@@ -1,30 +1,39 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
+import { Card, Flex, Text, Button, Grid } from '@radix-ui/themes';
 
 export const Route = createFileRoute('/difficulty')({
-  component: DifficultySelect,
-})
+  component: Difficulty,
+});
 
-function DifficultySelect() {
-  const difficulties = [
-    { level: '초급', color: 'bg-green-500', description: '클라이밍을 처음 시작하시나요?' },
-    { level: '중급', color: 'bg-yellow-500', description: '기본기를 익히셨나요?' },
-    { level: '고급', color: 'bg-red-500', description: '새로운 도전을 원하시나요?' },
-  ]
+const difficulties = [
+  { level: 'V0-V2', label: '초급', color: 'green' },
+  { level: 'V3-V4', label: '중급', color: 'yellow' },
+  { level: 'V5+', label: '고급', color: 'red' },
+] as const;
 
+function Difficulty() {
   return (
-    <div className="min-h-screen p-4 flex flex-col">
-      <h1 className="text-2xl font-bold text-center my-8">난이도 선택</h1>
-      <div className="flex-1 flex flex-col gap-4">
-        {difficulties.map((diff) => (
-          <button
-            key={diff.level}
-            className={`${diff.color} text-white p-6 rounded-2xl shadow-lg active:scale-95 transition-transform`}
-          >
-            <div className="text-2xl font-bold mb-2">{diff.level}</div>
-            <div className="text-sm opacity-90">{diff.description}</div>
-          </button>
-        ))}
+    <Flex direction="column" gap="6">
+      <div>
+        <Text size="6" weight="bold">난이도 선택</Text>
+        <Text size="2" color="gray">오늘의 클라이밍 난이도를 선택해주세요.</Text>
       </div>
-    </div>
-  )
+
+      <Grid columns="1" gap="4">
+        {difficulties.map(({ level, label, color }) => (
+          <Card key={level} size="3">
+            <Flex direction="column" gap="3">
+              <div>
+                <Text size="5" weight="bold">{level}</Text>
+                <Text size="2" color="gray">{label} 난이도</Text>
+              </div>
+              <Button variant="soft" color={color as any}>
+                이 난이도로 시작하기
+              </Button>
+            </Flex>
+          </Card>
+        ))}
+      </Grid>
+    </Flex>
+  );
 } 

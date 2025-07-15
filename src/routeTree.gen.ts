@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 import { Route as ChallengeCompleteRouteImport } from './routes/challenge/complete'
@@ -25,11 +24,6 @@ const SignInRoute = SignInRouteImport.update({
 const DifficultyRoute = DifficultyRouteImport.update({
   id: '/difficulty',
   path: '/difficulty',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,7 +49,6 @@ const ChallengeChallengeIdRoute = ChallengeChallengeIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/difficulty': typeof DifficultyRoute
   '/sign-in': typeof SignInRoute
   '/challenge/$challengeId': typeof ChallengeChallengeIdRoute
@@ -64,7 +57,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/difficulty': typeof DifficultyRoute
   '/sign-in': typeof SignInRoute
   '/challenge/$challengeId': typeof ChallengeChallengeIdRoute
@@ -74,7 +66,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/difficulty': typeof DifficultyRoute
   '/sign-in': typeof SignInRoute
   '/challenge/$challengeId': typeof ChallengeChallengeIdRoute
@@ -85,7 +76,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/difficulty'
     | '/sign-in'
     | '/challenge/$challengeId'
@@ -94,7 +84,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/difficulty'
     | '/sign-in'
     | '/challenge/$challengeId'
@@ -103,7 +92,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/difficulty'
     | '/sign-in'
     | '/challenge/$challengeId'
@@ -113,7 +101,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   DifficultyRoute: typeof DifficultyRoute
   SignInRoute: typeof SignInRoute
   ChallengeChallengeIdRoute: typeof ChallengeChallengeIdRoute
@@ -135,13 +122,6 @@ declare module '@tanstack/react-router' {
       path: '/difficulty'
       fullPath: '/difficulty'
       preLoaderRoute: typeof DifficultyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -177,7 +157,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   DifficultyRoute: DifficultyRoute,
   SignInRoute: SignInRoute,
   ChallengeChallengeIdRoute: ChallengeChallengeIdRoute,
