@@ -19,5 +19,10 @@
       "trailingCommas": "es5",
       "semicolons": "always"
     }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   }
 }
