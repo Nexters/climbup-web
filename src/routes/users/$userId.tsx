@@ -1,56 +1,83 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
+import { Card, Flex, Text, Grid } from '@radix-ui/themes';
 
 export const Route = createFileRoute('/users/$userId')({
-  component: UserProfile,
-})
+  component: UserProfile
+});
 
 function UserProfile() {
-  const { userId } = Route.useParams()
+  const { userId } = Route.useParams();
 
   return (
-    <div className="min-h-screen flex flex-col p-4">
-      <div className="flex items-center space-x-4 mb-6">
-        <div className="w-16 h-16 bg-gray-300 rounded-full"></div>
-        <div>
-          <h1 className="text-xl font-bold">사용자 #{userId}</h1>
-          <p className="text-sm text-gray-600">클라이밍 마스터</p>
-        </div>
-      </div>
+    <Flex direction='column' gap='4'>
+      <Flex gap='4' align='center'>
+        <Card style={{ width: 64, height: 64, borderRadius: '100%' }} />
+        <Flex direction='column' gap='1'>
+          <Text size='5' weight='bold'>
+            사용자 #{userId}
+          </Text>
+          <Text size='2' color='gray'>
+            클라이밍 마스터
+          </Text>
+        </Flex>
+      </Flex>
 
-      <div className="flex-1 space-y-4">
-        <div className="bg-white rounded-2xl p-4 shadow">
-          <h2 className="text-lg font-semibold mb-3">통계</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-500">32</div>
-              <div className="text-sm text-gray-600">완료</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-500">89%</div>
-              <div className="text-sm text-gray-600">성공률</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-500">12</div>
-              <div className="text-sm text-gray-600">연속</div>
-            </div>
-          </div>
-        </div>
+      <Flex direction='column' gap='4'>
+        <Card>
+          <Text size='4' weight='bold' mb='3'>
+            통계
+          </Text>
+          <Grid columns='3' gap='4'>
+            <Flex direction='column' align='center'>
+              <Text size='6' weight='bold' color='blue'>
+                32
+              </Text>
+              <Text size='2' color='gray'>
+                완료
+              </Text>
+            </Flex>
+            <Flex direction='column' align='center'>
+              <Text size='6' weight='bold' color='green'>
+                89%
+              </Text>
+              <Text size='2' color='gray'>
+                성공률
+              </Text>
+            </Flex>
+            <Flex direction='column' align='center'>
+              <Text size='6' weight='bold' color='purple'>
+                12
+              </Text>
+              <Text size='2' color='gray'>
+                연속
+              </Text>
+            </Flex>
+          </Grid>
+        </Card>
 
-        <div className="bg-white rounded-2xl p-4 shadow">
-          <h2 className="text-lg font-semibold mb-3">최근 기록</h2>
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-2 bg-gray-50 rounded-xl">
-                <div>
-                  <div className="font-medium">챌린지 #{i}</div>
-                  <div className="text-sm text-gray-600">2024.03.{10 + i}</div>
-                </div>
-                <div className="text-green-500 font-medium">성공</div>
-              </div>
+        <Card>
+          <Text size='4' weight='bold' mb='3'>
+            최근 기록
+          </Text>
+          <Flex direction='column' gap='2'>
+            {[1, 2, 3].map(i => (
+              <Card key={i} variant='surface'>
+                <Flex justify='between' align='center'>
+                  <Flex direction='column' gap='1'>
+                    <Text weight='medium'>챌린지 #{i}</Text>
+                    <Text size='2' color='gray'>
+                      2024.03.{10 + i}
+                    </Text>
+                  </Flex>
+                  <Text color='green' weight='medium'>
+                    성공
+                  </Text>
+                </Flex>
+              </Card>
             ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-} 
+          </Flex>
+        </Card>
+      </Flex>
+    </Flex>
+  );
+}
