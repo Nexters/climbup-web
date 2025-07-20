@@ -25,7 +25,7 @@ function Gym() {
 
   const onClickStart = () => {
     // TODO: API 호출하여 암장 전송
-    navigate({ to: "/" });
+    navigate({ to: "/mission" });
   };
 
   return (

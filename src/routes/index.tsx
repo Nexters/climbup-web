@@ -1,5 +1,5 @@
-import { Button, Flex, Text } from "@radix-ui/themes";
-import { createFileRoute } from "@tanstack/react-router";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -7,24 +7,33 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <Flex direction="column" height="100vh">
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        style={{ flex: 1 }}
-        gap="4"
+    <Flex direction="column" gap="6">
+      <Card
+        size="3"
+        style={{ maxWidth: "400px", margin: "0 auto", width: "100%" }}
       >
-        <Text size="8" weight="bold" align="center">
-          오늘의 클라이밍
-        </Text>
-        <Text size="3" color="gray" align="center">
-          새로운 도전을 시작해보세요!
-        </Text>
-        <Button size="4" style={{ width: "100%" }}>
-          클라이밍 시작하기
-        </Button>
-      </Flex>
+        <Flex direction="column" gap="5">
+          <div>
+            <Heading size="6" mb="2">
+              클뉴비에 오신 것을 환영해요 :)
+            </Heading>
+            <Text size="2" color="gray">
+              내 마음에 필요했던 조언을 받아보세요
+            </Text>
+          </div>
+
+          <Link 
+            style={{ 
+              backgroundColor: "#FEE500",
+              color: "#000000",
+              fontWeight: "bold"
+            }}
+            to="/difficulty"
+          >
+            카카오로 3초만에 시작하기
+          </Link>
+        </Flex>
+      </Card>
     </Flex>
   );
 }

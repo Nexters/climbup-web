@@ -1,27 +1,31 @@
-import { Container, Flex, Heading, Link } from "@radix-ui/themes";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { Container, Flex } from "@radix-ui/themes";
+import {
+  createRootRoute,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
+import Header from '../components/Header';
 
 export const Route = createRootRoute({
-  component: () => (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm px-4">
-        <Container size="2">
-          <Flex py="3" justify="between" align="center">
-            <Heading size="4">Climb Up</Heading>
-            <Flex gap="4">
-              <Link color="gray" href="/difficulty">
-                챌린지
-              </Link>
-              <Link color="gray" href="/users/me">
-                프로필
-              </Link>
-            </Flex>
-          </Flex>
-        </Container>
-      </header>
-      <Container size="2" py="6" px="4">
+  component: RootComponent,
+});
+
+const ROUTES_WITHOUT_HEADER = ["/", "/difficulty", "/gym"];
+
+function RootComponent() {
+  const routerState = useRouterState();
+  const hasHeader = !ROUTES_WITHOUT_HEADER.includes(
+    routerState.location.pathname
+  );
+
+  return (
+    <Flex direction="column" style={{ minHeight: "100vh" }}>
+      {hasHeader && (
+        <Header />
+      )}
+      <Container py="4" px="4">
         <Outlet />
       </Container>
-    </div>
-  ),
-});
+    </Flex>
+  );
+}
