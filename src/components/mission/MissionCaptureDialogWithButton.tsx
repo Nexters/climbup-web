@@ -1,14 +1,27 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import MissionCapturing from "./MissionCapturing";
+import MissionFailure from "./MissionFailure";
+import MissionReviewing from "./MissionReviewing";
+import MissionSuccess from "./MissionSuccess";
 
 interface MissionCaptureDialogWithButtonProps {
   sectorName: string;
 }
 
+type CapturedMedia = {
+  file: File;
+  preview: string;
+} | null;
+
+type ResultState = "capturing" | "reviewing" | "success" | "failure";
+
 export default function MissionCaptureDialogWithButton({
   sectorName,
 }: MissionCaptureDialogWithButtonProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
+  const [resultState, setResultState] = useState<ResultState>("capturing");
 
   const handleCapture = () => {
     fileInputRef.current?.click();
@@ -18,8 +31,52 @@ export default function MissionCaptureDialogWithButton({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // TODO: 파일 처리 로직
-    console.log("Selected file:", file);
+    const previewUrl = URL.createObjectURL(file);
+    setCapturedMedia({
+      file,
+      preview: previewUrl,
+    });
+    setResultState("reviewing");
+  };
+
+  const handleRetry = () => {
+    if (capturedMedia) {
+      URL.revokeObjectURL(capturedMedia.preview);
+    }
+    setCapturedMedia(null);
+    setResultState("capturing");
+    handleCapture();
+  };
+
+  const handleSuccess = () => {
+    setResultState("success");
+  };
+
+  const handleFailure = () => {
+    setResultState("failure");
+  };
+
+  const renderContent = () => {
+    switch (resultState) {
+      case "capturing":
+        return <MissionCapturing onCapture={handleCapture} />;
+
+      case "reviewing":
+        return (
+          <MissionReviewing
+            videoUrl={capturedMedia?.preview || ""}
+            onFailure={handleFailure}
+            onRetry={handleRetry}
+            onSuccess={handleSuccess}
+          />
+        );
+
+      case "success":
+        return <MissionSuccess />;
+
+      case "failure":
+        return <MissionFailure onRetry={handleRetry} />;
+    }
   };
 
   return (
@@ -50,32 +107,16 @@ export default function MissionCaptureDialogWithButton({
             </Dialog.Close>
           </div>
 
-          <div className="relative flex-1 flex items-center justify-center overflow-hidden">
-            <img
-              src={`https://placehold.co/800x1000`}
-              alt="미션 이미지"
-              className="max-w-full max-h-full object-contain"
-            />
-          </div>
-
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*,video/*"
+            accept="video/*"
             capture="environment"
             onChange={handleFileChange}
             className="hidden"
           />
 
-          <div className="p-4">
-            <button
-              type="button"
-              onClick={handleCapture}
-              className="w-full py-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
-            >
-              촬영하기
-            </button>
-          </div>
+          {renderContent()}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
