@@ -1,8 +1,6 @@
 name: Sync with external vault
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   sync:
