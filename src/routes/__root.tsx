@@ -4,7 +4,7 @@ import {
   Outlet,
   useRouterState,
 } from "@tanstack/react-router";
-import Header from '../components/Header';
+import Header from "../components/Header";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -20,9 +20,7 @@ function RootComponent() {
 
   return (
     <Flex direction="column" style={{ minHeight: "100vh" }}>
-      {hasHeader && (
-        <Header />
-      )}
+      {hasHeader && <Header />}
       <Container py="4" px="4">
         <Outlet />
       </Container>

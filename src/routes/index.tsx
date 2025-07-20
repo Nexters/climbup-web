@@ -22,11 +22,11 @@ function Home() {
             </Text>
           </div>
 
-          <Link 
-            style={{ 
+          <Link
+            style={{
               backgroundColor: "#FEE500",
               color: "#000000",
-              fontWeight: "bold"
+              fontWeight: "bold",
             }}
             to="/difficulty"
           >

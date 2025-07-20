@@ -46,16 +46,25 @@ function Gym() {
             size="3"
             style={{
               cursor: "pointer",
-              border: selectedGym === id ? "2px solid var(--accent-9)" : undefined,
+              border:
+                selectedGym === id ? "2px solid var(--accent-9)" : undefined,
             }}
             onClick={() => setSelectedGym(id)}
           >
             <Flex align="center" justify="between">
               <Flex direction="column" gap="1">
-                <Text size="3" weight="bold">{name}</Text>
-                <Text size="2" color="gray">{address}</Text>
+                <Text size="3" weight="bold">
+                  {name}
+                </Text>
+                <Text size="2" color="gray">
+                  {address}
+                </Text>
               </Flex>
-              {selectedGym === id && <Text size="3" color="gray">✓</Text>}
+              {selectedGym === id && (
+                <Text size="3" color="gray">
+                  ✓
+                </Text>
+              )}
             </Flex>
           </Card>
         ))}

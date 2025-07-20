@@ -12,6 +12,7 @@
     "check": "biome check --apply ."
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/themes": "^3.2.1",
     "@tanstack/react-router": "^1.127.8",
     "embla-carousel-react": "^8.6.0",
