@@ -1,0 +1,34 @@
+name: Sync PR branch with external vault
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.EXTERNAL_VAULT_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Add remote url
+        run: |
+          echo "Adding remote URL"
+          git remote add external-vault ${{ secrets.EXTERNAL_VAULT_URL }}
+          git config user.name ${{ secrets.EXTERNAL_VAULT_USERNAME }}
+          git config user.email ${{ secrets.EXTERNAL_VAULT_EMAIL }}
+
+      - name: Push branch to external-vault
+        run: |
+          BRANCH_NAME=${{ github.event.pull_request.head.ref }}
+          echo "Pushing branch $BRANCH_NAME to external-vault"
+          git push --force external-vault $BRANCH_NAME
+
+      - name: Clean up
+        run: |
+          echo "Removing external-vault remote"
+          git remote remove external-vault

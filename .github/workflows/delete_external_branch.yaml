@@ -1,0 +1,14 @@
+name: Delete Branch on PR Close/Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete_branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete branch in external vault
+        run: |
+          curl -s -X DELETE -u ${{ secrets.EXTERNAL_VAULT_USERNAME }}:${{ secrets.EXTERNAL_VAULT_TOKEN }} https://api.github.com/repos/${{ secrets.EXTERNAL_VAULT_USERNAME }}/climeup-web/git/refs/heads/${{ github.event.pull_request.head.ref }}
