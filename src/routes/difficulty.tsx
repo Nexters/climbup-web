@@ -6,7 +6,7 @@ export const Route = createFileRoute("/difficulty")({
   component: Difficulty,
 });
 
-const colors = [
+const tier = [
   { id: "orange", label: "주황", value: "orange" },
   { id: "red", label: "빨강", value: "red" },
   { id: "green", label: "초록", value: "green" },
@@ -17,7 +17,7 @@ const colors = [
 function Difficulty() {
   const navigate = useNavigate();
 
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedTier, setSelectedTier] = useState<string>("orange");
 
   const onClickNext = () => {
     // TODO: API 호출하여 난이도 전송
@@ -26,25 +26,25 @@ function Difficulty() {
 
   return (
     <Flex direction="column" gap="6">
-      <div>
+      <Flex direction="column" gap="2">
         <Text size="6" weight="bold">
-          색상 선택
+          반가워요
         </Text>
         <Text size="2" color="gray">
-          오늘의 클라이밍을 시작할 색상을 선택해주세요
+          클라이밍 티어를 선택해주세요.
         </Text>
-      </div>
+      </Flex>
 
       <Grid columns="1" gap="4">
-        {colors.map(({ id, label, value }) => (
+        {tier.map(({ id, label, value }) => (
           <Card 
             key={id} 
             size="3"
             style={{ 
               cursor: 'pointer',
-              border: selectedColor === id ? '2px solid var(--accent-9)' : undefined 
+              border: selectedTier === id ? '2px solid var(--accent-9)' : undefined 
             }}
-            onClick={() => setSelectedColor(id)}
+            onClick={() => setSelectedTier(id)}
           >
             <Flex align="center" justify="between">
               <Flex gap="2" align="center">
@@ -58,13 +58,28 @@ function Difficulty() {
                 />
                 <Text size="3">{label}</Text>
               </Flex>
-              {selectedColor === id && (
+              {selectedTier === id && (
                 <Text size="3" color="gray">✓</Text>
               )}
             </Flex>
           </Card>
         ))}
       </Grid>
+
+      <Card size="2">
+        <Flex direction="column" gap="2">
+          <Text weight="bold">난이도 안내</Text>
+          <Text size="2">
+            • 주황, 초록: V0-V2 수준의 초급 코스
+          </Text>
+          <Text size="2">
+            • 파랑, 보라: V3-V4 수준의 중급 코스
+          </Text>
+          <Text size="2">
+            • 빨강: V5 이상의 고급 코스
+          </Text>
+        </Flex>
+      </Card>
 
       <Button onClick={onClickNext}>다음으로</Button>
     </Flex>
