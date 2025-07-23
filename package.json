@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:msw": "MSW_ENABLED=true vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "format": "biome format --write .",
@@ -13,7 +14,7 @@
     "generate": "orval --config orval.config.ts"
   },
   "dependencies": {
-    "@hotjar/browser": "^1.0.9",
+    "@hotjar/browser": "1.0.9",
     "@radix-ui/react-dialog": "1.1.14",
     "@radix-ui/themes": "3.2.1",
     "@tanstack/react-router": "1.127.8",
@@ -31,10 +32,16 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@vitejs/plugin-react": "4.6.0",
+    "msw": "2.10.4",
     "orval": "7.10.0",
     "postcss": "8",
     "tailwindcss": "3.4.17",
     "typescript": "5.8.3",
     "vite": "7.0.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

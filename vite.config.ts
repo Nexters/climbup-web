@@ -12,4 +12,7 @@ export default defineConfig({
   server: {
     allowedHosts: ["0cfb2f639498.ngrok-free.app"],
   },
+  define: {
+    __MSW_ENABLED__: JSON.stringify(process.env.MSW_ENABLED === "true"),
+  },
 });

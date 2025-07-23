@@ -3,3 +3,4 @@ dist
 *.config.ts
 *.config.js 
 *.gen.ts
+/public/*
