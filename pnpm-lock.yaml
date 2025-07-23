@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@hotjar/browser':
+        specifier: ^1.0.9
+        version: 1.0.9
       '@radix-ui/react-dialog':
         specifier: 1.1.14
         version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -469,6 +472,9 @@ packages:
 
   '@gerrit0/mini-shiki@3.8.1':
     resolution: {integrity: sha512-HVZW+8pxoOExr5ZMPK15U79jQAZTO/S6i5byQyyZGjtNj+qaYd82cizTncwFzTQgiLo8uUBym6vh+/1tfJklTw==}
+
+  '@hotjar/browser@1.0.9':
+    resolution: {integrity: sha512-n9akDMod8BLGpYEQCrHwlYWWd63c1HlhUSXNIDfClZtKYXbUjIUOFlNZNNcUxgHTCsi4l2i+SWKsGsO0t93S8w==}
 
   '@ibm-cloud/openapi-ruleset-utilities@1.9.0':
     resolution: {integrity: sha512-AoFbSarOqFBYH+1TZ9Ahkm2IWYSi5v0pBk88fpV+5b3qGJukypX8PwvCWADjuyIccKg48/F73a6hTTkBzDQ2UA==}
@@ -3544,6 +3550,8 @@ snapshots:
       '@shikijs/themes': 3.8.1
       '@shikijs/types': 3.8.1
       '@shikijs/vscode-textmate': 10.0.2
+
+  '@hotjar/browser@1.0.9': {}
 
   '@ibm-cloud/openapi-ruleset-utilities@1.9.0': {}
 
