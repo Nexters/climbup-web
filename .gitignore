@@ -23,3 +23,6 @@ dist-ssr
 
 # TanStack Router generated files
 .tanstack
+
+*storybook.log
+storybook-static
