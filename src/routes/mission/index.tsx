@@ -2,7 +2,7 @@ import { Button, Flex, Text } from "@radix-ui/themes";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
-import MissionCard from "./_components/MissionCard";
+import MissionCard from "./-components/MissionCard";
 
 export const Route = createFileRoute("/mission/")({
   component: Mission,
