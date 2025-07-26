@@ -19,7 +19,10 @@ function RootComponent() {
   );
 
   return (
-    <Flex direction="column" style={{ minHeight: "100vh" }}>
+    <Flex
+      direction="column"
+      className="bg-neutral-200 min-h-screen max-w-[600px] mx-auto outline outline-1 outline-gray-200 -outline-offset-1"
+    >
       {hasHeader && <Header />}
       <Container py="4" px="4">
         <Outlet />
