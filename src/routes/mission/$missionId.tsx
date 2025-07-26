@@ -1,13 +1,13 @@
-import * as Dialog from "@radix-ui/react-dialog";
+import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import MissionCapturing from "./MissionCapturing";
-import MissionFailure from "./MissionFailure";
-import MissionReviewing from "./MissionReviewing";
-import MissionSuccess from "./MissionSuccess";
+import MissionCapturing from "./-components/MissionCapturing";
+import MissionFailure from "./-components/MissionFailure";
+import MissionReviewing from "./-components/MissionReviewing";
+import MissionSuccess from "./-components/MissionSuccess";
 
-interface MissionCaptureDialogWithButtonProps {
-  sectorName: string;
-}
+export const Route = createFileRoute("/mission/$missionId")({
+  component: MissionDetail,
+});
 
 type CapturedMedia = {
   file: File;
@@ -16,9 +16,8 @@ type CapturedMedia = {
 
 type ResultState = "capturing" | "reviewing" | "success" | "failure";
 
-export default function MissionCaptureDialogWithButton({
-  sectorName,
-}: MissionCaptureDialogWithButtonProps) {
+function MissionDetail() {
+  const { missionId } = Route.useParams();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
   const [resultState, setResultState] = useState<ResultState>("capturing");
@@ -80,45 +79,27 @@ export default function MissionCaptureDialogWithButton({
   };
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
+    <div className="fixed inset-0 flex flex-col bg-white">
+      <div className="flex justify-between items-center p-4">
+        <h1 className="text-xl font-bold">미션 {missionId}</h1>
         <button
           type="button"
-          className="w-full py-2 px-4 bg-gray-100 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+          className="text-gray-500 hover:text-gray-700"
+          onClick={() => window.history.back()}
         >
-          도전하기
+          닫기
         </button>
-      </Dialog.Trigger>
+      </div>
 
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        <Dialog.Content className="fixed inset-0 flex flex-col bg-white">
-          <div className="flex justify-between items-center p-4">
-            <Dialog.Title className="text-xl font-bold">
-              {sectorName}
-            </Dialog.Title>
-            <Dialog.Close asChild>
-              <button
-                type="button"
-                className="text-gray-500 hover:text-gray-700"
-              >
-                닫기
-              </button>
-            </Dialog.Close>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="video/*"
-            capture="environment"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-
-          {renderContent()}
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="video/*"
+        capture="environment"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+      {renderContent()}
+    </div>
   );
 }

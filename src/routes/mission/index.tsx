@@ -87,14 +87,24 @@ function Mission() {
         <div className="overflow-hidden" ref={emblaRef}>
           <Flex gap="4" className="flex-row">
             {missions.map((mission) => (
-              <MissionCard key={mission.id} {...mission} viewMode="card" />
+              <MissionCard
+                key={mission.id}
+                missionId={mission.id.toString()}
+                {...mission}
+                viewMode="card"
+              />
             ))}
           </Flex>
         </div>
       ) : (
         <Flex direction="column" gap="3">
           {missions.map((mission) => (
-            <MissionCard key={mission.id} {...mission} viewMode="list" />
+            <MissionCard
+              key={mission.id}
+              missionId={mission.id.toString()}
+              {...mission}
+              viewMode="list"
+            />
           ))}
         </Flex>
       )}

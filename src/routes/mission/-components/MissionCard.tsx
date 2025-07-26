@@ -1,12 +1,14 @@
-import MissionCaptureDialogWithButton from "./MissionCaptureDialogWithButton";
+import { Link } from "@tanstack/react-router";
 
 interface MissionCardProps {
+  missionId: string;
   sectorName: string;
   difficulty: string;
   viewMode?: "card" | "list";
 }
 
 export default function MissionCard({
+  missionId,
   sectorName,
   difficulty,
   viewMode = "card",
@@ -29,7 +31,13 @@ export default function MissionCard({
             />
           </div>
         </div>
-        <MissionCaptureDialogWithButton sectorName={sectorName} />
+        <Link
+          to="/mission/$missionId"
+          params={{ missionId }}
+          className="w-full py-2 px-4 bg-gray-100 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors text-center block"
+        >
+          도전하기
+        </Link>
       </div>
     </div>
   );
