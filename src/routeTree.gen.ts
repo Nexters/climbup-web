@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GymRouteImport } from './routes/gym'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
+import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
@@ -27,20 +28,25 @@ const DifficultyRoute = DifficultyRouteImport.update({
   path: '/difficulty',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MissionRouteRoute = MissionRouteRouteImport.update({
+  id: '/mission',
+  path: '/mission',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
-  id: '/onboarding/',
-  path: '/onboarding/',
-  getParentRoute: () => rootRouteImport,
+const MissionIndexRoute = MissionIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MissionRouteRoute,
 } as any)
 const MissionIndexRoute = MissionIndexRouteImport.update({
-  id: '/mission/',
-  path: '/mission/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => MissionRouteRoute,
 } as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/users/$userId',
@@ -48,18 +54,19 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const MissionMissionIdRoute = MissionMissionIdRouteImport.update({
-  id: '/mission/$missionId',
-  path: '/mission/$missionId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$missionId',
+  path: '/$missionId',
+  getParentRoute: () => MissionRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mission': typeof MissionRouteRouteWithChildren
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/mission': typeof MissionIndexRoute
+  '/mission/': typeof MissionIndexRoute
   '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mission': typeof MissionRouteRouteWithChildren
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
   '/mission/$missionId': typeof MissionMissionIdRoute
@@ -87,6 +95,7 @@ export interface FileRouteTypes {
     |
     | '/'
    
+    | '/mission'
     | '/difficulty'
    
     | '/gym'
@@ -94,7 +103,7 @@ export interface FileRouteTypes {
     | '/mission/$missionId'
     | '/users/$userId'
    
-    | '/mission'
+    | '/mission/'
     | '/onboarding'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
    
     | '/'
    
+    | '/mission'
     | '/difficulty'
    
     | '/gym'
@@ -129,11 +139,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MissionRouteRoute: typeof MissionRouteRouteWithChildren
   DifficultyRoute: typeof DifficultyRoute
   GymRoute: typeof GymRoute
-  MissionMissionIdRoute: typeof MissionMissionIdRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
-  MissionIndexRoute: typeof MissionIndexRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
@@ -153,6 +162,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DifficultyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mission': {
+      id: '/mission'
+      path: '/mission'
+      fullPath: '/mission'
+      preLoaderRoute: typeof MissionRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -169,10 +185,10 @@ declare module '@tanstack/react-router' {
     }
     '/mission/': {
       id: '/mission/'
-      path: '/mission'
-      fullPath: '/mission'
+      path: '/'
+      fullPath: '/mission/'
       preLoaderRoute: typeof MissionIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MissionRouteRoute
     }
     '/users/$userId': {
       id: '/users/$userId'
@@ -183,21 +199,34 @@ declare module '@tanstack/react-router' {
     }
     '/mission/$missionId': {
       id: '/mission/$missionId'
-      path: '/mission/$missionId'
+      path: '/$missionId'
       fullPath: '/mission/$missionId'
       preLoaderRoute: typeof MissionMissionIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MissionRouteRoute
     }
   }
 }
 
+interface MissionRouteRouteChildren {
+  MissionMissionIdRoute: typeof MissionMissionIdRoute
+  MissionIndexRoute: typeof MissionIndexRoute
+}
+
+const MissionRouteRouteChildren: MissionRouteRouteChildren = {
+  MissionMissionIdRoute: MissionMissionIdRoute,
+  MissionIndexRoute: MissionIndexRoute,
+}
+
+const MissionRouteRouteWithChildren = MissionRouteRoute._addFileChildren(
+  MissionRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MissionRouteRoute: MissionRouteRouteWithChildren,
   DifficultyRoute: DifficultyRoute,
   GymRoute: GymRoute,
-  MissionMissionIdRoute: MissionMissionIdRoute,
   UsersUserIdRoute: UsersUserIdRoute,
-  MissionIndexRoute: MissionIndexRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
 export const routeTree = rootRouteImport
