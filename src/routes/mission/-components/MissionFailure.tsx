@@ -1,4 +1,4 @@
-import * as Dialog from "@radix-ui/react-dialog";
+import { useNavigate } from "@tanstack/react-router";
 import answerVideo from "../../../assets/video/mock-mission-answer-video.mp4";
 
 interface MissionFailureProps {
@@ -6,6 +6,8 @@ interface MissionFailureProps {
 }
 
 export default function MissionFailure({ onRetry }: MissionFailureProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="relative flex-1 flex flex-col items-center justify-center overflow-hidden">
@@ -25,14 +27,13 @@ export default function MissionFailure({ onRetry }: MissionFailureProps) {
       </div>
       <div className="p-4">
         <div className="flex gap-2">
-          <Dialog.Close asChild>
-            <button
-              type="button"
-              className="flex-1 py-4 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
-            >
-              닫기
-            </button>
-          </Dialog.Close>
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/mission" })}
+            className="flex-1 py-4 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+          >
+            닫기
+          </button>
           <button
             type="button"
             onClick={onRetry}
