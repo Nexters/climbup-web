@@ -18,6 +18,7 @@
   "dependencies": {
     "@hotjar/browser": "1.0.9",
     "@radix-ui/react-dialog": "1.1.14",
+    "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/themes": "3.2.1",
     "@tanstack/react-router": "1.127.8",
     "axios": "1.11.0",
