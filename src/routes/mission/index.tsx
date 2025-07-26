@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
 import MissionCard from "./_components/MissionCard";
 
-export const Route = createFileRoute("/mission")({
+export const Route = createFileRoute("/mission/")({
   component: Mission,
 });
 

@@ -9,17 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DifficultyRouteImport } from './routes/difficulty'
 import { Route as GymRouteImport } from './routes/gym'
+import { Route as DifficultyRouteImport } from './routes/difficulty'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MissionRouteImport } from './routes/mission'
+import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
-const MissionRoute = MissionRouteImport.update({
-  id: '/mission',
-  path: '/mission',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const GymRoute = GymRouteImport.update({
   id: '/gym',
   path: '/gym',
@@ -35,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MissionIndexRoute = MissionIndexRouteImport.update({
+  id: '/mission/',
+  path: '/mission/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/users/$userId',
   path: '/users/$userId',
@@ -45,49 +45,42 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
-  '/mission': typeof MissionRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/mission': typeof MissionIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
-  '/mission': typeof MissionRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/mission': typeof MissionIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
-  '/mission': typeof MissionRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/mission/': typeof MissionIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/difficulty' | '/gym' | '/mission' | '/users/$userId'
+  fullPaths: '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/difficulty' | '/gym' | '/mission' | '/users/$userId'
-  id: '__root__' | '/' | '/difficulty' | '/gym' | '/mission' | '/users/$userId'
+  to: '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission'
+  id: '__root__' | '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DifficultyRoute: typeof DifficultyRoute
   GymRoute: typeof GymRoute
-  MissionRoute: typeof MissionRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
+  MissionIndexRoute: typeof MissionIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/mission': {
-      id: '/mission'
-      path: '/mission'
-      fullPath: '/mission'
-      preLoaderRoute: typeof MissionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/gym': {
       id: '/gym'
       path: '/gym'
@@ -109,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mission/': {
+      id: '/mission/'
+      path: '/mission'
+      fullPath: '/mission'
+      preLoaderRoute: typeof MissionIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/$userId': {
       id: '/users/$userId'
       path: '/users/$userId'
@@ -123,8 +123,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DifficultyRoute: DifficultyRoute,
   GymRoute: GymRoute,
-  MissionRoute: MissionRoute,
   UsersUserIdRoute: UsersUserIdRoute,
+  MissionIndexRoute: MissionIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
