@@ -9,10 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MissionRouteImport } from './routes/mission'
-import { Route as GymRouteImport } from './routes/gym'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
+import { Route as GymRouteImport } from './routes/gym'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MissionRouteImport } from './routes/mission'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
 const MissionRoute = MissionRouteImport.update({

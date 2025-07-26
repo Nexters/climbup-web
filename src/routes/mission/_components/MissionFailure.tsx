@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import answerVideo from "../../assets/video/mock-mission-answer-video.mp4";
+import answerVideo from "../../../assets/video/mock-mission-answer-video.mp4";
 
 interface MissionFailureProps {
   onRetry: () => void;

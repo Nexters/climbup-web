@@ -6,7 +6,7 @@ const gyms = [
   { id: "yangjae", name: "더클라임 양재" },
 ] as const;
 
-export default function Header() {
+export default function MissionHeader() {
   const [selectedGym, setSelectedGym] = useState("gangnam");
 
   return (

@@ -4,7 +4,7 @@ import {
   Outlet,
   useRouterState,
 } from "@tanstack/react-router";
-import Header from "../components/Header";
+import Header from "./mission/_components/MissionHeader";
 
 export const Route = createRootRoute({
   component: RootComponent,
