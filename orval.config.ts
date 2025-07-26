@@ -3,10 +3,10 @@ import { defineConfig } from "orval";
 export default defineConfig({
   "holdy-api": {
     input: {
-      target: "https://api.holdy.kr/api-docs",
+      target: "https://dev-api.holdy.kr/api-docs",
     },
     output: {
-      baseUrl: "https://api.holdy.kr",
+      baseUrl: "https://dev-api.holdy.kr",
       client: "axios-functions",
       mode: "tags-split",
       override: {

@@ -4,3 +4,4 @@ dist
 *.config.js 
 *.gen.ts
 /public/*
+/.storybook/*
