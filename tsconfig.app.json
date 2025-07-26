@@ -21,7 +21,20 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Path mapping */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/routes/*": ["./src/routes/*"],
+      "@/generated/*": ["./src/generated/*"],
+      "@/mocks/*": ["./src/mocks/*"],
+      "@/assets/*": ["./src/assets/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", ".storybook/**/*"]
 }
