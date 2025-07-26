@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as GymRouteImport } from './routes/gym'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 
@@ -28,6 +29,11 @@ const DifficultyRoute = DifficultyRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MissionIndexRoute = MissionIndexRouteImport.update({
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission': typeof MissionIndexRoute
+  '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission': typeof MissionIndexRoute
+  '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,33 @@ export interface FileRoutesById {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission/': typeof MissionIndexRoute
+  '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission'
+  fullPaths:
+    | '/'
+    | '/difficulty'
+    | '/gym'
+    | '/users/$userId'
+    | '/mission'
+    | '/onboarding'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission'
-  id: '__root__' | '/' | '/difficulty' | '/gym' | '/users/$userId' | '/mission/'
+  to:
+    | '/'
+    | '/difficulty'
+    | '/gym'
+    | '/users/$userId'
+    | '/mission'
+    | '/onboarding'
+  id:
+    | '__root__'
+    | '/'
+    | '/difficulty'
+    | '/gym'
+    | '/users/$userId'
+    | '/mission/'
+    | '/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +105,7 @@ export interface RootRouteChildren {
   GymRoute: typeof GymRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
   MissionIndexRoute: typeof MissionIndexRoute
+  OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding/': {
+      id: '/onboarding/'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mission/': {
       id: '/mission/'
       path: '/mission'
@@ -125,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   GymRoute: GymRoute,
   UsersUserIdRoute: UsersUserIdRoute,
   MissionIndexRoute: MissionIndexRoute,
+  OnboardingIndexRoute: OnboardingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

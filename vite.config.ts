@@ -6,7 +6,7 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
+
 
 const dirname =
   typeof __dirname !== "undefined"
@@ -16,8 +16,7 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [
-    react(),
-    tailwindcss(),
+    react(), 
     tanstackRouter({
       routesDirectory: "./src/routes",
     }),

@@ -1,7 +1,7 @@
 // Typography 컴포넌트 토큰 정의
 const pretendard =
   '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif';
-const montserrat = '"Montserrat, sans-serif';
+const montserrat = '"Montserrat", sans-serif';
 const typography = {
   // Pretendard
   ".t-p-42-b": {
