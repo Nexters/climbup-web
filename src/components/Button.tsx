@@ -18,7 +18,7 @@ export default function Button({
     <button
       className={clsx(
         "w-fit px-9 py-4 rounded-[32px] transition-colors",
-        "inline-flex items-center justify-center",
+        "inline-flex items-center justify-center gap-[10px]",
         {
           "bg-neutral-800 text-neutral-100 active:bg-neutral-900": !disabled,
           "bg-neutral-400 text-neutral-500 cursor-not-allowed": disabled,
@@ -28,9 +28,9 @@ export default function Button({
       disabled={disabled}
       {...props}
     >
-      {leftIcon && <span className="mr-[10px]">{leftIcon}</span>}
+      {leftIcon}
       {children}
-      {rightIcon && <span className="ml-[10px]">{rightIcon}</span>}
+      {rightIcon}
     </button>
   );
 }
