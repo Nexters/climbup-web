@@ -26,6 +26,9 @@ importers:
       axios:
         specifier: 1.11.0
         version: 1.11.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       driver.js:
         specifier: ^1.3.6
         version: 1.3.6
