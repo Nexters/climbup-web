@@ -7,9 +7,9 @@ export const Route = createFileRoute("/mission")({
 
 function MissionRoute() {
   return (
-    <>
+    <div className="bg-neutral-500 min-h-screen">
       <MissionHeader />
       <Outlet />
-    </>
+    </div>
   );
 }
