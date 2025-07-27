@@ -1,46 +1,59 @@
 import * as Select from "@radix-ui/react-select";
+import { Link } from "@tanstack/react-router";
+import { clsx } from "clsx";
 import { useState } from "react";
 import CheckIcon from "../../../components/icons/CheckIcon";
 import ChevronDownIcon from "../../../components/icons/ChevronDownIcon";
 
 const gyms = [
-  { id: "gangnam", name: "더클라임 강남" },
-  { id: "yangjae", name: "더클라임 양재" },
+  { id: "gangnam", name: "더 클라임 강남" },
+  { id: "nonhyeon", name: "더 클라임 논현" },
 ] as const;
 
 export default function MissionHeader() {
   const [selectedGym, setSelectedGym] = useState("gangnam");
 
-  const handleMyPageClick = () => {
-    console.log("마이페이지로 이동");
-  };
-
   return (
-    <div className="py-4 px-4 border-b border-gray-200">
+    <div className="py-4 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Select.Root value={selectedGym} onValueChange={setSelectedGym}>
-              <Select.Trigger className="inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <Select.Trigger className="inline-flex items-center justify-center gap-2 py-2 text-[22px] font-semibold text-gray-50 hover:opacity-90 focus:outline-none">
                 <Select.Value placeholder="암장 선택" />
-                <Select.Icon className="ml-2">
-                  <ChevronDownIcon variant="dark" />
+                <Select.Icon>
+                  <ChevronDownIcon variant="white" />
                 </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content className="overflow-hidden bg-white rounded-md shadow-lg border border-gray-200">
-                  <Select.Viewport className="p-1">
-                    <Select.Group>
+                <Select.Content
+                  position="popper"
+                  sideOffset={8}
+                  className="overflow-hidden bg-neutral-100 rounded-3xl shadow-lg z-50 min-w-[177px]"
+                >
+                  <Select.Viewport className="p-6">
+                    <Select.Group className="space-y-2">
                       {gyms.map((gym) => (
                         <Select.Item
                           key={gym.id}
                           value={gym.id}
-                          className="relative flex items-center px-8 py-2 text-sm text-gray-900 cursor-pointer select-none hover:bg-gray-100 focus:bg-gray-100 outline-none"
+                          className={clsx(
+                            "relative flex items-center gap-4 py-1.5 text-base cursor-pointer select-none outline-none transition-colors",
+                            selectedGym === gym.id
+                              ? "text-gray-900"
+                              : "text-gray-600"
+                          )}
                         >
                           <Select.ItemText>{gym.name}</Select.ItemText>
-                          <Select.ItemIndicator className="absolute left-2 w-4 h-4">
-                            <CheckIcon variant="dark" width={15} height={15} />
-                          </Select.ItemIndicator>
+                          {selectedGym === gym.id && (
+                            <Select.ItemIndicator>
+                              <CheckIcon
+                                variant="dark"
+                                width={24}
+                                height={24}
+                              />
+                            </Select.ItemIndicator>
+                          )}
                         </Select.Item>
                       ))}
                     </Select.Group>
@@ -49,13 +62,10 @@ export default function MissionHeader() {
               </Select.Portal>
             </Select.Root>
           </div>
-          <button
-            type="button"
-            onClick={handleMyPageClick}
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
-          >
-            마이페이지
-          </button>
+          <Link
+            to="/users/1"
+            className="w-11 h-11 rounded-full bg-gray-900 hover:opacity-90 transition-opacity"
+          ></Link>
         </div>
       </div>
     </div>
