@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
+import PlayIcon from "../../components/icons/PlayIcon";
 import MissionCard from "./-components/MissionCard";
 
 export const Route = createFileRoute("/mission/")({
@@ -136,17 +137,7 @@ function Mission() {
             className="w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors"
             aria-label="시작하기"
           >
-            <svg
-              aria-label="시작하기"
-              role="img"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
-            </svg>
+            <PlayIcon variant="white" />
           </button>
         </div>
       </div>
