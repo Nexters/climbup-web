@@ -1,6 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { clsx } from "clsx";
-import LockIcon from "../../../components/icons/LockIcon";
 
 interface MissionListCardProps {
   missionId: string;
@@ -16,38 +14,37 @@ export default function MissionListCard({
   status = "not_tried",
 }: MissionListCardProps) {
   return (
-    <div className="flex items-center gap-4 p-4">
-      <div className="w-[90px] h-[120px] rounded-2xl overflow-hidden">
+    <Link
+      to="/mission/$missionId"
+      params={{ missionId }}
+      className="flex items-center gap-4 p-4 bg-neutral-100 rounded-[32px]"
+    >
+      <div className="w-[66px] h-[90px] flex items-center">
         <img
           src={`https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+${missionId}`}
           alt=""
-          className="w-full h-full object-cover"
+          className="w-[66px] h-[66px] rounded-full object-cover"
         />
       </div>
-      <div className="flex-1 flex flex-col gap-2">
-        <div className="h-[18px] flex items-center">
-          <span className="px-3 py-1 bg-neutral-300 rounded-3xl text-[10px] font-semibold text-neutral-600">
-            {sectorName}
+      <div className="w-[1px] h-[114px] -my-4 bg-neutral-300" />
+      <div className="flex-1 flex flex-col gap-[6px]">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 bg-neutral-300 rounded-3xl t-p-10-sb text-neutral-600">
+            {status === "success" && "성공"}
+            {status === "failed" && "실패"}
+            {status === "not_tried" && "미도전"}
           </span>
+          <span className="t-p-10-sb text-neutral-400">2025.07.21 (월)</span>
         </div>
-        <div className="text-2xl font-extrabold text-neutral-100">
-          {difficulty}
+        <div className="t-m-24-b text-neutral-900">{difficulty}</div>
+        <div className="t-p-12-m text-neutral-600">
+          이 루트가 궁금하지 않으신가요?
         </div>
-        <div className="text-sm font-medium text-neutral-100">
-          이 루트 궁금하지 않으신가요?
+        <div className="flex items-center gap-1 t-p-10-sb text-neutral-400">
+          <span className="w-1 h-1 rounded-full bg-neutral-400" />
+          <span>{sectorName}</span>
         </div>
       </div>
-      <Link
-        to="/mission/$missionId"
-        params={{ missionId }}
-        className={clsx(
-          "w-12 h-14 flex items-center justify-center rounded-[32px]",
-          "bg-neutral-900 text-neutral-100",
-          "hover:opacity-90 transition-opacity"
-        )}
-      >
-        <LockIcon variant="white" />
-      </Link>
-    </div>
+    </Link>
   );
 }

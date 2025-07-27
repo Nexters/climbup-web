@@ -4,9 +4,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import ListIcon from "../../components/icons/ListIcon";
-import PlayIcon from "../../components/icons/PlayIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
+import MissionTimer from "./-components/MissionTimer";
 
 export const Route = createFileRoute("/mission/")({
   component: Mission,
@@ -51,10 +51,6 @@ function Mission() {
     setViewMode((prev) => (prev === "card" ? "list" : "card"));
   };
 
-  const handleStart = () => {
-    console.log("시작하기");
-  };
-
   return (
     <div className="flex flex-col gap-4 pb-20">
       <div className="flex justify-between items-center px-4">
@@ -64,7 +60,7 @@ function Mission() {
               key={type}
               type="button"
               className={clsx(
-                "h-9 px-4 rounded-3xl text-sm font-medium transition-colors",
+                "h-9 px-4 rounded-3xl t-p-14-m transition-colors",
                 filter === type
                   ? "bg-neutral-600 text-neutral-100"
                   : "text-neutral-100"
@@ -77,7 +73,7 @@ function Mission() {
         </div>
         <button
           type="button"
-          className="w-6 h-6 text-gray-50"
+          className="w-6 h-6 text-neutral-100"
           onClick={toggleViewMode}
           aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
         >
@@ -102,7 +98,7 @@ function Mission() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2 px-4">
           {missions.map((mission) => (
             <MissionListCard
               key={mission.id}
@@ -113,19 +109,7 @@ function Mission() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="text-4xl font-bold text-gray-900">00:00:00</div>
-          <button
-            type="button"
-            onClick={handleStart}
-            className="w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition-colors"
-            aria-label="시작하기"
-          >
-            <PlayIcon variant="white" />
-          </button>
-        </div>
-      </div>
+      <MissionTimer />
     </div>
   );
 }

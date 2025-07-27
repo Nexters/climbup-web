@@ -38,12 +38,12 @@ export default function MissionGridCard({
         <div className="flex flex-col justify-between h-full">
           <div className="flex flex-col gap-2">
             <div className="h-[18px] flex items-center">
-              <span className="px-3 py-1 bg-neutral-300 rounded-3xl text-[10px] font-semibold text-neutral-600">
+              <span className="px-3 py-1 bg-neutral-300 rounded-3xl t-p-10-sb text-neutral-600">
                 {sectorName}
               </span>
             </div>
             <div className="t-m-56-b text-neutral-100">{difficulty}</div>
-            <div className="text-sm font-medium text-neutral-100">
+            <div className="t-p-14-m text-neutral-100">
               이 루트 궁금하지 않으신가요?
             </div>
           </div>
