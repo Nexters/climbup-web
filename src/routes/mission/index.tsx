@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { clsx } from "clsx";
 import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
+import GridIcon from "@/components/icons/GridIcon";
+import ListIcon from "../../components/icons/ListIcon";
 import PlayIcon from "../../components/icons/PlayIcon";
 import MissionCard from "./-components/MissionCard";
 
@@ -28,6 +31,13 @@ const missions = [
 
 type FilterType = "all" | "failed" | "success" | "not_tried";
 
+const filterLabels: Record<FilterType, string> = {
+  all: "전체 30",
+  not_tried: "미도전",
+  failed: "실패",
+  success: "성공",
+};
+
 function Mission() {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
@@ -46,59 +56,35 @@ function Mission() {
 
   return (
     <div className="flex flex-col gap-4 pb-20">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center px-4">
         <div className="flex gap-2">
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setFilter("all")}
-          >
-            전체
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filter === "failed"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setFilter("failed")}
-          >
-            실패
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filter === "success"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setFilter("success")}
-          >
-            성공
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              filter === "not_tried"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-            onClick={() => setFilter("not_tried")}
-          >
-            미도전
-          </button>
+          {(["all", "not_tried", "failed", "success"] as const).map((type) => (
+            <button
+              key={type}
+              type="button"
+              className={clsx(
+                "h-9 px-4 rounded-3xl text-sm font-medium transition-colors",
+                filter === type
+                  ? "bg-neutral-600 text-neutral-100"
+                  : "text-neutral-100"
+              )}
+              onClick={() => setFilter(type)}
+            >
+              {filterLabels[type]}
+            </button>
+          ))}
         </div>
         <button
           type="button"
-          className="px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-md transition-colors"
+          className="w-6 h-6 text-gray-50"
           onClick={toggleViewMode}
+          aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
         >
-          {viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
+          {viewMode === "card" ? (
+            <ListIcon variant="white" />
+          ) : (
+            <GridIcon variant="white" />
+          )}
         </button>
       </div>
 
