@@ -38,10 +38,10 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MissionIndexRoute = MissionIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MissionRouteRoute,
+const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const MissionIndexRoute = MissionIndexRouteImport.update({
   id: '/',
@@ -92,47 +92,31 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    |
     | '/'
-   
     | '/mission'
     | '/difficulty'
-   
     | '/gym'
-   
     | '/mission/$missionId'
     | '/users/$userId'
-   
     | '/mission/'
     | '/onboarding'
   fileRoutesByTo: FileRoutesByTo
   to:
-    |
     | '/'
-   
     | '/difficulty'
-   
     | '/gym'
-   
     | '/mission/$missionId'
     | '/users/$userId'
-   
     | '/mission'
     | '/onboarding'
   id:
-    |
     | '__root__'
-   
     | '/'
-   
     | '/mission'
     | '/difficulty'
-   
     | '/gym'
-   
     | '/mission/$missionId'
     | '/users/$userId'
-   
     | '/mission/'
     | '/onboarding/'
   fileRoutesById: FileRoutesById
