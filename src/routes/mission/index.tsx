@@ -5,7 +5,8 @@ import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import ListIcon from "../../components/icons/ListIcon";
 import PlayIcon from "../../components/icons/PlayIcon";
-import MissionCard from "./-components/MissionCard";
+import MissionGridCard from "./-components/MissionGridCard";
+import MissionListCard from "./-components/MissionListCard";
 
 export const Route = createFileRoute("/mission/")({
   component: Mission,
@@ -14,18 +15,18 @@ export const Route = createFileRoute("/mission/")({
 const missions = [
   {
     id: 1,
-    sectorName: "A구역 1번",
-    difficulty: "orange",
+    sectorName: "SEC 1·2",
+    difficulty: "Blue",
   },
   {
     id: 2,
-    sectorName: "B구역 3번",
-    difficulty: "blue",
+    sectorName: "SEC 3·4",
+    difficulty: "Blue",
   },
   {
     id: 3,
-    sectorName: "C구역 2번",
-    difficulty: "red",
+    sectorName: "SEC 5·6",
+    difficulty: "Blue",
   },
 ] as const;
 
@@ -89,26 +90,24 @@ function Mission() {
       </div>
 
       {viewMode === "card" ? (
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div className="overflow-hidden px-4" ref={emblaRef}>
           <div className="flex gap-4">
             {missions.map((mission) => (
-              <MissionCard
+              <MissionGridCard
                 key={mission.id}
                 missionId={mission.id.toString()}
                 {...mission}
-                viewMode="card"
               />
             ))}
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
           {missions.map((mission) => (
-            <MissionCard
+            <MissionListCard
               key={mission.id}
               missionId={mission.id.toString()}
               {...mission}
-              viewMode="list"
             />
           ))}
         </div>
