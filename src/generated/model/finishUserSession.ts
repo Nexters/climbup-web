@@ -6,7 +6,6 @@
  * OpenAPI spec version: v1.0
  */
 
-/**
- * 응답 데이터
- */
-export type ApiResultMapStringObjectData = { [key: string]: unknown };
+export interface FinishUserSession {
+  id?: number;
+}

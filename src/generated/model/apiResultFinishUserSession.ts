@@ -5,14 +5,14 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { LevelResponse } from "./levelResponse";
+import type { FinishUserSession } from "./finishUserSession";
 
 /**
  * Api 응답 정보
  */
-export interface ApiResultListLevelResponse {
+export interface ApiResultFinishUserSession {
   /** 응답 메시지 */
   message?: string;
   /** 응답 데이터 */
-  data?: LevelResponse[];
+  data?: FinishUserSession;
 }

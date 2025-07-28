@@ -1,8 +1,8 @@
 import type { Config } from "tailwindcss";
-import scrollbarHide from "./tailwind-config/scroll-hide";
 import plugin from "tailwindcss/plugin";
-import typography from "./tailwind-config/typography";
 import colors from "./tailwind-config/colors";
+import scrollbarHide from "./tailwind-config/scroll-hide";
+import typography from "./tailwind-config/typography";
 
 const config: Config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,7 +13,7 @@ const config: Config = {
   },
   plugins: [
     scrollbarHide,
-    plugin(function({ addComponents }) {
+    plugin(({ addComponents }) => {
       addComponents(typography);
     }),
   ],
