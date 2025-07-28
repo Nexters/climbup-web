@@ -16,6 +16,15 @@ const config: Config = {
     plugin(({ addComponents }) => {
       addComponents(typography);
     }),
+    plugin(function({ addUtilities }) {
+      addUtilities({
+        ".flex-center": {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        },
+      });
+    }),
   ],
   safelist: [...Object.keys(typography)],
 };
