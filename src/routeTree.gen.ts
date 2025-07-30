@@ -17,6 +17,7 @@ import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 import { Route as MissionMissionIdRouteImport } from './routes/mission/$missionId'
+import { Route as Oauth2RedirectIndexRouteImport } from './routes/oauth2/redirect/index'
 
 const GymRoute = GymRouteImport.update({
   id: '/gym',
@@ -58,6 +59,11 @@ const MissionMissionIdRoute = MissionMissionIdRouteImport.update({
   path: '/$missionId',
   getParentRoute: () => MissionRouteRoute,
 } as any)
+const Oauth2RedirectIndexRoute = Oauth2RedirectIndexRouteImport.update({
+  id: '/oauth2/redirect/',
+  path: '/oauth2/redirect/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/users/$userId': typeof UsersUserIdRoute
   '/mission/': typeof MissionIndexRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/users/$userId': typeof UsersUserIdRoute
   '/mission': typeof MissionIndexRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/users/$userId': typeof UsersUserIdRoute
   '/mission/': typeof MissionIndexRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/oauth2/redirect/': typeof Oauth2RedirectIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/mission/'
     | '/onboarding'
+    | '/oauth2/redirect'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/mission'
     | '/onboarding'
+    | '/oauth2/redirect'
   id:
     | '__root__'
     | '/'
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/mission/'
     | '/onboarding/'
+    | '/oauth2/redirect/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   GymRoute: typeof GymRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
+  Oauth2RedirectIndexRoute: typeof Oauth2RedirectIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MissionMissionIdRouteImport
       parentRoute: typeof MissionRouteRoute
     }
+    '/oauth2/redirect/': {
+      id: '/oauth2/redirect/'
+      path: '/oauth2/redirect'
+      fullPath: '/oauth2/redirect'
+      preLoaderRoute: typeof Oauth2RedirectIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -212,6 +232,7 @@ const rootRouteChildren: RootRouteChildren = {
   GymRoute: GymRoute,
   UsersUserIdRoute: UsersUserIdRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
+  Oauth2RedirectIndexRoute: Oauth2RedirectIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

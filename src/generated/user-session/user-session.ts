@@ -5,13 +5,13 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-
-import { http } from "../../utils/http";
 import type {
   ApiResultCreateUserSession,
   ApiResultFinishUserSession,
   ApiResultUserSessionState,
 } from ".././model";
+
+import { http } from "../../utils/http";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -21,7 +21,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const startUserSession = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultCreateUserSession>(
-    { url: `https://dev-api.holdy.kr/api/sessions`, method: "POST" },
+    { url: `/api/sessions`, method: "POST" },
     options
   );
 };
@@ -34,7 +34,7 @@ export const getUserSession = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultUserSessionState>(
-    { url: `https://dev-api.holdy.kr/api/sessions/${id}`, method: "GET" },
+    { url: `/api/sessions/${id}`, method: "GET" },
     options
   );
 };
@@ -47,7 +47,7 @@ export const endUserSession = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultFinishUserSession>(
-    { url: `https://dev-api.holdy.kr/api/sessions/${id}`, method: "POST" },
+    { url: `/api/sessions/${id}`, method: "POST" },
     options
   );
 };

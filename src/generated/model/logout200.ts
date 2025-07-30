@@ -6,10 +6,4 @@
  * OpenAPI spec version: v1.0
  */
 
-/**
- * 레벨 선택 요청
- */
-export interface LevelRequest {
-  /** 암장별 레벨 ID */
-  gymLevelId?: number;
-}
+export type Logout200 = { [key: string]: unknown };

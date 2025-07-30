@@ -1,32 +1,28 @@
-import type { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
-import axios from "axios";
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from "axios";
 
 const createApiInstance = () => {
   const instance: AxiosInstance = axios.create({
-    baseURL: "https://api.holdy.kr",
+    baseURL: import.meta.env.PROD ? "/api" : "https://dev-api.holdy.kr",
     headers: {
       "Content-Type": "application/json",
     },
   });
-  // TODO: 토큰 인증 로직 추가
-  // instance.interceptors.request.use(
-  //   (config) => {
-  //     const tokenFromCookie = Cookies.get("token");
-  //     if (tokenFromCookie) {
-  //       config.headers.Authorization = `Bearer ${tokenFromCookie}`;
-  //     }
-  //     return config;
-  //   },
-  //   (error) => {
-  //     return Promise.reject(error);
-  //   }
-  // );
-  // instance.interceptors.response.use(
-  //   (res) => res,
-  //   (err: AxiosError) => {
-  //     return Promise.reject(err);
-  //   }
-  // );
+
+  instance.interceptors.response.use(
+    (res) => res,
+    (err: AxiosError) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          // refresh token 요청
+        }
+      }
+      return Promise.reject(err);
+    }
+  );
   return instance;
 };
 

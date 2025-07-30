@@ -5,9 +5,9 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type { UserStatusResponse } from ".././model";
 
 import { http } from "../../utils/http";
-import type { UserStatusResponse } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -25,7 +25,7 @@ export const getCurrentUserStatus = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<UserStatusResponse>(
-    { url: `https://dev-api.holdy.kr/api/users/me`, method: "GET" },
+    { url: `/api/users/me`, method: "GET" },
     options
   );
 };

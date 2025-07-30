@@ -5,11 +5,11 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const KAKAO_LOGIN_URL = "https://dev-api.holdy.kr/oauth2/authorization/kakao";
+const KAKAO_LOGIN_URL = `https://dev-api.holdy.kr/login/kakao?redirect_uri=${window.location.origin}/oauth2/redirect`;
 
 function Home() {
   return (
-    <Flex direction="column" gap="5" className="h-full">
+    <Flex direction="column" gap="5" className="h-full px-10 py-4">
       <Flex direction="column" align="center" gap="4px" className="mt-[160px]">
         <img
           src="/images/logo.png"

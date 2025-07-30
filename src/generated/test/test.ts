@@ -5,19 +5,19 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type { ApiResultMapStringObject } from ".././model";
 
 import { http } from "../../utils/http";
-import type { ApiResultMapStringObject } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
- * 개발/테스트용 기본 레벨 및 암장 데이터를 생성합니다
+ * 개발/테스트용 브랜드, 레벨, 암장, 브랜드별 레벨 데이터를 생성합니다
  * @summary 테스트 데이터 초기화
  */
 export const initTestData = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultMapStringObject>(
-    { url: `https://dev-api.holdy.kr/api/test/init-data`, method: "POST" },
+    { url: `/api/test/init-data`, method: "POST" },
     options
   );
 };
@@ -27,7 +27,7 @@ export const initTestData = (options?: SecondParameter<typeof http>) => {
  */
 export const clearTestData = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultMapStringObject>(
-    { url: `https://dev-api.holdy.kr/api/test/clear-data`, method: "POST" },
+    { url: `/api/test/clear-data`, method: "POST" },
     options
   );
 };
@@ -37,17 +37,27 @@ export const clearTestData = (options?: SecondParameter<typeof http>) => {
  */
 export const getRandomNumber = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultMapStringObject>(
-    { url: `https://dev-api.holdy.kr/api/test`, method: "GET" },
+    { url: `/api/test`, method: "GET" },
     options
   );
 };
 /**
- * 현재 DB에 있는 레벨/암장 데이터 개수를 확인합니다
+ * 현재 DB에 있는 모든 데이터 개수를 확인합니다
  * @summary 데이터 현황 조회
  */
 export const getDataStatus = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultMapStringObject>(
-    { url: `https://dev-api.holdy.kr/api/test/data-status`, method: "GET" },
+    { url: `/api/test/data-status`, method: "GET" },
+    options
+  );
+};
+/**
+ * 각 브랜드별로 설정된 레벨 체계를 확인합니다
+ * @summary 브랜드별 레벨 현황 조회
+ */
+export const getBrandLevels = (options?: SecondParameter<typeof http>) => {
+  return http<ApiResultMapStringObject>(
+    { url: `/api/test/brand-levels`, method: "GET" },
     options
   );
 };
@@ -62,4 +72,7 @@ export type GetRandomNumberResult = NonNullable<
 >;
 export type GetDataStatusResult = NonNullable<
   Awaited<ReturnType<typeof getDataStatus>>
+>;
+export type GetBrandLevelsResult = NonNullable<
+  Awaited<ReturnType<typeof getBrandLevels>>
 >;

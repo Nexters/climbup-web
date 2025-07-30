@@ -7,5 +7,9 @@
  */
 
 export type HandleOAuth2RedirectParams = {
-  token: string;
+  access_token?: string;
+  refresh_token?: string;
+  token_type?: string;
+  token?: string;
+  error?: string;
 };

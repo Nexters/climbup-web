@@ -5,9 +5,8 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-
+import type { GymLevelInfo } from "./gymLevelInfo";
 import type { GymInfo } from "./gymInfo";
-import type { LevelInfo } from "./levelInfo";
 
 /**
  * 사용자 상태 정보
@@ -26,7 +25,7 @@ export interface UserStatusResponse {
   /** 온보딩 완료 여부 */
   onboardingCompleted?: boolean;
   /** 선택된 레벨 정보 */
-  level?: LevelInfo;
+  gymLevel?: GymLevelInfo;
   /** 선택된 암장 정보 */
   gym?: GymInfo;
 }

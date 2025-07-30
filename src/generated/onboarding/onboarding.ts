@@ -5,16 +5,15 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-
-import type { BodyType } from "../../utils/http";
-
-import { http } from "../../utils/http";
 import type {
   ApiResultResponse,
   CompleteRequest,
   GymRequest,
   LevelRequest,
 } from ".././model";
+
+import { http } from "../../utils/http";
+import type { BodyType } from "../../utils/http";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -28,28 +27,10 @@ export const completeOnboarding = (
 ) => {
   return http<ApiResultResponse>(
     {
-      url: `https://dev-api.holdy.kr/api/onboarding`,
+      url: `/api/onboarding`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: completeRequest,
-    },
-    options
-  );
-};
-/**
- * 사용자의 레벨을 설정합니다.
- * @summary 레벨 선택
- */
-export const setLevel = (
-  levelRequest: BodyType<LevelRequest>,
-  options?: SecondParameter<typeof http>
-) => {
-  return http<ApiResultResponse>(
-    {
-      url: `https://dev-api.holdy.kr/api/onboarding/level`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: levelRequest,
     },
     options
   );
@@ -64,7 +45,7 @@ export const setGym = (
 ) => {
   return http<ApiResultResponse>(
     {
-      url: `https://dev-api.holdy.kr/api/onboarding/gym`,
+      url: `/api/onboarding/gym`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: gymRequest,
@@ -72,8 +53,26 @@ export const setGym = (
     options
   );
 };
+/**
+ * 사용자의 레벨을 설정합니다. (암장별 레벨) - 암장 선택 후에만 가능합니다.
+ * @summary 레벨 선택
+ */
+export const setLevel = (
+  levelRequest: BodyType<LevelRequest>,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultResponse>(
+    {
+      url: `/api/onboarding/gym-level`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: levelRequest,
+    },
+    options
+  );
+};
 export type CompleteOnboardingResult = NonNullable<
   Awaited<ReturnType<typeof completeOnboarding>>
 >;
-export type SetLevelResult = NonNullable<Awaited<ReturnType<typeof setLevel>>>;
 export type SetGymResult = NonNullable<Awaited<ReturnType<typeof setGym>>>;
+export type SetLevelResult = NonNullable<Awaited<ReturnType<typeof setLevel>>>;
