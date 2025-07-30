@@ -5,9 +5,12 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type {
+  ApiResultLevelResponse,
+  ApiResultListLevelResponse,
+} from ".././model";
 
 import { http } from "../../utils/http";
-import type { ApiResultListLevelResponse } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -17,10 +20,26 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  */
 export const getAllLevelList = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultListLevelResponse>(
-    { url: `https://dev-api.holdy.kr/api/levels`, method: "GET" },
+    { url: `/api/levels`, method: "GET" },
+    options
+  );
+};
+/**
+ * 레벨 ID로 특정 레벨의 상세 정보를 조회합니다
+ * @summary 특정 레벨 정보 조회
+ */
+export const getLevelById = (
+  levelId: number,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultLevelResponse>(
+    { url: `/api/levels/${levelId}`, method: "GET" },
     options
   );
 };
 export type GetAllLevelListResult = NonNullable<
   Awaited<ReturnType<typeof getAllLevelList>>
+>;
+export type GetLevelByIdResult = NonNullable<
+  Awaited<ReturnType<typeof getLevelById>>
 >;

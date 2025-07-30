@@ -5,12 +5,12 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-
-import { http } from "../../utils/http";
 import type {
   HandleOAuth2Redirect200,
   HandleOAuth2RedirectParams,
 } from ".././model";
+
+import { http } from "../../utils/http";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -19,11 +19,11 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary oauth2 리다이렉트 경로
  */
 export const handleOAuth2Redirect = (
-  params: HandleOAuth2RedirectParams,
+  params?: HandleOAuth2RedirectParams,
   options?: SecondParameter<typeof http>
 ) => {
   return http<HandleOAuth2Redirect200>(
-    { url: `https://dev-api.holdy.kr/oauth2/redirect`, method: "GET", params },
+    { url: `/oauth2/redirect`, method: "GET", params },
     options
   );
 };

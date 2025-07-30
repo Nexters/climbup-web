@@ -5,22 +5,57 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type {
+  ApiResultGymResponse,
+  ApiResultListGymResponse,
+} from ".././model";
 
 import { http } from "../../utils/http";
-import type { ApiResultListGymResponse } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
- * 존재하는 모든 암장의 리스트를 반환합니다
- * @summary 모든 암장 반환
+ * 모든 브랜드의 모든 암장을 조회합니다
+ * @summary 전체 암장 리스트 조회
  */
 export const getAllGyms = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultListGymResponse>(
-    { url: `https://dev-api.holdy.kr/api/gyms`, method: "GET" },
+    { url: `/api/gyms`, method: "GET" },
+    options
+  );
+};
+/**
+ * 암장 ID로 특정 암장의 상세 정보를 조회합니다
+ * @summary 특정 암장 정보 조회
+ */
+export const getGymById = (
+  gymId: number,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultGymResponse>(
+    { url: `/api/gyms/${gymId}`, method: "GET" },
+    options
+  );
+};
+/**
+ * 특정 브랜드의 모든 지점을 조회합니다
+ * @summary 브랜드별 암장 리스트 조회
+ */
+export const getGymsByBrand = (
+  brandId: number,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultListGymResponse>(
+    { url: `/api/gyms/brands/${brandId}`, method: "GET" },
     options
   );
 };
 export type GetAllGymsResult = NonNullable<
   Awaited<ReturnType<typeof getAllGyms>>
+>;
+export type GetGymByIdResult = NonNullable<
+  Awaited<ReturnType<typeof getGymById>>
+>;
+export type GetGymsByBrandResult = NonNullable<
+  Awaited<ReturnType<typeof getGymsByBrand>>
 >;

@@ -12,6 +12,6 @@
 export interface CompleteRequest {
   /** 암장 ID */
   gymId?: number;
-  /** 레벨 ID */
-  levelId?: number;
+  /** 암장별 레벨 ID */
+  gymLevelId?: number;
 }

@@ -7,17 +7,23 @@
  */
 
 /**
- * 암장 정보
+ * 암장 정보 응답
  */
 export interface GymResponse {
   /** 암장 ID */
   id?: number;
-  /** 암장 이름 */
-  name?: string;
+  /** 브랜드 ID */
+  brandId?: number;
+  /** 브랜드명 */
+  brandName?: string;
   /** 지점명 */
-  location?: string;
+  branchName?: string;
+  /** 전체 이름 */
+  fullName?: string;
   /** 주소 */
   address?: string;
-  /** 암장 이미지 URL */
+  /** 섹터 정보 */
+  sectorInfo?: string;
+  /** 이미지 URL */
   imageUrl?: string;
 }

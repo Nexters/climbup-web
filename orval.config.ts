@@ -6,7 +6,6 @@ export default defineConfig({
       target: "https://dev-api.holdy.kr/api-docs",
     },
     output: {
-      baseUrl: "https://dev-api.holdy.kr",
       client: "axios-functions",
       mode: "tags-split",
       override: {

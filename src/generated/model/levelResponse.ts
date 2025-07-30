@@ -11,6 +11,8 @@ export interface LevelResponse {
   id?: number;
   /** 레벨 이름 */
   name?: string;
-  /** 레벨 이미지 URL */
-  imageUrl?: string;
+  /** 레벨 설명 */
+  description?: string;
+  /** 정렬 순서 */
+  sortOrder?: number;
 }

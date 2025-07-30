@@ -23,6 +23,9 @@ importers:
       '@tanstack/react-router':
         specifier: 1.127.8
         version: 1.127.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/zod-adapter':
+        specifier: 1.130.8
+        version: 1.130.8(@tanstack/react-router@1.127.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@4.0.14)
       axios:
         specifier: 1.11.0
         version: 1.11.0
@@ -44,6 +47,12 @@ importers:
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
+      ts-pattern:
+        specifier: ^5.8.0
+        version: 5.8.0
+      zod:
+        specifier: ^4.0.14
+        version: 4.0.14
     devDependencies:
       '@biomejs/biome':
         specifier: 2.1.1
@@ -1771,6 +1780,13 @@ packages:
   '@tanstack/virtual-file-routes@1.121.21':
     resolution: {integrity: sha512-3nuYsTyaq6ZN7jRZ9z6Gj3GXZqBOqOT0yzd/WZ33ZFfv4yVNIvsa5Lw+M1j3sgyEAxKMqGu/FaNi7FCjr3yOdw==}
     engines: {node: '>=12'}
+
+  '@tanstack/zod-adapter@1.130.8':
+    resolution: {integrity: sha512-VgjyHCoaRWmrPjkk6qBuNfpnYQOTee98EisP70ZttTyxVWqczODI5EihAMyEteLtXiyY9eCfmJo7EbR+R/Seuw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@tanstack/react-router': '>=1.43.2'
+      zod: ^3.23.8
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -3744,6 +3760,9 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
+  ts-pattern@5.8.0:
+    resolution: {integrity: sha512-kIjN2qmWiHnhgr5DAkAafF9fwb0T5OhMVSWrm8XEdTFnX6+wfXwYOFjeF86UZ54vduqiR7BfqScFmXSzSaH8oA==}
+
   tsconfck@2.1.2:
     resolution: {integrity: sha512-ghqN1b0puy3MhhviwO2kGF8SeMDNhEbnKxjK7h6+fvY9JAxqvXi8y5NAHSQv687OVboS2uZIByzGd45/YxrRHg==}
     engines: {node: ^14.13.1 || ^16 || >=18}
@@ -4059,6 +4078,9 @@ packages:
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+  zod@4.0.14:
+    resolution: {integrity: sha512-nGFJTnJN6cM2v9kXL+SOBq3AtjQby3Mv5ySGFof5UGRHrRioSJ5iG680cYNjE/yWk671nROcpPj4hAS8nyLhSw==}
 
 snapshots:
 
@@ -5918,6 +5940,11 @@ snapshots:
   '@tanstack/store@0.7.2': {}
 
   '@tanstack/virtual-file-routes@1.121.21': {}
+
+  '@tanstack/zod-adapter@1.130.8(@tanstack/react-router@1.127.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@4.0.14)':
+    dependencies:
+      '@tanstack/react-router': 1.127.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      zod: 4.0.14
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -8077,6 +8104,8 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
+  ts-pattern@5.8.0: {}
+
   tsconfck@2.1.2(typescript@5.8.3):
     optionalDependencies:
       typescript: 5.8.3
@@ -8401,3 +8430,5 @@ snapshots:
   yoctocolors-cjs@2.1.2: {}
 
   zod@3.25.76: {}
+
+  zod@4.0.14: {}
