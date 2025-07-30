@@ -1,0 +1,46 @@
+import Button from "@/components/Button";
+
+interface MissionNotTriedFailedProps {
+  onRetry: () => void;
+}
+
+export default function MissionNotTriedFailed({
+  onRetry,
+}: MissionNotTriedFailedProps) {
+  return (
+    <div className="flex-1 flex flex-col bg-neutral-500">
+      <div className="absolute top-4 right-4">
+        <button type="button" onClick={() => window.history.back()}>
+          <div className="w-11 h-11 bg-neutral-100 rounded-full" />
+        </button>
+      </div>
+
+      <div className="flex-1 flex flex-col items-center pt-[14vh]">
+        <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
+          <h1 className="t-p-22-sb text-neutral-100 leading-[1.4] tracking-[-0.024em] text-center">
+            성공 영상을 보며 루트를 떠올려보세요
+          </h1>
+          <p className="t-p-14-m text-[#D2D6DB] leading-[1.4] tracking-[-0.022em] text-center">
+            준비되셨다면 다시 올라가볼 차례예요.
+          </p>
+        </div>
+
+        <div className="w-[80%] max-w-[300px] aspect-video bg-neutral-800 rounded-2xl overflow-hidden">
+          <video
+            src="/src/assets/video/mock-mission-answer-video.mp4"
+            className="w-full h-full object-contain"
+            controls
+            playsInline
+          >
+            <track kind="captions" />
+          </video>
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-2 px-[30px] pb-6">
+        <Button onClick={() => window.history.back()}>홈</Button>
+        <Button onClick={onRetry}>재도전</Button>
+      </div>
+    </div>
+  );
+}
