@@ -47,17 +47,12 @@ const getMissionAttemptStatus = (
 function MissionDetail() {
   const missionStatus = getMissionAttemptStatus(MOCK_DATA.attempts);
 
-  const handleRetry = () => {
-    // TODO: 미션 재시도 로직 구현
-    console.log("미션 재시도");
-  };
-
   const renderContent = () => {
     switch (missionStatus) {
       case "SUCCESS":
         return <MissionSuccess />;
       case "FAILED":
-        return <MissionFailed onRetry={handleRetry} />;
+        return <MissionFailed />;
       case "NOT_TRIED":
         return (
           <MissionNotTried
