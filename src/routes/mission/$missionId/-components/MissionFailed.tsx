@@ -1,11 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import answerVideo from "@/assets/video/mock-mission-answer-video.mp4";
 
-interface MissionFailedProps {
-  onRetry: () => void;
-}
-
-export default function MissionFailed({ onRetry }: MissionFailedProps) {
+export default function MissionFailed() {
   const navigate = useNavigate();
 
   return (
@@ -36,7 +32,7 @@ export default function MissionFailed({ onRetry }: MissionFailedProps) {
           </button>
           <button
             type="button"
-            onClick={onRetry}
+            onClick={() => navigate({ to: "/mission" })}
             className="flex-1 py-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
           >
             재도전
