@@ -1,6 +1,6 @@
-import * as Select from "@radix-ui/react-select";
 import { Link } from "@tanstack/react-router";
 import { clsx } from "clsx";
+import { Select } from "radix-ui";
 import { useState } from "react";
 import CheckIcon from "../../../components/icons/CheckIcon";
 import ChevronDownIcon from "../../../components/icons/ChevronDownIcon";
