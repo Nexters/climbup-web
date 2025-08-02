@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { clsx } from "clsx";
 import Button from "@/components/Button";
+import { cn } from "@/utils/cn";
 import LockIcon from "../../../components/icons/LockIcon";
 
 interface MissionGridCardProps {
@@ -29,7 +29,7 @@ export default function MissionGridCard({
           <img
             src={`https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+${missionId}`}
             alt="mission-image"
-            className={clsx(
+            className={cn(
               "absolute inset-0 w-full h-full object-cover z-[-1]",
               isLocked && "blur-sm"
             )}

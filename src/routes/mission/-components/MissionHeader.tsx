@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { clsx } from "clsx";
 import { Select } from "radix-ui";
 import { useState } from "react";
+import { cn } from "@/utils/cn";
 import CheckIcon from "../../../components/icons/CheckIcon";
 import ChevronDownIcon from "../../../components/icons/ChevronDownIcon";
 
@@ -37,7 +37,7 @@ export default function MissionHeader() {
                         <Select.Item
                           key={gym.id}
                           value={gym.id}
-                          className={clsx(
+                          className={cn(
                             "relative flex items-center gap-4 py-1.5 t-p-16-m cursor-pointer select-none outline-none transition-colors",
                             selectedGym === gym.id
                               ? "text-neutral-900"

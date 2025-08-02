@@ -1,5 +1,5 @@
-import { clsx } from "clsx";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "@/utils/cn";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: ReactNode;
@@ -16,7 +16,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={clsx(
+      className={cn(
         "w-fit px-9 py-4 rounded-[32px] transition-colors",
         "inline-flex items-center justify-center gap-[10px]",
         {

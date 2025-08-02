@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { clsx } from "clsx";
 import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
+import { cn } from "@/utils/cn";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
@@ -59,7 +59,7 @@ function Mission() {
             <button
               key={type}
               type="button"
-              className={clsx(
+              className={cn(
                 "h-9 px-4 rounded-3xl t-p-14-m transition-colors",
                 filter === type
                   ? "bg-neutral-600 text-neutral-100"
