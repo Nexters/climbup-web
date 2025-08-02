@@ -12,7 +12,7 @@ import { http } from "../../utils/http";
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
- * 개발/테스트용 브랜드, 레벨, 암장, 브랜드별 레벨 데이터를 생성합니다
+ * 개발/테스트용 브랜드, 레벨, 암장, 브랜드별 레벨, 섹터, 루트 미션 데이터를 생성합니다
  * @summary 테스트 데이터 초기화
  */
 export const initTestData = (options?: SecondParameter<typeof http>) => {
