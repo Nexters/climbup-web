@@ -30,12 +30,17 @@ export const Route = createFileRoute("/oauth2/redirect/")({
 
 function Oauth2RedirectComponent() {
   const data = Route.useLoaderData() as UserStatusResponse;
-  const navigate = useNavigate();
+  const navigate = useNavigate({
+    from: "/oauth2/redirect",
+  });
 
   useEffect(() => {
     const url = match(data)
-      .with({ gym: P.nullish }, () => "/onboarding") // 암장 미선택
-      .with({ gym: P.nonNullable, gymLevel: P.nullish }, () => "/onboarding") // 레벨 미선택
+      .with({ gym: P.nullish, gymLevel: P.nullish }, () => "/onboarding/level/") // 암장 미선택
+      .with(
+        { gym: P.nonNullable, gymLevel: P.nullish },
+        () => "/onboarding/climb/"
+      ) // 레벨 미선택
       .with({ gym: P.nonNullable, gymLevel: P.nonNullable }, () => "/") // 암장, 레벨 선택
       .otherwise(() => "/login");
     navigate({ to: url });

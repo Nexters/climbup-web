@@ -13,7 +13,7 @@ const createApiInstance = () => {
   });
 
   instance.interceptors.response.use(
-    (res) => res,
+    (res) => res.data,
     (err: AxiosError) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
