@@ -6,8 +6,14 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 영상 청크별 업로드 상태 응답
+ */
 export interface UploadStatusChunkResponse {
+  /** 현재까지 업로드된 갯수 */
   totalReceived?: number;
+  /** 총 업로드될 갯수 */
   totalExpected?: number;
+  /** 현재까지 업로드된 청크 ID 목록 */
   completedChunks?: number[];
 }

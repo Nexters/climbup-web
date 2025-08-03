@@ -6,6 +6,10 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 영상 업로드 세션 생성 응답
+ */
 export interface RouteMissionUploadSessionInitializeResponse {
+  /** 업로드 ID */
   uploadId?: string;
 }

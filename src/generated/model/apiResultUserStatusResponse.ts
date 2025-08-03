@@ -5,14 +5,14 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { Response } from "./response";
+import type { UserStatusResponse } from "./userStatusResponse";
 
 /**
  * Api 응답 정보
  */
-export interface ApiResultResponse {
+export interface ApiResultUserStatusResponse {
   /** 응답 메시지 */
   message?: string;
   /** 응답 데이터 */
-  data?: Response;
+  data?: UserStatusResponse;
 }

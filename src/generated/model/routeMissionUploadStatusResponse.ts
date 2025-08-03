@@ -8,9 +8,16 @@
 import type { RouteMissionUploadStatusResponseStatus } from "./routeMissionUploadStatusResponseStatus";
 import type { UploadStatusChunkResponse } from "./uploadStatusChunkResponse";
 
+/**
+ * 영상 업로드 상태 응답
+ */
 export interface RouteMissionUploadStatusResponse {
+  /** 업로드 상태 */
   status?: RouteMissionUploadStatusResponseStatus;
+  /** 업로드 ID */
   uploadId?: string;
+  /** 생성 시각 */
   createdAt?: string;
+  /** 청크 목록 */
   chunks?: UploadStatusChunkResponse;
 }

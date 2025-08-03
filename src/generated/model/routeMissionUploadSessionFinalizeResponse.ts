@@ -6,6 +6,10 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 영상 업로드 세션 완료 응답
+ */
 export interface RouteMissionUploadSessionFinalizeResponse {
+  /** 파일명 */
   fileName?: string;
 }

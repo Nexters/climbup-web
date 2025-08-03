@@ -1,11 +1,7 @@
-import axios, {
-  AxiosError,
-  type AxiosInstance,
-  type AxiosRequestConfig,
-} from "axios";
+import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
 const createApiInstance = () => {
-  const instance: AxiosInstance = axios.create({
+  const instance = axios.create({
     baseURL: import.meta.env.PROD ? "/api" : "https://dev-api.holdy.kr",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +9,7 @@ const createApiInstance = () => {
   });
 
   instance.interceptors.response.use(
-    (res) => res.data,
+    (res) => res.data.data,
     (err: AxiosError) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
@@ -23,6 +19,7 @@ const createApiInstance = () => {
       return Promise.reject(err);
     }
   );
+
   return instance;
 };
 
@@ -32,12 +29,10 @@ export const http = <T>(
   config: AxiosRequestConfig,
   options?: AxiosRequestConfig
 ): Promise<T> => {
-  const promise = apiInstance({
+  return apiInstance({
     ...config,
     ...options,
-  }).then(({ data }) => data);
-
-  return promise;
+  });
 };
 
 export type ErrorType<Error> = AxiosError<Error>;

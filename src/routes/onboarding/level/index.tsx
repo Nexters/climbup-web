@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/onboarding/level/")({
-  component: LevelOnboardingComponent,
+  component: OnboardingLevelComponent,
 });
 
-function LevelOnboardingComponent() {
+function OnboardingLevelComponent() {
   return <div>Hello "/onboarding/level/"!</div>;
 }

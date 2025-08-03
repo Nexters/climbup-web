@@ -5,7 +5,11 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { Logout200, RefreshTokenBody, TokenResponse } from ".././model";
+import type {
+  ApiResultTokenResponse,
+  ApiResultVoid,
+  RefreshTokenBody,
+} from ".././model";
 
 import { http } from "../../utils/http";
 import type { BodyType } from "../../utils/http";
@@ -20,7 +24,7 @@ export const refreshToken = (
   refreshTokenBody: BodyType<RefreshTokenBody>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<TokenResponse>(
+  return http<ApiResultTokenResponse>(
     {
       url: `/api/auth/refresh`,
       method: "POST",
@@ -35,7 +39,10 @@ export const refreshToken = (
  * @summary 로그아웃
  */
 export const logout = (options?: SecondParameter<typeof http>) => {
-  return http<Logout200>({ url: `/api/auth/logout`, method: "POST" }, options);
+  return http<ApiResultVoid>(
+    { url: `/api/auth/logout`, method: "POST" },
+    options
+  );
 };
 export type RefreshTokenResult = NonNullable<
   Awaited<ReturnType<typeof refreshToken>>

@@ -5,7 +5,7 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { RouteMissionRecommendationResponse } from ".././model";
+import type { ApiResultListRouteMissionRecommendationResponse } from ".././model";
 
 import { http } from "../../utils/http";
 
@@ -18,7 +18,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 export const getRouteMissionRecommendations = (
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionRecommendationResponse>(
+  return http<ApiResultListRouteMissionRecommendationResponse>(
     { url: `/recommendations`, method: "GET" },
     options
   );

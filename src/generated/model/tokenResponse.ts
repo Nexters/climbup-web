@@ -6,9 +6,18 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 토큰 응답 정보
+ */
 export interface TokenResponse {
+  /** 액세스 토큰 */
   accessToken?: string;
+  /** 리프레시 토큰 */
   refreshToken?: string;
+  /** 토큰 타입 */
   tokenType?: string;
-  message?: string;
+  /** 액세스 토큰 만료 시간 (초) */
+  accessTokenExpiresIn?: number;
+  /** 리프레시 토큰 만료 시간 (초) */
+  refreshTokenExpiresIn?: number;
 }

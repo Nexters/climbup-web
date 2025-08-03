@@ -6,8 +6,14 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 루트미션 도전 영상 업로드 응답
+ */
 export interface RouteMissionUploadChunkResponse {
+  /** 인덱스 번호 */
   index?: number;
+  /** 현재까지 업로드된 갯수 */
   totalChunkReceived?: number;
+  /** 총 업로드될 갯수 */
   totalChunkExpected?: number;
 }

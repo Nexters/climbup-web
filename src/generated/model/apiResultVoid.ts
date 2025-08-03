@@ -7,9 +7,11 @@
  */
 
 /**
- * 온보딩 응답
+ * Api 응답 정보
  */
-export interface Response {
-  /** 결과 메시지 */
+export interface ApiResultVoid {
+  /** 응답 메시지 */
   message?: string;
+  /** 응답 데이터 */
+  data?: unknown;
 }

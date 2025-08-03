@@ -5,36 +5,13 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type {
-  ApiResultResponse,
-  CompleteRequest,
-  GymRequest,
-  LevelRequest,
-} from ".././model";
+import type { ApiResultVoid, GymRequest, LevelRequest } from ".././model";
 
 import { http } from "../../utils/http";
 import type { BodyType } from "../../utils/http";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-/**
- * 암장과 레벨을 동시에 설정하여 온보딩을 완료합니다.
- * @summary 온보딩 완료
- */
-export const completeOnboarding = (
-  completeRequest: BodyType<CompleteRequest>,
-  options?: SecondParameter<typeof http>
-) => {
-  return http<ApiResultResponse>(
-    {
-      url: `/api/onboarding`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: completeRequest,
-    },
-    options
-  );
-};
 /**
  * 사용자의 암장을 설정합니다.
  * @summary 암장 선택
@@ -43,7 +20,7 @@ export const setGym = (
   gymRequest: BodyType<GymRequest>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<ApiResultResponse>(
+  return http<ApiResultVoid>(
     {
       url: `/api/onboarding/gym`,
       method: "POST",
@@ -61,7 +38,7 @@ export const setLevel = (
   levelRequest: BodyType<LevelRequest>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<ApiResultResponse>(
+  return http<ApiResultVoid>(
     {
       url: `/api/onboarding/gym-level`,
       method: "POST",
@@ -71,8 +48,5 @@ export const setLevel = (
     options
   );
 };
-export type CompleteOnboardingResult = NonNullable<
-  Awaited<ReturnType<typeof completeOnboarding>>
->;
 export type SetGymResult = NonNullable<Awaited<ReturnType<typeof setGym>>>;
 export type SetLevelResult = NonNullable<Awaited<ReturnType<typeof setLevel>>>;

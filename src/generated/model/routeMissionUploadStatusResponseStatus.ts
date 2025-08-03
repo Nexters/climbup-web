@@ -6,6 +6,9 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 업로드 상태
+ */
 export type RouteMissionUploadStatusResponseStatus =
   (typeof RouteMissionUploadStatusResponseStatus)[keyof typeof RouteMissionUploadStatusResponseStatus];
 

@@ -6,15 +6,15 @@
  * OpenAPI spec version: v1.0
  */
 import type {
+  ApiResultCreateAttemptResponse,
+  ApiResultListRouteMissionRecommendationResponse,
+  ApiResultRouteMissionUploadChunkResponse,
+  ApiResultRouteMissionUploadSessionFinalizeResponse,
+  ApiResultRouteMissionUploadSessionInitializeResponse,
+  ApiResultRouteMissionUploadStatusResponse,
   CreateAttemptRequest,
-  CreateAttemptResponse,
-  RouteMissionRecommendationResponse,
   RouteMissionUploadChunkRequest,
-  RouteMissionUploadChunkResponse,
-  RouteMissionUploadSessionFinalizeResponse,
   RouteMissionUploadSessionInitializeRequest,
-  RouteMissionUploadSessionInitializeResponse,
-  RouteMissionUploadStatusResponse,
 } from ".././model";
 
 import { http } from "../../utils/http";
@@ -30,7 +30,7 @@ export const createAttempt = (
   createAttemptRequest: BodyType<CreateAttemptRequest>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<CreateAttemptResponse>(
+  return http<ApiResultCreateAttemptResponse>(
     {
       url: `/attempts`,
       method: "POST",
@@ -49,7 +49,7 @@ export const finalizeRouteMissionUploadSession = (
   uploadId: string,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionUploadSessionFinalizeResponse>(
+  return http<ApiResultRouteMissionUploadSessionFinalizeResponse>(
     {
       url: `/attempts/${attemptId}/upload/${uploadId}/finalize`,
       method: "POST",
@@ -67,7 +67,7 @@ export const uploadRouteMissionVideoChunk = (
   routeMissionUploadChunkRequest: BodyType<RouteMissionUploadChunkRequest>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionUploadChunkResponse>(
+  return http<ApiResultRouteMissionUploadChunkResponse>(
     {
       url: `/attempts/${attemptId}/upload/${uploadId}/chunk`,
       method: "POST",
@@ -86,7 +86,7 @@ export const initializeRouteMissionUploadSession = (
   routeMissionUploadSessionInitializeRequest: BodyType<RouteMissionUploadSessionInitializeRequest>,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionUploadSessionInitializeResponse>(
+  return http<ApiResultRouteMissionUploadSessionInitializeResponse>(
     {
       url: `/attempts/${attemptId}/upload/initialize`,
       method: "POST",
@@ -104,7 +104,7 @@ export const getRouteMissionUploadStatus = (
   attemptId: number,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionUploadStatusResponse>(
+  return http<ApiResultRouteMissionUploadStatusResponse>(
     { url: `/attempts/${attemptId}/upload/status`, method: "GET" },
     options
   );
@@ -117,7 +117,7 @@ export const getRouteMissionRecommendationByAttempt = (
   attemptId: number,
   options?: SecondParameter<typeof http>
 ) => {
-  return http<RouteMissionRecommendationResponse>(
+  return http<ApiResultListRouteMissionRecommendationResponse>(
     { url: `/attempts/${attemptId}/recommendations`, method: "GET" },
     options
   );
