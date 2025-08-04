@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { match, P } from "ts-pattern";
 import { z } from "zod";
-import type { UserStatusResponse } from "@/generated/model";
 import { getCurrentUserStatus } from "@/generated/user/user";
 import { getHeaderToken, setToken } from "@/utils/cookie";
 
