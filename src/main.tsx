@@ -13,7 +13,7 @@ if (!rootElement) throw new Error("Failed to find the root element");
 const startApp = () => {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <Theme accentColor="blue" grayColor="sand" radius="large" scaling="95%">
+      <Theme scaling="100%">
         <App />
       </Theme>
     </React.StrictMode>
