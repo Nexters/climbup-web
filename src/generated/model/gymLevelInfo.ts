@@ -16,8 +16,8 @@ export interface GymLevelInfo {
   brandName?: string;
   /** 기본 레벨명 */
   levelName?: string;
-  /** 브랜드별 표시명 */
-  displayName?: string;
+  /** 암장별 레벨명 */
+  gymLevelName?: string;
   /** 최소 SR */
   srMin?: number;
   /** 최대 SR */

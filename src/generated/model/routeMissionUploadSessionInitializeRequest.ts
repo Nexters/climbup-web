@@ -6,10 +6,18 @@
  * OpenAPI spec version: v1.0
  */
 
+/**
+ * 루트미션 시도 영상 업로드 세션 생성
+ */
 export interface RouteMissionUploadSessionInitializeRequest {
+  /** 총 청크 개수 */
   chunkLength?: number;
+  /** 총 청크 크기 */
   chunkSize?: number;
+  /** 총 파일 크기 */
   fileSize?: number;
+  /** 파일 이름 */
   fileName: string;
+  /** 파일 확장자 */
   fileType: string;
 }

@@ -16,12 +16,14 @@ export interface GymLevelResponse {
   brandId?: number;
   /** 브랜드명 */
   brandName?: string;
+  /** 암장별 레벨명 */
+  gymLevelName?: string;
   /** 기본 레벨 ID */
   levelId?: number;
   /** 기본 레벨명 */
   levelName?: string;
-  /** 브랜드별 표시명 */
-  displayName?: string;
+  /** 레벨 설명 */
+  description?: string;
   /** 최소 SR */
   srMin?: number;
   /** 최대 SR */
