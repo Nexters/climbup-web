@@ -13,7 +13,6 @@ import { Route as GymRouteImport } from './routes/gym'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
 import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 import { Route as OnboardingLevelIndexRouteImport } from './routes/onboarding/level/index'
@@ -39,11 +38,6 @@ const MissionRouteRoute = MissionRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
-  id: '/onboarding/',
-  path: '/onboarding/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MissionIndexRoute = MissionIndexRouteImport.update({
@@ -84,7 +78,6 @@ export interface FileRoutesByFullPath {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission/': typeof MissionIndexRoute
-  '/onboarding': typeof OnboardingIndexRoute
   '/mission/$missionId': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym': typeof OnboardingGymIndexRoute
@@ -96,7 +89,6 @@ export interface FileRoutesByTo {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission': typeof MissionIndexRoute
-  '/onboarding': typeof OnboardingIndexRoute
   '/mission/$missionId': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym': typeof OnboardingGymIndexRoute
@@ -110,7 +102,6 @@ export interface FileRoutesById {
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission/': typeof MissionIndexRoute
-  '/onboarding/': typeof OnboardingIndexRoute
   '/mission/$missionId/': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect/': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym/': typeof OnboardingGymIndexRoute
@@ -125,7 +116,6 @@ export interface FileRouteTypes {
     | '/gym'
     | '/users/$userId'
     | '/mission/'
-    | '/onboarding'
     | '/mission/$missionId'
     | '/oauth2/redirect'
     | '/onboarding/gym'
@@ -137,7 +127,6 @@ export interface FileRouteTypes {
     | '/gym'
     | '/users/$userId'
     | '/mission'
-    | '/onboarding'
     | '/mission/$missionId'
     | '/oauth2/redirect'
     | '/onboarding/gym'
@@ -150,7 +139,6 @@ export interface FileRouteTypes {
     | '/gym'
     | '/users/$userId'
     | '/mission/'
-    | '/onboarding/'
     | '/mission/$missionId/'
     | '/oauth2/redirect/'
     | '/onboarding/gym/'
@@ -163,7 +151,6 @@ export interface RootRouteChildren {
   DifficultyRoute: typeof DifficultyRoute
   GymRoute: typeof GymRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
-  OnboardingIndexRoute: typeof OnboardingIndexRoute
   Oauth2RedirectIndexRoute: typeof Oauth2RedirectIndexRoute
   OnboardingGymIndexRoute: typeof OnboardingGymIndexRoute
   OnboardingLevelIndexRoute: typeof OnboardingLevelIndexRoute
@@ -197,13 +184,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding/': {
-      id: '/onboarding/'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mission/': {
@@ -271,7 +251,6 @@ const rootRouteChildren: RootRouteChildren = {
   DifficultyRoute: DifficultyRoute,
   GymRoute: GymRoute,
   UsersUserIdRoute: UsersUserIdRoute,
-  OnboardingIndexRoute: OnboardingIndexRoute,
   Oauth2RedirectIndexRoute: Oauth2RedirectIndexRoute,
   OnboardingGymIndexRoute: OnboardingGymIndexRoute,
   OnboardingLevelIndexRoute: OnboardingLevelIndexRoute,

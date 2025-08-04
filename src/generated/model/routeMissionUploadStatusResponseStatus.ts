@@ -14,7 +14,7 @@ export type RouteMissionUploadStatusResponseStatus =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RouteMissionUploadStatusResponseStatus = {
-  finished: "finished",
-  in_progress: "in_progress",
-  not_started: "not_started",
+  NOT_STARTED: "NOT_STARTED",
+  IN_PROGRESS: "IN_PROGRESS",
+  FINISHED: "FINISHED",
 } as const;
