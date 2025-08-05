@@ -6,7 +6,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <div className="bg-neutral-200 min-h-screen max-w-[600px] mx-auto outline outline-1 outline-gray-200 -outline-offset-1">
+    <div className="bg-neutral-200 min-h-dvh max-w-[600px] mx-auto outline outline-1 outline-gray-200 -outline-offset-1">
       <Outlet />
     </div>
   );
