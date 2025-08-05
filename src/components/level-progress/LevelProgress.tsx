@@ -10,6 +10,7 @@ interface LevelProgressProps {
   progress?: number;
   onLevelUp?: () => void;
   onProgressChange?: (progress: number) => void;
+  progressWrapperClassName?: string;
 }
 
 export const LevelProgress = ({
@@ -19,6 +20,7 @@ export const LevelProgress = ({
   progress: controlledProgress,
   onLevelUp,
   onProgressChange,
+  progressWrapperClassName,
 }: LevelProgressProps) => {
   const [internalProgress, setInternalProgress] = useState(0);
   const [, setShowLevelUp] = useState(false);
@@ -70,9 +72,11 @@ export const LevelProgress = ({
   ]);
 
   return (
-    <div className="flex items-center gap-1 w-full">
+    <div className={cn("flex items-center gap-1 w-full")}>
       {/* 진행률 바 영역 */}
-      <div className="relative w-[211px] h-[20px]">
+      <div
+        className={cn("relative w-[211px] h-[20px]", progressWrapperClassName)}
+      >
         {/* Radix UI Progress */}
         <ProgressPrimitive.Root
           value={progress}
@@ -125,7 +129,7 @@ export const LevelProgress = ({
       </div>
 
       {/* 레벨 표시 원형 컴포넌트 */}
-      <div className="relative w-8 h-8">
+      <div className="relative w-8 h-8 shrink-0">
         {/* 원형 배경 */}
         <div className="w-full h-full bg-neutral-100 border-2 border-neutral-300 rounded-full" />
 
