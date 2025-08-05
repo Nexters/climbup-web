@@ -20,28 +20,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Blue: Story = {
   args: {
-    variant: "blue",
+    variant: "BLUE",
     children: "label",
   },
 };
 
 export const Red: Story = {
   args: {
-    variant: "red",
+    variant: "RED",
     children: "label",
   },
 };
 
 export const Green: Story = {
   args: {
-    variant: "green",
+    variant: "GREEN",
     children: "label",
   },
 };
 
 export const Neutral: Story = {
   args: {
-    variant: "neutral",
+    variant: "NEUTRAL",
     children: "label",
   },
 };
@@ -52,10 +52,10 @@ export const AllVariants: Story = {
   },
   render: () => (
     <div className="flex gap-2">
-      <Tag variant="blue">label</Tag>
-      <Tag variant="red">label</Tag>
-      <Tag variant="green">label</Tag>
-      <Tag variant="neutral">label</Tag>
+      <Tag variant="BLUE">label</Tag>
+      <Tag variant="RED">label</Tag>
+      <Tag variant="GREEN">label</Tag>
+      <Tag variant="NEUTRAL">label</Tag>
     </div>
   ),
 };

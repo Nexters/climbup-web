@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { AspectRatio, RadioGroup } from "radix-ui";
+import { RadioGroup } from "radix-ui";
 import { cn } from "@/utils/cn";
 
 type LevelRadioButtonProps = RadioGroup.RadioGroupItemProps;
