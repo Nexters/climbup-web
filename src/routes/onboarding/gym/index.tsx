@@ -54,7 +54,7 @@ function OnboardingGymComponent() {
   };
 
   return (
-    <main className="flex-center flex-col pt-[124px] px-8 min-h-screen">
+    <main className="flex-center flex-col pt-[124px] px-8 min-h-dvh">
       <div className="flex-col gap-1 flex items-center">
         <p className="t-p-22-sb text-neutral-900">
           어디서 클라이밍을 시작할까요?

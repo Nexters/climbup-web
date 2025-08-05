@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as GymRouteImport } from './routes/gym'
 import { Route as DifficultyRouteImport } from './routes/difficulty'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
@@ -28,6 +29,10 @@ const GymRoute = GymRouteImport.update({
 const DifficultyRoute = DifficultyRouteImport.update({
   id: '/difficulty',
   path: '/difficulty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MissionRouteRoute = MissionRouteRouteImport.update({
@@ -98,6 +103,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRoute
   '/difficulty': typeof DifficultyRoute
   '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -135,6 +141,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/mission'
+    | '/_authenticated'
     | '/difficulty'
     | '/gym'
     | '/users/$userId'
@@ -148,6 +155,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MissionRouteRoute: typeof MissionRouteRouteWithChildren
+  AuthenticatedRoute: typeof AuthenticatedRoute
   DifficultyRoute: typeof DifficultyRoute
   GymRoute: typeof GymRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
@@ -170,6 +178,13 @@ declare module '@tanstack/react-router' {
       path: '/difficulty'
       fullPath: '/difficulty'
       preLoaderRoute: typeof DifficultyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mission': {
@@ -248,6 +263,7 @@ const MissionRouteRouteWithChildren = MissionRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MissionRouteRoute: MissionRouteRouteWithChildren,
+  AuthenticatedRoute: AuthenticatedRoute,
   DifficultyRoute: DifficultyRoute,
   GymRoute: GymRoute,
   UsersUserIdRoute: UsersUserIdRoute,

@@ -1,14 +1,16 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Theme } from "@radix-ui/themes";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./router";
-
-const queryClient = new QueryClient();
+import { customQueryClient } from "./third-party/queryClient";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <Theme scaling="100%">
+      <QueryClientProvider client={customQueryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </Theme>
   );
 }
 

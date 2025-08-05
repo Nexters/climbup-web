@@ -1,5 +1,4 @@
 import Hotjar from "@hotjar/browser";
-import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -13,9 +12,7 @@ if (!rootElement) throw new Error("Failed to find the root element");
 const startApp = () => {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <Theme scaling="100%">
-        <App />
-      </Theme>
+      <App />
     </React.StrictMode>
   );
 };
