@@ -1,8 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
+import type {
+  RouteMissionRecommendationResponse,
+  UserMissionAttemptResponse,
+} from "@/generated/model";
+import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
 import { cn } from "@/utils/cn";
+import { getHeaderToken } from "@/utils/cookie";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
@@ -12,39 +19,68 @@ export const Route = createFileRoute("/mission/")({
   component: Mission,
 });
 
-const missions = [
-  {
-    id: 1,
-    sectorName: "SEC 1·2",
-    difficulty: "Blue",
-  },
-  {
-    id: 2,
-    sectorName: "SEC 3·4",
-    difficulty: "Blue",
-  },
-  {
-    id: 3,
-    sectorName: "SEC 5·6",
-    difficulty: "Blue",
-  },
-] as const;
-
 type FilterType = "all" | "failed" | "success" | "not_tried";
 
-const filterLabels: Record<FilterType, string> = {
-  all: "전체 30",
-  not_tried: "미도전",
-  failed: "실패",
-  success: "성공",
+const getFilterLabels = (
+  recommendations: (RouteMissionRecommendationResponse & {
+    status: "not_tried" | "success" | "failed";
+  })[]
+) => {
+  const total = recommendations.length;
+  const notTried = recommendations.filter(
+    (recommendation) => recommendation.status === "not_tried"
+  ).length;
+  const failed = recommendations.filter(
+    (recommendation) => recommendation.status === "failed"
+  ).length;
+  const success = recommendations.filter(
+    (recommendation) => recommendation.status === "success"
+  ).length;
+
+  return {
+    all: `전체 ${total}`,
+    not_tried: `미도전 ${notTried}`,
+    failed: `실패 ${failed}`,
+    success: `성공 ${success}`,
+  };
+};
+
+const calculateMissionStatus = (
+  attempts: UserMissionAttemptResponse[] = []
+): "not_tried" | "success" | "failed" => {
+  if (attempts.length === 0) {
+    return "not_tried";
+  }
+  if (attempts.some((attempt) => attempt.success)) {
+    return "success";
+  }
+  return "failed";
 };
 
 function Mission() {
+  const { data: recommendations = [] } = useQuery({
+    queryKey: ["recommendations"],
+    queryFn: () =>
+      getRouteMissionRecommendations({ headers: getHeaderToken() }),
+    select: (data) => {
+      const missions = data.data ?? [];
+      return missions.map((mission) => ({
+        ...mission,
+        status: calculateMissionStatus(mission.attempts),
+      }));
+    },
+  });
+
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
   const [emblaRef] = useEmblaCarousel({
     align: "center",
     containScroll: "trimSnaps",
+  });
+
+  const filteredRecommendations = recommendations.filter((mission) => {
+    if (filter === "all") return true;
+    return mission.status === filter;
   });
 
   const toggleViewMode = () => {
@@ -60,14 +96,14 @@ function Mission() {
               key={type}
               type="button"
               className={cn(
-                "h-9 px-4 rounded-3xl t-p-14-m transition-colors",
+                "h-9 px-4 rounded-3xl t-p-14-recommendation transition-colors",
                 filter === type
                   ? "bg-neutral-600 text-neutral-100"
                   : "text-neutral-100"
               )}
               onClick={() => setFilter(type)}
             >
-              {filterLabels[type]}
+              {getFilterLabels(recommendations)[type]}
             </button>
           ))}
         </div>
@@ -88,22 +124,28 @@ function Mission() {
       {viewMode === "card" ? (
         <div className="overflow-hidden px-4" ref={emblaRef}>
           <div className="flex gap-4">
-            {missions.map((mission) => (
+            {filteredRecommendations.map((mission) => (
               <MissionGridCard
-                key={mission.id}
-                missionId={mission.id.toString()}
-                {...mission}
+                key={mission.missionId}
+                missionId={mission.missionId?.toString() ?? ""}
+                sectorName={mission.sector?.name ?? ""}
+                difficulty={mission.difficulty ?? ""}
+                imageUrl={mission.imageUrl}
+                status={mission.status}
               />
             ))}
           </div>
         </div>
       ) : (
         <div className="flex flex-col gap-2 px-4">
-          {missions.map((mission) => (
+          {filteredRecommendations.map((mission) => (
             <MissionListCard
-              key={mission.id}
-              missionId={mission.id.toString()}
-              {...mission}
+              key={mission.missionId}
+              missionId={mission.missionId?.toString() ?? ""}
+              sectorName={mission.sector?.name ?? ""}
+              difficulty={mission.difficulty ?? ""}
+              imageUrl={mission.imageUrl}
+              status={mission.status}
             />
           ))}
         </div>

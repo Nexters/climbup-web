@@ -1,6 +1,7 @@
 import { HttpResponse, http } from "msw";
 import type {
   ApiResultListGymLevelResponse,
+  ApiResultListRouteMissionRecommendationResponse,
   ApiResultUserStatusResponse,
 } from "@/generated/model";
 
@@ -9,6 +10,84 @@ import type {
  * - 하위에 리스트 형태로 추가
  */
 export const handlers = [
+  http.get("https://dev-api.holdy.kr/recommendations", () => {
+    return HttpResponse.json<ApiResultListRouteMissionRecommendationResponse>({
+      message: "추천 루트미션을 성공적으로 조회했습니다.",
+      data: [
+        {
+          missionId: 1,
+          gymId: 1,
+          attempts: [],
+          sector: {
+            id: 1,
+            name: "섹터 1·2",
+            imageUrl:
+              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+1",
+          },
+          difficulty: "6A",
+          score: 30,
+          imageUrl:
+            "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+1",
+          videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+          removedAt: "2024-04-20T00:00:00Z",
+          postedAt: "2024-03-20T00:00:00Z",
+          recommendedOrder: 1,
+        },
+        {
+          missionId: 2,
+          gymId: 1,
+          attempts: [
+            {
+              missionAttemptId: 1,
+              success: true,
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              createdAt: "2024-03-15T10:30:00Z",
+            },
+          ],
+          sector: {
+            id: 2,
+            name: "섹터 3·4",
+            imageUrl:
+              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+2",
+          },
+          difficulty: "6B",
+          score: 40,
+          imageUrl:
+            "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+2",
+          videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+          removedAt: "2024-04-25T00:00:00Z",
+          postedAt: "2024-03-25T00:00:00Z",
+          recommendedOrder: 2,
+        },
+        {
+          missionId: 3,
+          gymId: 1,
+          attempts: [
+            {
+              missionAttemptId: 2,
+              success: false,
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              createdAt: "2024-03-10T14:20:00Z",
+            },
+          ],
+          sector: {
+            id: 3,
+            name: "섹터 5·6",
+            imageUrl:
+              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+3",
+          },
+          difficulty: "6C",
+          score: 50,
+          imageUrl:
+            "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+3",
+          videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+          removedAt: "2024-04-30T00:00:00Z",
+          postedAt: "2024-03-30T00:00:00Z",
+          recommendedOrder: 3,
+        },
+      ],
+    });
+  }),
   http.post(
     "https://dev-api.holdy.kr/api/onboarding/gym",
     async ({ request }) => {

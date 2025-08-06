@@ -9,6 +9,7 @@ interface MissionGridCardProps {
   difficulty: string;
   status?: "success" | "failed" | "not_tried";
   isLocked?: boolean;
+  imageUrl?: string;
 }
 
 export default function MissionGridCard({
@@ -17,6 +18,7 @@ export default function MissionGridCard({
   difficulty,
   status = "not_tried",
   isLocked = false,
+  imageUrl,
 }: MissionGridCardProps) {
   return (
     <Link
@@ -25,9 +27,9 @@ export default function MissionGridCard({
       className="flex-[0_0_300px] h-[400px] rounded-[40px] overflow-hidden  border-8 border-neutral-100"
     >
       <div className="relative h-full p-5">
-        {status === "not_tried" && (
+        {status === "not_tried" && imageUrl && (
           <img
-            src={`https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+${missionId}`}
+            src={imageUrl}
             alt="mission-image"
             className={cn(
               "absolute inset-0 w-full h-full object-cover z-[-1]",
