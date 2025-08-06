@@ -1,5 +1,6 @@
 import { HttpResponse, http } from "msw";
 import type {
+  ApiResultCreateAttemptResponse,
   ApiResultListGymLevelResponse,
   ApiResultListRouteMissionRecommendationResponse,
   ApiResultUserStatusResponse,
@@ -22,7 +23,7 @@ export const handlers = [
             id: 1,
             name: "섹터 1·2",
             imageUrl:
-              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+1",
+              "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+2",
           },
           difficulty: "6A",
           score: 30,
@@ -48,7 +49,7 @@ export const handlers = [
             id: 2,
             name: "섹터 3·4",
             imageUrl:
-              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+2",
+              "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+2",
           },
           difficulty: "6B",
           score: 40,
@@ -74,7 +75,7 @@ export const handlers = [
             id: 3,
             name: "섹터 5·6",
             imageUrl:
-              "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Sector+3",
+              "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+2",
           },
           difficulty: "6C",
           score: 50,
@@ -88,6 +89,73 @@ export const handlers = [
       ],
     });
   }),
+  http.post("https://dev-api.holdy.kr/attempts", async ({ request }) => {
+    const body = (await request.json()) as {
+      missionId: number;
+      success: boolean;
+    };
+    return HttpResponse.json<ApiResultCreateAttemptResponse>({
+      message: "도전기록이 성공적으로 등록되었습니다.",
+      data: {
+        missionAttemptId: 1,
+        success: body.success,
+        videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+        createdAt: new Date().toISOString(),
+        srGained: body.success ? 30 : 0,
+        currentSr: body.success ? 1530 : 1500,
+      },
+    });
+  }),
+  http.get(
+    "https://dev-api.holdy.kr/attempts/:attemptId/recommendations",
+    () => {
+      return HttpResponse.json<ApiResultListRouteMissionRecommendationResponse>(
+        {
+          message: "비슷한 난이도의 루트미션을 성공적으로 조회했습니다.",
+          data: [
+            {
+              missionId: 4,
+              gymId: 1,
+              attempts: [],
+              sector: {
+                id: 4,
+                name: "섹터 7·8",
+                imageUrl:
+                  "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+4",
+              },
+              difficulty: "6A",
+              score: 35,
+              imageUrl:
+                "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+4",
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              removedAt: "2024-05-01T00:00:00Z",
+              postedAt: "2024-04-01T00:00:00Z",
+              recommendedOrder: 1,
+            },
+            {
+              missionId: 5,
+              gymId: 1,
+              attempts: [],
+              sector: {
+                id: 5,
+                name: "섹터 9·10",
+                imageUrl:
+                  "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+5",
+              },
+              difficulty: "6B",
+              score: 40,
+              imageUrl:
+                "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+5",
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              removedAt: "2024-05-05T00:00:00Z",
+              postedAt: "2024-04-05T00:00:00Z",
+              recommendedOrder: 2,
+            },
+          ],
+        }
+      );
+    }
+  ),
   http.post(
     "https://dev-api.holdy.kr/api/onboarding/gym",
     async ({ request }) => {
