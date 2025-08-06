@@ -3,13 +3,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
-import type {
-  RouteMissionRecommendationResponse,
-  UserMissionAttemptResponse,
-} from "@/generated/model";
+import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
+import { calculateMissionStatus } from "@/utils/mission";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
@@ -43,18 +41,6 @@ const getFilterLabels = (
     failed: `실패 ${failed}`,
     success: `성공 ${success}`,
   };
-};
-
-const calculateMissionStatus = (
-  attempts: UserMissionAttemptResponse[] = []
-): "not_tried" | "success" | "failed" => {
-  if (attempts.length === 0) {
-    return "not_tried";
-  }
-  if (attempts.some((attempt) => attempt.success)) {
-    return "success";
-  }
-  return "failed";
 };
 
 function Mission() {

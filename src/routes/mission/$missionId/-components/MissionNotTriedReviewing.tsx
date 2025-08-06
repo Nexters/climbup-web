@@ -25,7 +25,7 @@ export default function MissionNotTriedReviewing({
           </p>
         </div>
 
-        <div className="w-[80%] max-w-[300px] aspect-video bg-neutral-800 rounded-2xl overflow-hidden">
+        <div className="w-[85vw] aspect-video bg-neutral-800 border-8 border-neutral-100 rounded-2xl overflow-hidden">
           <video
             src={videoUrl}
             className="w-full h-full object-contain"

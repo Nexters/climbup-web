@@ -1,64 +1,65 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
+import { getHeaderToken } from "@/utils/cookie";
+import { calculateMissionStatus } from "@/utils/mission";
 import MissionFailed from "./-components/MissionFailed";
 import MissionNotTried from "./-components/MissionNotTried";
 import MissionSuccess from "./-components/MissionSuccess";
-
-interface MissionAttempt {
-  missionAttemptId: number;
-  success: boolean;
-  videoUrl: string;
-  createdAt: string;
-}
-
-const MOCK_DATA = {
-  missionId: 1,
-  attempts: [] as MissionAttempt[],
-  gymId: 1,
-  sector: {
-    id: 1,
-    name: "섹터 5·6",
-    imageUrl: "https://placehold.co/600x400/png?text=Sector+1",
-  },
-  difficulty: "6A",
-  score: 30,
-  imageUrl: "https://placehold.co/800x600/png?text=Mission+1",
-  videoUrl: "https://example.com/mission-video.mp4",
-  removedAt: "2024-04-20T00:00:00Z",
-  postedAt: "2024-03-20T00:00:00Z",
-  recommendedOrder: 1,
-};
 
 export const Route = createFileRoute("/mission/$missionId/")({
   component: MissionDetail,
 });
 
-type MissionAttemptStatus = "NOT_TRIED" | "SUCCESS" | "FAILED";
+function MissionDetail() {
+  const { missionId } = Route.useParams();
 
-const getMissionAttemptStatus = (
-  attempts: MissionAttempt[]
-): MissionAttemptStatus => {
-  if (!attempts || attempts.length === 0) {
-    return "NOT_TRIED";
+  const { data: currentMission } = useQuery({
+    queryKey: ["recommendations"],
+    queryFn: () =>
+      getRouteMissionRecommendations({ headers: getHeaderToken() }),
+    select: (data) => {
+      const missions = data.data ?? [];
+      const mission = missions.find(
+        (mission) => mission.missionId === Number(missionId)
+      );
+
+      if (!mission) return undefined;
+
+      return {
+        ...mission,
+        status: calculateMissionStatus(mission.attempts),
+      };
+    },
+  });
+
+  if (!currentMission) {
+    return (
+      <div className="fixed inset-0 flex flex-col bg-neutral-900">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-neutral-100">미션을 찾을 수 없습니다.</div>
+        </div>
+      </div>
+    );
   }
 
-  return attempts.some((attempt) => attempt.success) ? "SUCCESS" : "FAILED";
-};
-
-function MissionDetail() {
-  const missionStatus = getMissionAttemptStatus(MOCK_DATA.attempts);
-
   const renderContent = () => {
-    switch (missionStatus) {
-      case "SUCCESS":
+    switch (currentMission.status) {
+      case "success":
         return <MissionSuccess />;
-      case "FAILED":
+      case "failed":
         return <MissionFailed />;
-      case "NOT_TRIED":
+      case "not_tried":
         return (
           <MissionNotTried
-            sectorName={MOCK_DATA.sector.name}
-            missionImage={MOCK_DATA.imageUrl}
-            score={MOCK_DATA.score}
+            missionId={Number(missionId)}
+            sectorName={currentMission.sector?.name ?? ""}
+            difficulty={currentMission.difficulty ?? ""}
+            sectorImage={currentMission.sector?.imageUrl ?? ""}
+            missionImage={currentMission.imageUrl ?? ""}
+            score={currentMission.score ?? 0}
+            videoUrl={currentMission.videoUrl ?? ""}
+            attemptId={currentMission.attempts?.[0]?.missionAttemptId ?? null}
           />
         );
     }
