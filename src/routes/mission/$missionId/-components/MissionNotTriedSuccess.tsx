@@ -1,65 +1,46 @@
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
-import Button from "@/components/Button";
+import { useCallback, useEffect, useState } from "react";
 import CloseIcon from "@/components/icons/CloseIcon";
+import { getRouteMissionRecommendationByAttempt } from "@/generated/attempts/attempts";
+import MissionGridCard from "../../-components/MissionGridCard";
 
-const MOCK_MISSIONS = [
-  {
-    missionId: 2,
-    attempts: [],
-    gymId: 1,
-    sector: {
-      id: 1,
-      name: "섹터 5·6",
-      imageUrl: "https://placehold.co/600x400/png?text=Sector+1",
-    },
-    difficulty: "6A",
-    score: 30,
-    imageUrl: "https://placehold.co/800x600/png?text=Mission+2",
-    videoUrl: "https://example.com/mission-video.mp4",
-    removedAt: "2024-04-20T00:00:00Z",
-    postedAt: "2024-03-20T00:00:00Z",
-    recommendedOrder: 2,
-  },
-  {
-    missionId: 3,
-    attempts: [],
-    gymId: 1,
-    sector: {
-      id: 1,
-      name: "섹터 5·6",
-      imageUrl: "https://placehold.co/600x400/png?text=Sector+1",
-    },
-    difficulty: "6A+",
-    score: 35,
-    imageUrl: "https://placehold.co/800x600/png?text=Mission+3",
-    videoUrl: "https://example.com/mission-video.mp4",
-    removedAt: "2024-04-20T00:00:00Z",
-    postedAt: "2024-03-20T00:00:00Z",
-    recommendedOrder: 3,
-  },
-  {
-    missionId: 4,
-    attempts: [],
-    gymId: 1,
-    sector: {
-      id: 1,
-      name: "섹터 5·6",
-      imageUrl: "https://placehold.co/600x400/png?text=Sector+1",
-    },
-    difficulty: "6B",
-    score: 40,
-    imageUrl: "https://placehold.co/800x600/png?text=Mission+4",
-    videoUrl: "https://example.com/mission-video.mp4",
-    removedAt: "2024-04-20T00:00:00Z",
-    postedAt: "2024-03-20T00:00:00Z",
-    recommendedOrder: 4,
-  },
-];
+interface MissionNotTriedSuccessProps {
+  attemptId: number | null;
+}
 
-export default function MissionNotTriedSuccess() {
-  const [emblaRef] = useEmblaCarousel({
+export default function MissionNotTriedSuccess({
+  attemptId,
+}: MissionNotTriedSuccessProps) {
+  const navigate = useNavigate();
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
-    containScroll: "trimSnaps",
+    containScroll: false,
+    loop: false,
+  });
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  const { data: missions } = useQuery({
+    queryKey: ["mission-not-tried-success", attemptId],
+    queryFn: () => getRouteMissionRecommendationByAttempt(attemptId ?? 0),
+    select: (data) => data.data ?? [],
   });
 
   return (
@@ -80,31 +61,29 @@ export default function MissionNotTriedSuccess() {
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4 ml-[38px]">
-            {MOCK_MISSIONS.map((mission) => (
+          <div className="flex gap-1 px-[7.5vw]">
+            {missions?.map((mission, index) => (
               <div
                 key={mission.missionId}
-                className="relative shrink-0 w-[300px] aspect-[3/4] rounded-[40px] bg-neutral-50 border-8 border-neutral-50 overflow-hidden"
+                className="flex-[0_0_85vw] flex items-center justify-center"
+                style={{
+                  transform:
+                    index === selectedIndex ? "scale(1)" : "scale(0.9)",
+                  transition: "transform 0.3s ease",
+                }}
               >
-                <div className="absolute inset-0">
-                  <img
-                    src={mission.imageUrl}
-                    alt={`Mission ${mission.missionId}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div className="absolute top-0 left-0 w-full h-[45%] bg-gradient-neutral opacity-60" />
-
-                <div className="relative flex flex-col justify-between h-full p-[7%]">
-                  <div>
-                    <div className="w-[18.7%] aspect-square rounded-xl bg-neutral-200/60" />
-                  </div>
-
-                  <div className="w-full flex justify-end">
-                    <Button>도전하기</Button>
-                  </div>
-                </div>
+                <MissionGridCard
+                  key={mission.missionId}
+                  sectorName={mission.sector?.name ?? ""}
+                  difficulty={mission.difficulty ?? ""}
+                  imageUrl={mission.imageUrl}
+                  onStart={() => {
+                    navigate({
+                      to: "/mission/$missionId",
+                      params: { missionId: mission.missionId?.toString() },
+                    });
+                  }}
+                />
               </div>
             ))}
           </div>

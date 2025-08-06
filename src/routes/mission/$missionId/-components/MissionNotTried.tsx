@@ -1,4 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
+import { createAttempt } from "@/generated/attempts/attempts";
+import { getHeaderToken } from "@/utils/cookie";
 import MissionNotTriedDefault from "./MissionNotTriedDefault";
 import MissionNotTriedFailed from "./MissionNotTriedFailed";
 import MissionNotTriedReviewing from "./MissionNotTriedReviewing";
@@ -6,8 +9,13 @@ import MissionNotTriedSuccess from "./MissionNotTriedSuccess";
 
 interface MissionNotTriedProps {
   sectorName: string;
+  sectorImage: string;
+  difficulty: string;
   missionImage: string;
   score: number;
+  videoUrl: string;
+  attemptId: number | null;
+  missionId: number;
 }
 
 type MissionState = "DEFAULT" | "REVIEWING" | "SUCCESS" | "FAILED";
@@ -18,9 +26,28 @@ type CapturedMedia = {
 } | null;
 
 export default function MissionNotTried(props: MissionNotTriedProps) {
+  const queryClient = useQueryClient();
+
   const [state, setState] = useState<MissionState>("DEFAULT");
   const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { mutateAsync: createAttemptMutate } = useMutation({
+    mutationFn: (success: boolean) =>
+      createAttempt(
+        {
+          missionId: props.missionId,
+          success,
+        },
+        { headers: getHeaderToken() }
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["recommendations"],
+      });
+    },
+  });
 
   const handleStart = () => {
     fileInputRef.current?.click();
@@ -39,10 +66,24 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
   };
 
   const handleReviewSuccess = () => {
+    createAttemptMutate(true, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["recommendations"],
+        });
+      },
+    });
     setState("SUCCESS");
   };
 
   const handleReviewFailed = () => {
+    createAttemptMutate(false, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["recommendations"],
+        });
+      },
+    });
     setState("FAILED");
   };
 
@@ -81,9 +122,14 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
               />
             );
           case "SUCCESS":
-            return <MissionNotTriedSuccess />;
+            return <MissionNotTriedSuccess attemptId={props.attemptId} />;
           case "FAILED":
-            return <MissionNotTriedFailed onRetry={handleRetry} />;
+            return (
+              <MissionNotTriedFailed
+                videoUrl={props.videoUrl}
+                onRetry={handleRetry}
+              />
+            );
         }
       })()}
     </div>

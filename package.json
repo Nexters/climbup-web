@@ -44,6 +44,7 @@
     "@storybook/addon-docs": "^9.0.18",
     "@storybook/addon-vitest": "^9.0.18",
     "@storybook/react-vite": "^9.0.18",
+    "@tanstack/react-query-devtools": "^5.84.1",
     "@tanstack/react-router-devtools": "1.127.8",
     "@tanstack/router-vite-plugin": "1.127.8",
     "@types/js-cookie": "3.0.6",

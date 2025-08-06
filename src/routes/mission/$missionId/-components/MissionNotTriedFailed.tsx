@@ -1,12 +1,17 @@
+import { useNavigate } from "@tanstack/react-router";
 import Button from "@/components/Button";
 
 interface MissionNotTriedFailedProps {
+  videoUrl: string;
   onRetry: () => void;
 }
 
 export default function MissionNotTriedFailed({
+  videoUrl,
   onRetry,
 }: MissionNotTriedFailedProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex-1 flex flex-col bg-neutral-500">
       <div className="absolute top-4 right-4">
@@ -25,9 +30,9 @@ export default function MissionNotTriedFailed({
           </p>
         </div>
 
-        <div className="w-[80%] max-w-[300px] aspect-video bg-neutral-800 rounded-2xl overflow-hidden">
+        <div className="w-[85vw] aspect-video bg-neutral-800 border-8 border-neutral-100 rounded-2xl overflow-hidden">
           <video
-            src="/src/assets/video/mock-mission-answer-video.mp4"
+            src={videoUrl}
             className="w-full h-full object-contain"
             controls
             playsInline
@@ -38,7 +43,7 @@ export default function MissionNotTriedFailed({
       </div>
 
       <div className="flex justify-center gap-2 px-[30px] pb-6">
-        <Button onClick={() => window.history.back()}>홈</Button>
+        <Button onClick={() => navigate({ to: "/mission" })}>홈</Button>
         <Button onClick={onRetry}>재도전</Button>
       </div>
     </div>

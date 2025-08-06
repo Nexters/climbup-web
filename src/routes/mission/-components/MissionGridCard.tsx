@@ -4,11 +4,13 @@ import { cn } from "@/utils/cn";
 import LockIcon from "../../../components/icons/LockIcon";
 
 interface MissionGridCardProps {
-  missionId: string;
+  missionId?: string;
   sectorName: string;
   difficulty: string;
   status?: "success" | "failed" | "not_tried";
   isLocked?: boolean;
+  imageUrl?: string;
+  onStart?: () => void;
 }
 
 export default function MissionGridCard({
@@ -17,17 +19,20 @@ export default function MissionGridCard({
   difficulty,
   status = "not_tried",
   isLocked = false,
+  imageUrl,
+  onStart,
 }: MissionGridCardProps) {
   return (
     <Link
       to="/mission/$missionId"
       params={{ missionId }}
-      className="flex-[0_0_300px] h-[400px] rounded-[40px] overflow-hidden  border-8 border-neutral-100"
+      disabled={!missionId}
+      className="w-full aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
     >
       <div className="relative h-full p-5">
-        {status === "not_tried" && (
+        {status === "not_tried" && imageUrl && (
           <img
-            src={`https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+${missionId}`}
+            src={imageUrl}
             alt="mission-image"
             className={cn(
               "absolute inset-0 w-full h-full object-cover z-[-1]",
@@ -55,6 +60,7 @@ export default function MissionGridCard({
                 </Link>
               </Button>
             )}
+            {onStart && <Button onClick={onStart}>도전</Button>}
           </div>
         </div>
       </div>

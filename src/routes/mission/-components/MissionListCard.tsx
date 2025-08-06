@@ -5,6 +5,7 @@ interface MissionListCardProps {
   sectorName: string;
   difficulty: string;
   status?: "success" | "failed" | "not_tried";
+  imageUrl?: string;
 }
 
 export default function MissionListCard({
@@ -12,6 +13,7 @@ export default function MissionListCard({
   sectorName,
   difficulty,
   status = "not_tried",
+  imageUrl,
 }: MissionListCardProps) {
   return (
     <Link
@@ -20,11 +22,13 @@ export default function MissionListCard({
       className="flex items-center gap-4 p-4 bg-neutral-100 rounded-[32px]"
     >
       <div className="w-[66px] h-[90px] flex items-center">
-        <img
-          src={`https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+${missionId}`}
-          alt=""
-          className="w-[66px] h-[66px] rounded-full object-cover"
-        />
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt=""
+            className="w-[66px] h-[66px] rounded-full object-cover"
+          />
+        )}
       </div>
       <div className="w-[1px] h-[114px] -my-4 bg-neutral-300" />
       <div className="flex-1 flex flex-col gap-[6px]">
