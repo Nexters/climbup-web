@@ -1,24 +1,55 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { isNil } from "es-toolkit/compat";
 import { Select } from "radix-ui";
-import { useState } from "react";
+import { getAllGyms } from "@/generated/climbing-gym/climbing-gym";
+import { setGym } from "@/generated/onboarding/onboarding";
+import { getCurrentUserStatus } from "@/generated/user/user";
 import { cn } from "@/utils/cn";
+import { getHeaderToken } from "@/utils/cookie";
 import CheckIcon from "../../../components/icons/CheckIcon";
 import ChevronDownIcon from "../../../components/icons/ChevronDownIcon";
 
-const gyms = [
-  { id: "gangnam", name: "더 클라임 강남" },
-  { id: "nonhyeon", name: "더 클라임 논현" },
-] as const;
-
 export default function MissionHeader() {
-  const [selectedGym, setSelectedGym] = useState("gangnam");
+  const queryClient = useQueryClient();
+
+  const { data: gyms } = useQuery({
+    queryKey: ["gyms"],
+    queryFn: () => getAllGyms(),
+    select: (data) => data.data ?? [],
+  });
+
+  const { data: userStatus } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () => getCurrentUserStatus({ headers: getHeaderToken() }),
+    select: (data) => data.data,
+  });
+
+  const selectedGymId = userStatus?.gym?.id?.toString() ?? "";
+
+  const { mutateAsync: setGymMutation } = useMutation({
+    mutationFn: (gymId: string) => {
+      return setGym({ gymId: Number(gymId) }, { headers: getHeaderToken() });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    },
+  });
+
+  const handleGymChange = async (value: string) => {
+    try {
+      await setGymMutation(value);
+    } catch (error) {
+      console.error("암장 설정 중 오류가 발생했습니다:", error);
+    }
+  };
 
   return (
     <div className="py-4 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Select.Root value={selectedGym} onValueChange={setSelectedGym}>
+            <Select.Root value={selectedGymId} onValueChange={handleGymChange}>
               <Select.Trigger className="inline-flex items-center justify-center gap-2 py-2 t-p-22-sb text-neutral-100 hover:opacity-90 focus:outline-none">
                 <Select.Value placeholder="암장 선택" />
                 <Select.Icon>
@@ -33,29 +64,30 @@ export default function MissionHeader() {
                 >
                   <Select.Viewport className="p-6">
                     <Select.Group className="space-y-2">
-                      {gyms.map((gym) => (
-                        <Select.Item
-                          key={gym.id}
-                          value={gym.id}
-                          className={cn(
-                            "relative flex items-center gap-4 py-1.5 t-p-16-m cursor-pointer select-none outline-none transition-colors",
-                            selectedGym === gym.id
-                              ? "text-neutral-900"
-                              : "text-neutral-600"
-                          )}
-                        >
-                          <Select.ItemText>{gym.name}</Select.ItemText>
-                          {selectedGym === gym.id && (
-                            <Select.ItemIndicator>
-                              <CheckIcon
-                                variant="dark"
-                                width={24}
-                                height={24}
-                              />
-                            </Select.ItemIndicator>
-                          )}
-                        </Select.Item>
-                      ))}
+                      {!isNil(gyms) &&
+                        gyms.map((gym) => (
+                          <Select.Item
+                            key={gym.id}
+                            value={gym.id?.toString() || ""}
+                            className={cn(
+                              "relative flex items-center gap-4 py-1.5 t-p-16-m cursor-pointer select-none outline-none transition-colors",
+                              selectedGymId === gym.id?.toString()
+                                ? "text-neutral-900"
+                                : "text-neutral-600"
+                            )}
+                          >
+                            <Select.ItemText>{gym.fullName}</Select.ItemText>
+                            {selectedGymId === gym.id?.toString() && (
+                              <Select.ItemIndicator>
+                                <CheckIcon
+                                  variant="dark"
+                                  width={24}
+                                  height={24}
+                                />
+                              </Select.ItemIndicator>
+                            )}
+                          </Select.Item>
+                        ))}
                     </Select.Group>
                   </Select.Viewport>
                 </Select.Content>
@@ -63,7 +95,7 @@ export default function MissionHeader() {
             </Select.Root>
           </div>
           <Link
-            to="/users/1"
+            to={`/users/${userStatus?.id ?? ""}`}
             className="w-11 h-11 rounded-full bg-neutral-900 hover:opacity-90 transition-opacity"
           ></Link>
         </div>
