@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import type {
   RouteMissionRecommendationResponse,
@@ -73,10 +73,27 @@ function Mission() {
 
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
-  const [emblaRef] = useEmblaCarousel({
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "center",
-    containScroll: "trimSnaps",
+    containScroll: false,
+    loop: false,
   });
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   const filteredRecommendations = recommendations.filter((mission) => {
     if (filter === "all") return true;
@@ -122,17 +139,26 @@ function Mission() {
       </div>
 
       {viewMode === "card" ? (
-        <div className="overflow-hidden px-4" ref={emblaRef}>
-          <div className="flex gap-4">
-            {filteredRecommendations.map((mission) => (
-              <MissionGridCard
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-1 px-[7.5vw]">
+            {filteredRecommendations.map((mission, index) => (
+              <div
                 key={mission.missionId}
-                missionId={mission.missionId?.toString() ?? ""}
-                sectorName={mission.sector?.name ?? ""}
-                difficulty={mission.difficulty ?? ""}
-                imageUrl={mission.imageUrl}
-                status={mission.status}
-              />
+                className="flex-[0_0_85vw] flex items-center justify-center"
+                style={{
+                  transform:
+                    index === selectedIndex ? "scale(1)" : "scale(0.9)",
+                  transition: "transform 0.3s ease",
+                }}
+              >
+                <MissionGridCard
+                  missionId={mission.missionId?.toString() ?? ""}
+                  sectorName={mission.sector?.name ?? ""}
+                  difficulty={mission.difficulty ?? ""}
+                  imageUrl={mission.imageUrl}
+                  status={mission.status}
+                />
+              </div>
             ))}
           </div>
         </div>

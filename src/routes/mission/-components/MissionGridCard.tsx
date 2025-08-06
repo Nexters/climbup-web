@@ -24,7 +24,7 @@ export default function MissionGridCard({
     <Link
       to="/mission/$missionId"
       params={{ missionId }}
-      className="flex-[0_0_300px] h-[400px] rounded-[40px] overflow-hidden  border-8 border-neutral-100"
+      className="w-full aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
     >
       <div className="relative h-full p-5">
         {status === "not_tried" && imageUrl && (
