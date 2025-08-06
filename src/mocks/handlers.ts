@@ -1,8 +1,11 @@
 import { HttpResponse, http } from "msw";
 import type {
   ApiResultCreateAttemptResponse,
+  ApiResultCreateUserSession,
+  ApiResultFinishUserSession,
   ApiResultListGymLevelResponse,
   ApiResultListRouteMissionRecommendationResponse,
+  ApiResultUserSessionState,
   ApiResultUserStatusResponse,
 } from "@/generated/model";
 
@@ -156,6 +159,37 @@ export const handlers = [
       );
     }
   ),
+  http.post("https://dev-api.holdy.kr/api/sessions", () => {
+    return HttpResponse.json<ApiResultCreateUserSession>({
+      message: "세션이 성공적으로 시작되었습니다.",
+      data: {
+        id: 1,
+        startedAt: new Date().toISOString(),
+      },
+    });
+  }),
+  http.get("https://dev-api.holdy.kr/api/sessions/:id", () => {
+    return HttpResponse.json<ApiResultUserSessionState>({
+      message: "세션 정보를 성공적으로 조회했습니다.",
+      data: {
+        sessionDate: new Date().toISOString().split("T")[0],
+        startedAt: new Date().toISOString(),
+        endedAt: undefined,
+        totalDuration: 7200,
+        srGained: 150,
+        completedCount: 5,
+        attemptedCount: 8,
+      },
+    });
+  }),
+  http.post("https://dev-api.holdy.kr/api/sessions/:id", () => {
+    return HttpResponse.json<ApiResultFinishUserSession>({
+      message: "세션이 성공적으로 종료되었습니다.",
+      data: {
+        id: 1,
+      },
+    });
+  }),
   http.post(
     "https://dev-api.holdy.kr/api/onboarding/gym",
     async ({ request }) => {

@@ -1,18 +1,76 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
+import {
+  endUserSession,
+  getUserSession,
+  startUserSession,
+} from "@/generated/user-session/user-session";
+import { getHeaderToken } from "@/utils/cookie";
+import { getStorage, removeStorage, setStorage } from "@/utils/storage";
 import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
 export default function MissionTimer() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
+
+  const storageSessionId = getStorage(USER_SESSION_STORAGE_KEY);
+
+  const { data: sessionData } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () =>
+      storageSessionId
+        ? getUserSession(Number(storageSessionId), {
+            headers: getHeaderToken(),
+          })
+        : null,
+    select: (data) => data?.data ?? null,
+    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
+  });
+
+  const { mutateAsync: startSession } = useMutation({
+    mutationFn: () => startUserSession({ headers: getHeaderToken() }),
+    onSuccess: (data) => {
+      setStorage(USER_SESSION_STORAGE_KEY, data.data?.id?.toString() ?? "");
+      setIsRunning(true);
+      setTime(0);
+      queryClient.invalidateQueries({ queryKey: ["userSession"] });
+    },
+  });
+
+  const { mutateAsync: endSession } = useMutation({
+    mutationFn: (sessionId: number) =>
+      endUserSession(sessionId, { headers: getHeaderToken() }),
+    onSuccess: () => {
+      removeStorage(USER_SESSION_STORAGE_KEY);
+      setIsRunning(false);
+      setTime(0);
+      queryClient.invalidateQueries({ queryKey: ["userSession"] });
+      navigate({ to: "/mission-result" });
+    },
+  });
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
-    if (isRunning) {
+    if (sessionData?.startedAt && !sessionData?.endedAt) {
+      setIsRunning(true);
+      const startTime = new Date(sessionData.startedAt).getTime();
+      const currentTime = Date.now();
+      const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+      setTime(elapsedSeconds);
+
       intervalId = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
+    } else {
+      setIsRunning(false);
+      setTime(0);
     }
 
     return () => {
@@ -20,7 +78,7 @@ export default function MissionTimer() {
         clearInterval(intervalId);
       }
     };
-  }, [isRunning]);
+  }, [sessionData]);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -33,8 +91,16 @@ export default function MissionTimer() {
     )} : ${String(remainingSeconds).padStart(2, "0")}`;
   };
 
-  const handleToggle = () => {
-    setIsRunning((prev) => !prev);
+  const handleToggle = async () => {
+    try {
+      if (isRunning) {
+        await endSession(Number(storageSessionId));
+      } else {
+        await startSession();
+      }
+    } catch (error) {
+      console.error("세션 처리 중 오류가 발생했습니다:", error);
+    }
   };
 
   return (

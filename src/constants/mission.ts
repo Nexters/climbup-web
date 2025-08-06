@@ -1,0 +1,1 @@
+export const USER_SESSION_STORAGE_KEY = "USER_SESSION_ID";
