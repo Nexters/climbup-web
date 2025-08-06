@@ -1,10 +1,13 @@
-import NumberFlow from "@number-flow/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
+import { useState } from "react";
 import assetCharacterIcon from "@/assets/images/ic_character.png";
 import assetFailIcon from "@/assets/images/ic_failure.png";
 import assetScoreIcon from "@/assets/images/ic_score.png";
 import assetSuccessIcon from "@/assets/images/ic_success.png";
+import Button from "@/components/Button";
 import { LevelProgress } from "@/components/level-progress/LevelProgress";
+import { MotionNumberFlow } from "@/components/motion-number-flow/MotionNumberFlow";
 import { Timer } from "@/components/timer/Timer";
 
 export const Route = createFileRoute("/mission-result/")({
@@ -12,12 +15,17 @@ export const Route = createFileRoute("/mission-result/")({
 });
 
 function RouteComponent() {
+  // TODO: 데이터 받아오기
+  const [scoreValue] = useState(500);
+  const [successValue] = useState(22);
+  const [failureValue] = useState(11);
+
   return (
-    <div className="h-dvh px-4">
+    <div className="h-dvh px-4 flex flex-col">
       <div className="flex flex-col justify-between items-center">
         <p className="t-p-14-m">25.07.20 (수)</p>
         <p className="t-p-16-m pt-1">더 클라임 강남점</p>
-        <Timer seconds={0} className="pt-2" />
+        <Timer seconds={2000} className="pt-2" />
       </div>
       <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
         <div className="flex flex-col flex-1 items-center justify-center">
@@ -26,9 +34,9 @@ function RouteComponent() {
             alt="점수"
             className="object-cover w-12 h-12"
           />
-          <NumberFlow
+          <MotionNumberFlow
             prefix="+"
-            value={500}
+            value={scoreValue}
             className="t-p-22-sb text-neutral-800"
           />
           <p className="t-p-14-m pt-1 text-neutral-500">점수</p>
@@ -39,7 +47,10 @@ function RouteComponent() {
             alt="성공 횟수"
             className="object-cover w-12 h-12"
           />
-          <NumberFlow value={22} className="t-p-22-sb text-neutral-800" />
+          <MotionNumberFlow
+            value={successValue}
+            className="t-p-22-sb text-neutral-800"
+          />
           <p className="t-p-14-m pt-1 text-neutral-500">성공</p>
         </div>
         <div className="flex flex-col flex-1 items-center justify-center">
@@ -48,7 +59,10 @@ function RouteComponent() {
             alt="실패 횟수"
             className="object-cover w-12 h-12"
           />
-          <NumberFlow value={11} className="t-p-22-sb text-neutral-800" />
+          <MotionNumberFlow
+            value={failureValue}
+            className="t-p-22-sb text-neutral-800"
+          />
           <p className="t-p-14-m pt-1 text-neutral-500">실패</p>
         </div>
       </div>
@@ -60,9 +74,15 @@ function RouteComponent() {
         />
         <div className="flex flex-col flex-1">
           {/* TODO: UI 수정 */}
-          <p className="t-p-12-m text-neutral-800 pb-2">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="t-p-12-m text-neutral-800 pb-2"
+          >
             LV.4까지 남은 점수 250점 !
-          </p>
+          </motion.p>
           <LevelProgress
             level={1}
             currentExp={100}
@@ -70,6 +90,34 @@ function RouteComponent() {
             progressWrapperClassName="w-full"
           />
         </div>
+      </div>
+      <button
+        type="button"
+        className="flex justify-end items-center gap-1 mt-3 w-fit ml-auto"
+      >
+        <p className="t-p-14-m text-neutral-500">레벨 보기</p>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="레벨 보기 바로가기"
+          role="img"
+        >
+          <path
+            className="stroke-neutral-500"
+            d="M6 11.9961L10 7.99609L6 3.99609"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      <div className="flex items-center justify-center w-full mt-auto px-10 py-4">
+        <Button asChild className="w-full">
+          <Link to="/my-page">완등 영상 보기</Link>
+        </Button>
       </div>
     </div>
   );

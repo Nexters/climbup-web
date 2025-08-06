@@ -1,5 +1,6 @@
-import NumberFlow, { NumberFlowGroup } from "@number-flow/react";
+import { NumberFlowGroup } from "@number-flow/react";
 import { cn } from "@/utils/cn";
+import { MotionNumberFlow } from "../motion-number-flow/MotionNumberFlow";
 
 type TimerProps = {
   seconds: number;
@@ -14,25 +15,25 @@ export const Timer = ({ seconds, className }: TimerProps) => {
     <NumberFlowGroup>
       <div
         className={cn(
-          "~text-3xl/4xl flex items-baseline font-semibold tabular-nums t-m-48-b",
+          "flex items-baseline font-semibold tabular-nums t-m-48-b",
           className
         )}
       >
-        <NumberFlow
-          trend={-1}
+        <MotionNumberFlow
+          trend={1}
           value={hh}
           format={{ minimumIntegerDigits: 2 }}
         />
-        <NumberFlow
+        <MotionNumberFlow
           prefix=" : "
-          trend={-1}
+          trend={1}
           value={mm}
           digits={{ 1: { max: 5 } }}
           format={{ minimumIntegerDigits: 2 }}
         />
-        <NumberFlow
+        <MotionNumberFlow
           prefix=" : "
-          trend={-1}
+          trend={1}
           value={ss}
           digits={{ 1: { max: 5 } }}
           format={{ minimumIntegerDigits: 2 }}

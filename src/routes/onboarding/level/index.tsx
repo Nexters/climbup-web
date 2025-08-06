@@ -67,7 +67,7 @@ function OnboardingLevelComponent() {
     .with({ gymLevelName: "PURPLE" }, () => "NEUTRAL")
     .otherwise(() => "NEUTRAL");
 
-  const label = match(selectedLevel)
+  const selectedLabel = match(selectedLevel)
     .with(null, () => "")
     .with({ gymLevelName: "ORANGE" }, () => "주황")
     .with({ gymLevelName: "GREEN" }, () => "초록")
@@ -97,7 +97,7 @@ function OnboardingLevelComponent() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Tag variant={tagVariant}>{label}</Tag>
+            <Tag variant={tagVariant}>{selectedLabel}</Tag>
             <p className="t-p-22-sb text-neutral-900 pt-2">
               {selectedLevel?.levelName}
             </p>

@@ -48,7 +48,13 @@ export default function MissionGridCard({
             </div>
           </div>
           <div className="flex justify-end">
-            {isLocked && <Button leftIcon={<LockIcon variant="white" />} />}
+            {isLocked && (
+              <Button asChild>
+                <Link to="/mission/$missionId" params={{ missionId }}>
+                  <LockIcon variant="white" />
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
