@@ -1,4 +1,4 @@
-import NumberFlow, { NumberFlowGroup } from "@number-flow/react";
+import { NumberFlowGroup } from "@number-flow/react";
 import { cn } from "@/utils/cn";
 import { MotionNumberFlow } from "../motion-number-flow/MotionNumberFlow";
 
