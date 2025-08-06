@@ -1,22 +1,22 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Slot } from "radix-ui";
+import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/utils/cn";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  asChild?: boolean;
 }
 
 export default function Button({
   className,
   disabled,
-  leftIcon,
-  rightIcon,
   children,
+  asChild = false,
   ...props
 }: ButtonProps) {
+  const Component = asChild ? Slot.Slot : "button";
+
   return (
-    // #6C737F #121315
-    <button
+    <Component
       className={cn(
         "w-fit px-9 py-4 rounded-[32px] transition-colors",
         "inline-flex items-center justify-center gap-[10px]",
@@ -30,9 +30,7 @@ export default function Button({
       disabled={disabled}
       {...props}
     >
-      {leftIcon}
       {children}
-      {rightIcon}
-    </button>
+    </Component>
   );
 }
