@@ -5,6 +5,10 @@ import type {
   ApiResultFinishUserSession,
   ApiResultListGymLevelResponse,
   ApiResultListRouteMissionRecommendationResponse,
+  ApiResultRouteMissionUploadChunkResponse,
+  ApiResultRouteMissionUploadSessionFinalizeResponse,
+  ApiResultRouteMissionUploadSessionInitializeResponse,
+  ApiResultRouteMissionUploadStatusResponse,
   ApiResultUserSessionState,
   ApiResultUserStatusResponse,
 } from "@/generated/model";
@@ -365,4 +369,70 @@ export const handlers = [
       ],
     });
   }),
+
+  http.get(
+    "https://dev-api.holdy.kr/attempts/:attemptId/upload/status",
+    async () => {
+      return HttpResponse.json<ApiResultRouteMissionUploadStatusResponse>({
+        message: "요청이 성공적으로 처리되었습니다.",
+        data: {
+          status: "IN_PROGRESS",
+          uploadId: "8ded5806-87df-43b5-9c64-e4513eb33987",
+          createdAt: "2025-07-31T14:20:00",
+          chunks: {
+            totalReceived: 505050,
+            totalExpected: 10101010,
+            completedChunks: [1, 2, 3, 4, 5, 6, 7, 10],
+          },
+        },
+      });
+    }
+  ),
+
+  http.post(
+    "https://dev-api.holdy.kr/attempts/:attemptId/upload/initialize",
+    async () => {
+      return HttpResponse.json<ApiResultRouteMissionUploadSessionInitializeResponse>(
+        {
+          message: "요청이 성공적으로 처리되었습니다.",
+          data: {
+            uploadId: "8ded5806-87df-43b5-9c64-e4513eb33987",
+          },
+        }
+      );
+    }
+  ),
+
+  http.post(
+    "https://dev-api.holdy.kr/attempts/:attemptId/upload/:uploadId/chunk",
+    async ({ request }) => {
+      const body = (await request.json()) as {
+        index?: number;
+        chunk?: string;
+      };
+
+      return HttpResponse.json<ApiResultRouteMissionUploadChunkResponse>({
+        message: "청크가 성공적으로 업로드되었습니다.",
+        data: {
+          index: body.index,
+          totalChunkReceived: (body.index || 0) + 1,
+          totalChunkExpected: 5,
+        },
+      });
+    }
+  ),
+
+  http.post(
+    "https://dev-api.holdy.kr/attempts/:attemptId/upload/:uploadId/finalize",
+    async () => {
+      return HttpResponse.json<ApiResultRouteMissionUploadSessionFinalizeResponse>(
+        {
+          message: "업로드가 성공적으로 완료되었습니다.",
+          data: {
+            fileName: `mission_video_${Date.now()}.mp4`,
+          },
+        }
+      );
+    }
+  ),
 ];
