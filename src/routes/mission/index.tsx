@@ -4,11 +4,14 @@ import useEmblaCarousel from "embla-carousel-react";
 import { countBy } from "es-toolkit/compat";
 import { useCallback, useEffect, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
+import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
+import { getUserSession } from "@/generated/user-session/user-session";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
+import { getStorage } from "@/utils/storage";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
@@ -51,6 +54,18 @@ function Mission() {
         status: calculateMissionStatus(mission.attempts),
       }));
     },
+  });
+
+  const { data: sessionData } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () =>
+      getStorage(USER_SESSION_STORAGE_KEY)
+        ? getUserSession(Number(getStorage(USER_SESSION_STORAGE_KEY)), {
+            headers: getHeaderToken(),
+          })
+        : null,
+    select: (data) => data?.data ?? null,
+    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
   });
 
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
@@ -139,6 +154,7 @@ function Mission() {
                   difficulty={mission.difficulty ?? ""}
                   imageUrl={mission.imageUrl}
                   status={mission.status}
+                  isLocked={!sessionData?.startedAt}
                 />
               </div>
             ))}

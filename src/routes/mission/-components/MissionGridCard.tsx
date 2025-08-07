@@ -26,7 +26,7 @@ export default function MissionGridCard({
     <Link
       to="/mission/$missionId"
       params={{ missionId }}
-      disabled={!missionId}
+      disabled={!missionId || isLocked}
       className="w-full aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
     >
       <div className="relative h-full p-5">
