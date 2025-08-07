@@ -25,7 +25,7 @@ export default function MissionNotTriedSuccess({
     <div className="flex-1 flex flex-col">
       <MissionDetailHeader type="close" />
 
-      <div className="flex-1 flex flex-col items-center pt-[14vh]">
+      <div className="flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
           <h1 className="t-p-22-sb text-neutral-100 leading-[1.4] tracking-[-0.024em] text-center">
             축하해요!
@@ -61,6 +61,12 @@ export default function MissionNotTriedSuccess({
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="flex items-center justify-center t-p-14-m bg-neutral-600 rounded-[24px] px-3 py-1 mt-4">
+          <span className="text-neutral-100">{selectedIndex + 1}</span>
+          <span className="text-neutral-400">/</span>
+          <span className="text-neutral-400">{missions?.length}</span>
         </div>
       </div>
     </div>
