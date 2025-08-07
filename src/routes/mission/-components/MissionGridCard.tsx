@@ -125,7 +125,7 @@ export default function MissionGridCard({
               <img
                 src={holdImageUrl}
                 alt="mission-image"
-                className="w-full h-full object-cover w-[180px] h-[180px]"
+                className="w-[180px] h-[180px] object-cover"
               />
             </div>
           )}
