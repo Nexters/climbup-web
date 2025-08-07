@@ -16,7 +16,7 @@ export default function MissionNotTriedReviewing({
 }: MissionNotTriedReviewingProps) {
   return (
     <div className="flex-1 flex flex-col">
-      <MissionDetailHeader type="my-page" />
+      <MissionDetailHeader type="mypage" />
 
       <div className="flex-1 flex flex-col items-center pt-[14vh]">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">

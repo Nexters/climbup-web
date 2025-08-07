@@ -4,7 +4,7 @@ import CloseIcon from "@/components/icons/CloseIcon";
 export default function MissionDetailHeader({
   type = "close",
 }: {
-  type?: "close" | "my-page";
+  type?: "close" | "mypage";
 }) {
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ export default function MissionDetailHeader({
           if (type === "close") {
             navigate({ to: "/mission" });
           }
-          if (type === "my-page") {
+          if (type === "mypage") {
             navigate({ to: "/mypage" });
           }
         }}
@@ -25,7 +25,7 @@ export default function MissionDetailHeader({
         {type === "close" && (
           <CloseIcon variant="white" width={24} height={24} />
         )}
-        {type === "my-page" && (
+        {type === "mypage" && (
           <div className="w-[42px] h-[42px] bg-neutral-100 rounded-full" />
         )}
       </button>
