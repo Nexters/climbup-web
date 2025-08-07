@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { createAttempt } from "@/generated/attempts/attempts";
 import { getHeaderToken } from "@/utils/cookie";
+import { useUploadAttemptVideo } from "../-hooks/useUploadAttemptVideo";
 import MissionNotTriedDefault from "./MissionNotTriedDefault";
 import MissionNotTriedFailed from "./MissionNotTriedFailed";
 import MissionNotTriedReviewing from "./MissionNotTriedReviewing";
 import MissionNotTriedSuccess from "./MissionNotTriedSuccess";
+import MissionVideoUploadOverlay from "./MissionVideoUploadOverlay";
 
 interface MissionNotTriedProps {
   sectorName: string;
@@ -30,8 +32,14 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
 
   const [state, setState] = useState<MissionState>("DEFAULT");
   const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
+  const [currentUploadInfo, setCurrentUploadInfo] = useState<{
+    isSuccess: boolean;
+    attemptId: number | null;
+  } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { uploadVideo, isUploading, progress } = useUploadAttemptVideo();
 
   const { mutateAsync: createAttemptMutate } = useMutation({
     mutationFn: (success: boolean) =>
@@ -65,26 +73,41 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
     setState("REVIEWING");
   };
 
-  const handleReviewSuccess = () => {
-    createAttemptMutate(true, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["recommendations"],
-        });
-      },
-    });
-    setState("SUCCESS");
+  const handleReviewSuccess = async () => {
+    await handleReview(true);
   };
 
-  const handleReviewFailed = () => {
-    createAttemptMutate(false, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["recommendations"],
+  const handleReviewFailed = async () => {
+    await handleReview(false);
+  };
+
+  const handleReview = async (isSuccess: boolean) => {
+    try {
+      const response = await createAttemptMutate(isSuccess);
+      const newAttemptId = response.data?.missionAttemptId;
+
+      if (newAttemptId && capturedMedia?.file) {
+        setCurrentUploadInfo({ isSuccess, attemptId: newAttemptId });
+
+        await uploadVideo(newAttemptId, capturedMedia.file, {
+          onSuccess: () => {
+            setTimeout(() => setState(isSuccess ? "SUCCESS" : "FAILED"), 500);
+            setCurrentUploadInfo(null);
+          },
+          onError: (error) => {
+            console.error("Upload failed:", error);
+            setTimeout(() => setState("FAILED"), 500);
+            setCurrentUploadInfo(null);
+          },
         });
-      },
-    });
-    setState("FAILED");
+      } else {
+        setState(isSuccess ? "SUCCESS" : "FAILED");
+      }
+    } catch (error) {
+      console.error("Review failed:", error);
+      setState(isSuccess ? "SUCCESS" : "FAILED");
+      setCurrentUploadInfo(null);
+    }
   };
 
   const handleRetry = () => {
@@ -108,6 +131,13 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
         className="hidden"
       />
 
+      {isUploading && (
+        <MissionVideoUploadOverlay
+          progress={progress}
+          isAttemptSuccess={currentUploadInfo?.isSuccess ?? false}
+        />
+      )}
+
       {(() => {
         switch (state) {
           case "DEFAULT":
@@ -122,7 +152,11 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
               />
             );
           case "SUCCESS":
-            return <MissionNotTriedSuccess attemptId={props.attemptId} />;
+            return (
+              <MissionNotTriedSuccess
+                attemptId={currentUploadInfo?.attemptId ?? null}
+              />
+            );
           case "FAILED":
             return (
               <MissionNotTriedFailed
