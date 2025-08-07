@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
 import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
@@ -13,6 +14,10 @@ export const Route = createFileRoute("/mission/$missionId/")({
 
 function MissionDetail() {
   const { missionId } = Route.useParams();
+
+  const [state, setState] = useState<"not_tried" | "success" | "failed">(
+    "not_tried"
+  );
 
   const { data: currentMission } = useQuery({
     queryKey: ["recommendations"],
@@ -33,6 +38,12 @@ function MissionDetail() {
     },
   });
 
+  useEffect(() => {
+    if (currentMission?.status) {
+      setState(currentMission.status);
+    }
+  }, [currentMission]);
+
   if (!currentMission) {
     return (
       <div className="fixed inset-0 flex flex-col bg-neutral-900">
@@ -44,11 +55,16 @@ function MissionDetail() {
   }
 
   const renderContent = () => {
-    switch (currentMission.status) {
+    switch (state) {
       case "success":
-        return <MissionSuccess />;
+        return <MissionSuccess missionData={currentMission} />;
       case "failed":
-        return <MissionFailed />;
+        return (
+          <MissionFailed
+            missionData={currentMission}
+            onRetry={() => setState("not_tried")}
+          />
+        );
       case "not_tried":
         return (
           <MissionNotTried

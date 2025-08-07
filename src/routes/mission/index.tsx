@@ -1,17 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
+import { countBy } from "es-toolkit/compat";
+import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
+import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
+import { getUserSession } from "@/generated/user-session/user-session";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
+import { getStorage } from "@/utils/storage";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
 import MissionTimer from "./-components/MissionTimer";
+import { useCarousel } from "./-hooks/useCarousel";
 
 export const Route = createFileRoute("/mission/")({
   component: Mission,
@@ -24,23 +28,52 @@ const getFilterLabels = (
     status: "not_tried" | "success" | "failed";
   })[]
 ) => {
-  const total = recommendations.length;
-  const notTried = recommendations.filter(
-    (recommendation) => recommendation.status === "not_tried"
-  ).length;
-  const failed = recommendations.filter(
-    (recommendation) => recommendation.status === "failed"
-  ).length;
-  const success = recommendations.filter(
-    (recommendation) => recommendation.status === "success"
-  ).length;
+  const counts = countBy(recommendations, ({ status }) => status);
+
+  const notTried = counts.not_tried || 0;
+  const failed = counts.failed || 0;
+  const success = counts.success || 0;
 
   return {
-    all: `전체 ${total}`,
+    all: `전체 ${recommendations.length}`,
     not_tried: `미도전 ${notTried}`,
     failed: `실패 ${failed}`,
     success: `성공 ${success}`,
   };
+};
+
+const createMissionCardProps = (
+  mission: RouteMissionRecommendationResponse & {
+    status: "not_tried" | "success" | "failed";
+  },
+  isLocked: boolean
+) => {
+  const baseProps = {
+    missionId: mission.missionId?.toString() ?? "",
+    sectorName: mission.sector?.name ?? "",
+    difficulty: mission.difficulty ?? "",
+    imageUrl: mission.imageUrl,
+    status: mission.status,
+    isLocked,
+    score: mission.score,
+  };
+
+  switch (mission.status) {
+    case "success":
+      return {
+        ...baseProps,
+        completedAt: mission.attempts?.[0]?.createdAt,
+        holdImageUrl: mission.imageUrl,
+      };
+    case "failed":
+      return {
+        ...baseProps,
+        removedAt: mission.removedAt,
+        holdImageUrl: mission.imageUrl,
+      };
+    default:
+      return baseProps;
+  }
 };
 
 function Mission() {
@@ -57,29 +90,22 @@ function Mission() {
     },
   });
 
-  const [viewMode, setViewMode] = useState<"card" | "list">("card");
-  const [filter, setFilter] = useState<FilterType>("all");
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "center",
-    containScroll: false,
-    loop: false,
+  const { data: sessionData } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () =>
+      getStorage(USER_SESSION_STORAGE_KEY)
+        ? getUserSession(Number(getStorage(USER_SESSION_STORAGE_KEY)), {
+            headers: getHeaderToken(),
+          })
+        : null,
+    select: (data) => data?.data ?? null,
+    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
   });
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<"card" | "list">("card");
+  const [filter, setFilter] = useState<FilterType>("all");
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+  const { emblaRef, selectedIndex } = useCarousel();
 
   const filteredRecommendations = recommendations.filter((mission) => {
     if (filter === "all") return true;
@@ -126,11 +152,11 @@ function Mission() {
 
       {viewMode === "card" ? (
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-1 px-[7.5vw]">
+          <div className="flex gap-1 px-[10vw]">
             {filteredRecommendations.map((mission, index) => (
               <div
                 key={mission.missionId}
-                className="flex-[0_0_85vw] flex items-center justify-center"
+                className="flex-[0_0_80vw] flex items-center justify-center"
                 style={{
                   transform:
                     index === selectedIndex ? "scale(1)" : "scale(0.9)",
@@ -138,11 +164,7 @@ function Mission() {
                 }}
               >
                 <MissionGridCard
-                  missionId={mission.missionId?.toString() ?? ""}
-                  sectorName={mission.sector?.name ?? ""}
-                  difficulty={mission.difficulty ?? ""}
-                  imageUrl={mission.imageUrl}
-                  status={mission.status}
+                  {...createMissionCardProps(mission, !sessionData?.startedAt)}
                 />
               </div>
             ))}
@@ -153,11 +175,7 @@ function Mission() {
           {filteredRecommendations.map((mission) => (
             <MissionListCard
               key={mission.missionId}
-              missionId={mission.missionId?.toString() ?? ""}
-              sectorName={mission.sector?.name ?? ""}
-              difficulty={mission.difficulty ?? ""}
-              imageUrl={mission.imageUrl}
-              status={mission.status}
+              {...createMissionCardProps(mission, !sessionData?.startedAt)}
             />
           ))}
         </div>

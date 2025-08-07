@@ -1,29 +1,31 @@
 import type { SVGProps } from "react";
 
 interface ThumbsUpIconProps extends SVGProps<SVGSVGElement> {
-  variant?: "dark" | "white";
+  variant?: "white" | "dark";
+  width?: number;
+  height?: number;
 }
 
 export default function ThumbsUpIcon({
   variant = "dark",
-  ...props
+  width = 16,
+  height = 16,
 }: ThumbsUpIconProps) {
-  const stroke = variant === "dark" ? "#121315" : "#FCFCFD";
+  const color = variant === "white" ? "#FFFFFF" : "#4D5761";
 
   return (
     <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width={width}
+      height={height}
+      viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Thumbs up icon"
+      aria-label="Thumbs Up Icon"
       role="img"
-      {...props}
     >
       <path
-        d="M7 22H4C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V13C2 12.4696 2.21071 11.9609 2.58579 11.5858C2.96086 11.2107 3.46957 11 4 11H7M14 9V5C14 4.20435 13.6839 3.44129 13.1213 2.87868C12.5587 2.31607 11.7956 2 11 2L7 11V22H18.28C18.7623 22.0055 19.2304 21.8364 19.5979 21.524C19.9654 21.2116 20.2077 20.7769 20.28 20.3L21.66 11.3C21.7035 11.0134 21.6842 10.7207 21.6033 10.4423C21.5225 10.1638 21.3821 9.90629 21.1919 9.68751C21.0016 9.46873 20.7661 9.29393 20.5016 9.17522C20.2371 9.0565 19.9499 8.99672 19.66 9H14Z"
-        stroke={stroke}
+        d="M8.5 1.5C8.5 1.22386 8.27614 1 8 1C7.72386 1 7.5 1.22386 7.5 1.5V6.5H4.5C4.22386 6.5 4 6.72386 4 7V13.5C4 13.7761 4.22386 14 4.5 14H11.5C11.7761 14 12 13.7761 12 13.5V7C12 6.72386 11.7761 6.5 11.5 6.5H10.5V4.5C10.5 3.67157 9.82843 3 9 3H8.5V1.5Z"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
