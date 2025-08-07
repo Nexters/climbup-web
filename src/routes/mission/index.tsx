@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import useEmblaCarousel from "embla-carousel-react";
+import { countBy } from "es-toolkit/compat";
 import { useCallback, useEffect, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
@@ -24,19 +25,14 @@ const getFilterLabels = (
     status: "not_tried" | "success" | "failed";
   })[]
 ) => {
-  const total = recommendations.length;
-  const notTried = recommendations.filter(
-    (recommendation) => recommendation.status === "not_tried"
-  ).length;
-  const failed = recommendations.filter(
-    (recommendation) => recommendation.status === "failed"
-  ).length;
-  const success = recommendations.filter(
-    (recommendation) => recommendation.status === "success"
-  ).length;
+  const counts = countBy(recommendations, ({ status }) => status);
+
+  const notTried = counts.not_tried || 0;
+  const failed = counts.failed || 0;
+  const success = counts.success || 0;
 
   return {
-    all: `전체 ${total}`,
+    all: `전체 ${recommendations.length}`,
     not_tried: `미도전 ${notTried}`,
     failed: `실패 ${failed}`,
     success: `성공 ${success}`,
