@@ -1,44 +1,127 @@
 import { useNavigate } from "@tanstack/react-router";
-import answerVideo from "@/assets/video/mock-mission-answer-video.mp4";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useEffect, useState } from "react";
+import Button from "@/components/Button";
+import CloseIcon from "@/components/icons/CloseIcon";
+import FrownIcon from "@/components/icons/FrownIcon";
+import type { RouteMissionRecommendationResponse } from "@/generated/model";
+import { cn } from "@/utils/cn";
 
-export default function MissionFailed() {
+type TabType = "my-video" | "answer";
+
+interface MissionFailedProps {
+  missionData: RouteMissionRecommendationResponse;
+  onRetry: () => void;
+}
+
+export default function MissionFailed({
+  missionData,
+  onRetry,
+}: MissionFailedProps) {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<TabType>("my-video");
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "center",
+    containScroll: false,
+    loop: false,
+  });
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   return (
-    <>
-      <div className="relative flex-1 flex flex-col items-center justify-center overflow-hidden">
-        <div className="text-center mb-4">
-          <p className="text-lg font-medium mb-2">완등 답안 영상</p>
-          <p className="text-sm text-gray-500">
-            영상을 참고하여 다시 도전해보세요
-          </p>
-        </div>
-        <video
-          controls
-          className="max-w-full max-h-[60vh] object-contain rounded-lg"
-          src={answerVideo}
+    <div className="flex flex-col h-full bg-neutral-900">
+      <div className="flex items-center justify-end px-4 py-3">
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/mission" })}
+          className="p-2"
         >
-          <track kind="captions" />
-        </video>
+          <CloseIcon variant="white" width={24} height={24} />
+        </button>
       </div>
-      <div className="p-4">
-        <div className="flex gap-2">
+
+      <div className="flex items-center justify-between px-4 py-2">
+        <div className="flex items-center gap-1">
+          <FrownIcon variant="white" width={24} height={24} />
+          <span className="t-p-22-sb text-neutral-100">미션 실패</span>
+        </div>
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate({ to: "/mission" })}
-            className="flex-1 py-4 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+            onClick={() => setActiveTab("my-video")}
+            className={cn(
+              "px-4 py-2 rounded-3xl t-p-14-m transition-colors",
+              activeTab === "my-video"
+                ? "bg-neutral-600 text-neutral-100"
+                : "bg-transparent text-neutral-100"
+            )}
           >
-            닫기
+            내 영상
           </button>
           <button
             type="button"
-            onClick={() => navigate({ to: "/mission" })}
-            className="flex-1 py-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
+            onClick={() => setActiveTab("answer")}
+            className={cn(
+              "px-4 py-2 rounded-3xl t-p-14-m transition-colors",
+              activeTab === "answer"
+                ? "bg-neutral-600 text-neutral-100"
+                : "bg-transparent text-neutral-100"
+            )}
           >
-            재도전
+            답지
           </button>
         </div>
       </div>
-    </>
+
+      <div className="flex items-center gap-4 px-4 py-6 overflow-x-auto">
+        {activeTab === "my-video" ? (
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-1 px-[10vw]">
+              {missionData?.attempts?.map((attempt, index) => (
+                <div
+                  key={attempt.missionAttemptId}
+                  className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden"
+                  style={{
+                    transform:
+                      index === selectedIndex ? "scale(1)" : "scale(0.9)",
+                    transition: "transform 0.3s ease",
+                  }}
+                >
+                  <video src={attempt.videoUrl} controls playsInline>
+                    <track kind="captions" />
+                  </video>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="w-full flex justify-center items-center">
+            <div className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
+              <video src={missionData?.videoUrl} controls playsInline>
+                <track kind="captions" />
+              </video>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="flex justify-center px-4 py-6">
+        <Button onClick={onRetry}>다시 도전</Button>
+      </div>
+    </div>
   );
 }

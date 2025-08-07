@@ -51,6 +51,12 @@ export const handlers = [
               videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
               createdAt: "2024-03-15T10:30:00Z",
             },
+            {
+              missionAttemptId: 2,
+              success: false,
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              createdAt: "2024-03-15T10:30:00Z",
+            },
           ],
           sector: {
             id: 2,
