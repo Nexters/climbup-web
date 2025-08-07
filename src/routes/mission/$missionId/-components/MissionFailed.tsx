@@ -1,11 +1,10 @@
-import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import Button from "@/components/Button";
-import CloseIcon from "@/components/icons/CloseIcon";
 import FrownIcon from "@/components/icons/FrownIcon";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { cn } from "@/utils/cn";
 import { useCarousel } from "../../-hooks/useCarousel";
+import MissionDetailHeader from "./MissionDetailHeader";
 
 type TabType = "my-video" | "answer";
 
@@ -18,22 +17,13 @@ export default function MissionFailed({
   missionData,
   onRetry,
 }: MissionFailedProps) {
-  const navigate = useNavigate();
   const { emblaRef, selectedIndex } = useCarousel();
 
   const [activeTab, setActiveTab] = useState<TabType>("my-video");
 
   return (
     <div className="flex flex-col h-full bg-neutral-900">
-      <div className="flex items-center justify-end px-4 py-3">
-        <button
-          type="button"
-          onClick={() => navigate({ to: "/mission" })}
-          className="p-2"
-        >
-          <CloseIcon variant="white" width={24} height={24} />
-        </button>
-      </div>
+      <MissionDetailHeader type="close" />
 
       <div className="flex items-center justify-between px-4 py-2">
         <div className="flex items-center gap-1">

@@ -1,6 +1,5 @@
-import { useNavigate } from "@tanstack/react-router";
-import CloseIcon from "@/components/icons/CloseIcon";
 import MissionGridCard from "../../-components/MissionGridCard";
+import MissionDetailHeader from "./MissionDetailHeader";
 
 interface MissionNotTriedDefaultProps {
   sectorName: string;
@@ -18,19 +17,9 @@ export default function MissionNotTriedDefault({
   missionImage,
   onStart,
 }: MissionNotTriedDefaultProps) {
-  const navigate = useNavigate();
-
   return (
     <div className="flex flex-col bg-neutral-900">
-      <div className="flex justify-end items-center px-4 py-4">
-        <button
-          type="button"
-          onClick={() => navigate({ to: "/mission" })}
-          className="w-6 h-6 text-neutral-400"
-        >
-          <CloseIcon variant="white" />
-        </button>
-      </div>
+      <MissionDetailHeader type="close" />
 
       <div className="flex-1 flex flex-col items-center gap-4 px-4">
         <div className="flex flex-col items-center gap-2">

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import CloseIcon from "@/components/icons/CloseIcon";
 import { getRouteMissionRecommendationByAttempt } from "@/generated/attempts/attempts";
 import MissionGridCard from "../../-components/MissionGridCard";
 import { useCarousel } from "../../-hooks/useCarousel";
+import MissionDetailHeader from "./MissionDetailHeader";
 
 interface MissionNotTriedSuccessProps {
   attemptId: number | null;
@@ -23,11 +23,7 @@ export default function MissionNotTriedSuccess({
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="absolute top-4 right-4">
-        <button type="button" onClick={() => window.history.back()}>
-          <CloseIcon variant="white" />
-        </button>
-      </div>
+      <MissionDetailHeader type="close" />
 
       <div className="flex-1 flex flex-col items-center pt-[14vh]">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">

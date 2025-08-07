@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import Button from "@/components/Button";
+import MissionDetailHeader from "./MissionDetailHeader";
 
 interface MissionNotTriedFailedProps {
   videoUrl: string;
@@ -14,11 +15,7 @@ export default function MissionNotTriedFailed({
 
   return (
     <div className="flex-1 flex flex-col bg-neutral-500">
-      <div className="absolute top-4 right-4">
-        <button type="button" onClick={() => window.history.back()}>
-          <div className="w-11 h-11 bg-neutral-100 rounded-full" />
-        </button>
-      </div>
+      <MissionDetailHeader type="my-page" />
 
       <div className="flex-1 flex flex-col items-center pt-[14vh]">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
