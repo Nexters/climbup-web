@@ -42,6 +42,40 @@ const getFilterLabels = (
   };
 };
 
+const createMissionCardProps = (
+  mission: RouteMissionRecommendationResponse & {
+    status: "not_tried" | "success" | "failed";
+  },
+  isLocked: boolean
+) => {
+  const baseProps = {
+    missionId: mission.missionId?.toString() ?? "",
+    sectorName: mission.sector?.name ?? "",
+    difficulty: mission.difficulty ?? "",
+    imageUrl: mission.imageUrl,
+    status: mission.status,
+    isLocked,
+    score: mission.score,
+  };
+
+  switch (mission.status) {
+    case "success":
+      return {
+        ...baseProps,
+        completedAt: mission.attempts?.[0]?.createdAt,
+        holdImageUrl: mission.imageUrl,
+      };
+    case "failed":
+      return {
+        ...baseProps,
+        removedAt: mission.removedAt,
+        holdImageUrl: mission.imageUrl,
+      };
+    default:
+      return baseProps;
+  }
+};
+
 function Mission() {
   const { data: recommendations = [] } = useQuery({
     queryKey: ["recommendations"],
@@ -137,11 +171,11 @@ function Mission() {
 
       {viewMode === "card" ? (
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-1 px-[7.5vw]">
+          <div className="flex gap-1 px-[10vw]">
             {filteredRecommendations.map((mission, index) => (
               <div
                 key={mission.missionId}
-                className="flex-[0_0_85vw] flex items-center justify-center"
+                className="flex-[0_0_80vw] flex items-center justify-center"
                 style={{
                   transform:
                     index === selectedIndex ? "scale(1)" : "scale(0.9)",
@@ -149,12 +183,7 @@ function Mission() {
                 }}
               >
                 <MissionGridCard
-                  missionId={mission.missionId?.toString() ?? ""}
-                  sectorName={mission.sector?.name ?? ""}
-                  difficulty={mission.difficulty ?? ""}
-                  imageUrl={mission.imageUrl}
-                  status={mission.status}
-                  isLocked={!sessionData?.startedAt}
+                  {...createMissionCardProps(mission, !sessionData?.startedAt)}
                 />
               </div>
             ))}
@@ -165,11 +194,7 @@ function Mission() {
           {filteredRecommendations.map((mission) => (
             <MissionListCard
               key={mission.missionId}
-              missionId={mission.missionId?.toString() ?? ""}
-              sectorName={mission.sector?.name ?? ""}
-              difficulty={mission.difficulty ?? ""}
-              imageUrl={mission.imageUrl}
-              status={mission.status}
+              {...createMissionCardProps(mission, !sessionData?.startedAt)}
             />
           ))}
         </div>
