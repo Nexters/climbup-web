@@ -1,11 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@/components/Button";
 import CloseIcon from "@/components/icons/CloseIcon";
 import FrownIcon from "@/components/icons/FrownIcon";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { cn } from "@/utils/cn";
+import { useCarousel } from "../../-hooks/useCarousel";
 
 type TabType = "my-video" | "answer";
 
@@ -19,29 +19,9 @@ export default function MissionFailed({
   onRetry,
 }: MissionFailedProps) {
   const navigate = useNavigate();
+  const { emblaRef, selectedIndex } = useCarousel();
+
   const [activeTab, setActiveTab] = useState<TabType>("my-video");
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "center",
-    containScroll: false,
-    loop: false,
-  });
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
 
   return (
     <div className="flex flex-col h-full bg-neutral-900">

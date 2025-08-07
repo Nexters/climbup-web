@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import useEmblaCarousel from "embla-carousel-react";
 import { countBy } from "es-toolkit/compat";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
@@ -16,6 +15,7 @@ import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
 import MissionTimer from "./-components/MissionTimer";
+import { useCarousel } from "./-hooks/useCarousel";
 
 export const Route = createFileRoute("/mission/")({
   component: Mission,
@@ -104,27 +104,8 @@ function Mission() {
 
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "center",
-    containScroll: false,
-    loop: false,
-  });
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+  const { emblaRef, selectedIndex } = useCarousel();
 
   const filteredRecommendations = recommendations.filter((mission) => {
     if (filter === "all") return true;

@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
 import CloseIcon from "@/components/icons/CloseIcon";
 import { getRouteMissionRecommendationByAttempt } from "@/generated/attempts/attempts";
 import MissionGridCard from "../../-components/MissionGridCard";
+import { useCarousel } from "../../-hooks/useCarousel";
 
 interface MissionNotTriedSuccessProps {
   attemptId: number | null;
@@ -14,28 +13,7 @@ export default function MissionNotTriedSuccess({
   attemptId,
 }: MissionNotTriedSuccessProps) {
   const navigate = useNavigate();
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "center",
-    containScroll: false,
-    loop: false,
-  });
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+  const { emblaRef, selectedIndex } = useCarousel();
 
   const { data: missions } = useQuery({
     queryKey: ["mission-not-tried-success", attemptId],
