@@ -20,10 +20,11 @@ export const Route = createFileRoute("/oauth2/redirect/")({
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ deps: { search } }) => {
     setToken(search.accessToken);
-    const userInfo = await getCurrentUserStatus({
+    const { data } = await getCurrentUserStatus({
       headers: getHeaderToken(),
     });
-    return userInfo;
+
+    return data;
   },
 });
 
@@ -40,9 +41,10 @@ function Oauth2RedirectComponent() {
         { gym: P.nonNullable, gymLevel: P.nullish },
         () => "/onboarding/level"
       ) // 레벨 미선택
-      .with({ gym: P.nonNullable, gymLevel: P.nonNullable }, () => "/") // 암장, 레벨 선택
-      .otherwise(() => "/login");
-    navigate({ to: url });
+      .with({ gym: P.nonNullable, gymLevel: P.nonNullable }, () => "/mission") // 암장, 레벨 선택
+      .otherwise(() => "/");
+
+    navigate({ to: url, replace: true });
   }, [navigate, data]);
 
   return null;
