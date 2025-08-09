@@ -1,10 +1,14 @@
-import type { ButtonHTMLAttributes } from "react";
+import { motion } from "motion/react";
+import type { MouseEventHandler } from "react";
 
-interface VideoCardProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface VideoCardProps {
   imageUrl: string;
   sectorName: string;
   score: number;
   completedAt: string;
+  layoutId?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 export const VideoCard = ({
@@ -12,13 +16,18 @@ export const VideoCard = ({
   sectorName,
   score,
   completedAt,
-  ...props
+  layoutId,
+  onClick,
+  disabled,
 }: VideoCardProps) => {
   return (
-    <button
+    <motion.button
       type="button"
       className="w-full min-h-[224px] rounded-[24px] overflow-hidden bg-neutral-100 relative aspect-[168 / 224]"
-      {...props}
+      layout
+      layoutId={layoutId}
+      onClick={onClick}
+      disabled={disabled}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-[#313131] to-[#00000000] z-10" />
       <img
@@ -44,6 +53,6 @@ export const VideoCard = ({
           <span className="t-p-10-sb text-neutral-300">{completedAt}</span>
         </div>
       </div>
-    </button>
+    </motion.button>
   );
 };
