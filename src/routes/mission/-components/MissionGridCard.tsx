@@ -147,7 +147,13 @@ export default function MissionGridCard({
             <div className="flex justify-end">
               {isLocked && (
                 <Button asChild>
-                  <Link to="/mission/$missionId" params={{ missionId }}>
+                  <Link
+                    to="/mission/$missionId"
+                    params={{ missionId }}
+                    disabled={
+                      !missionId || (isLocked && status === "not_tried")
+                    }
+                  >
                     <LockIcon variant="white" />
                   </Link>
                 </Button>

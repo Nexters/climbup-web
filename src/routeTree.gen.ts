@@ -9,8 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as GymRouteImport } from './routes/gym'
-import { Route as DifficultyRouteImport } from './routes/difficulty'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,16 +21,6 @@ import { Route as OnboardingGymIndexRouteImport } from './routes/onboarding/gym/
 import { Route as Oauth2RedirectIndexRouteImport } from './routes/oauth2/redirect/index'
 import { Route as MissionMissionIdIndexRouteImport } from './routes/mission/$missionId/index'
 
-const GymRoute = GymRouteImport.update({
-  id: '/gym',
-  path: '/gym',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DifficultyRoute = DifficultyRouteImport.update({
-  id: '/difficulty',
-  path: '/difficulty',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -91,8 +79,6 @@ const MissionMissionIdIndexRoute = MissionMissionIdIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
-  '/difficulty': typeof DifficultyRoute
-  '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission-result': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
@@ -104,8 +90,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/difficulty': typeof DifficultyRoute
-  '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission-result': typeof MissionResultIndexRoute
   '/mission': typeof MissionIndexRoute
@@ -120,8 +104,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRoute
-  '/difficulty': typeof DifficultyRoute
-  '/gym': typeof GymRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/mission-result/': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
@@ -136,8 +118,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/mission'
-    | '/difficulty'
-    | '/gym'
     | '/users/$userId'
     | '/mission-result'
     | '/mission/'
@@ -149,8 +129,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/difficulty'
-    | '/gym'
     | '/users/$userId'
     | '/mission-result'
     | '/mission'
@@ -164,8 +142,6 @@ export interface FileRouteTypes {
     | '/'
     | '/mission'
     | '/_authenticated'
-    | '/difficulty'
-    | '/gym'
     | '/users/$userId'
     | '/mission-result/'
     | '/mission/'
@@ -180,8 +156,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MissionRouteRoute: typeof MissionRouteRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRoute
-  DifficultyRoute: typeof DifficultyRoute
-  GymRoute: typeof GymRoute
   UsersUserIdRoute: typeof UsersUserIdRoute
   MissionResultIndexRoute: typeof MissionResultIndexRoute
   MyIndexRoute: typeof MyIndexRoute
@@ -192,20 +166,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/gym': {
-      id: '/gym'
-      path: '/gym'
-      fullPath: '/gym'
-      preLoaderRoute: typeof GymRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/difficulty': {
-      id: '/difficulty'
-      path: '/difficulty'
-      fullPath: '/difficulty'
-      preLoaderRoute: typeof DifficultyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -304,8 +264,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MissionRouteRoute: MissionRouteRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRoute,
-  DifficultyRoute: DifficultyRoute,
-  GymRoute: GymRoute,
   UsersUserIdRoute: UsersUserIdRoute,
   MissionResultIndexRoute: MissionResultIndexRoute,
   MyIndexRoute: MyIndexRoute,
