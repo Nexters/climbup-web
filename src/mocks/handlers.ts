@@ -11,6 +11,7 @@ import type {
   ApiResultRouteMissionUploadStatusResponse,
   ApiResultUserSessionState,
   ApiResultUserStatusResponse,
+  ApiResultVoid,
 } from "@/generated/model";
 
 /**
@@ -203,38 +204,35 @@ export const handlers = [
   http.post(
     "https://dev-api.holdy.kr/api/onboarding/gym",
     async ({ request }) => {
-      const body = (await request.json()) as { gymId: number };
-      return HttpResponse.json<ApiResultUserStatusResponse>({
+      // 요청 바디를 파싱하여 기본적인 유효성만 확인합니다.
+      const body = (await request.json()) as { gymId?: number };
+      if (typeof body.gymId !== "number" || body.gymId <= 0) {
+        return HttpResponse.json<ApiResultVoid>(
+          { message: "잘못된 요청입니다.", data: undefined },
+          { status: 400 }
+        );
+      }
+      return HttpResponse.json<ApiResultVoid>({
         message: "암장이 성공적으로 설정되었습니다.",
-        data: {
-          id: 1,
-          name: "홍길동",
-          nickname: "클라이머",
-          imageUrl: "https://example.com/profile.jpg",
-          sr: 1500,
-          onboardingCompleted: true,
-          gymLevel: {
-            id: 3,
-            brandName: "더클라임",
-            gymLevelName: "BLUE",
-            levelName: "도전의 재미가 시작되는 단계",
-            srMin: 1000,
-            srMax: 1999,
-            sortOrder: 3,
-          },
-          gym: {
-            id: body.gymId,
-            brandId: 1,
-            brandName: "더클라임",
-            branchName: body.gymId === 1 ? "강남점" : "논현점",
-            fullName: body.gymId === 1 ? "더클라임 강남점" : "더클라임 논현점",
-            address:
-              body.gymId === 1
-                ? "서울특별시 강남구 강남대로 123"
-                : "서울특별시 강남구 논현로 123",
-            imageUrl: "https://example.com/gym.jpg",
-          },
-        },
+        data: undefined,
+      });
+    }
+  ),
+
+  http.post(
+    "https://dev-api.holdy.kr/api/onboarding/gym-level",
+    async ({ request }) => {
+      // 요청 바디를 파싱하여 기본적인 유효성만 확인합니다.
+      const body = (await request.json()) as { gymLevelId?: number };
+      if (typeof body.gymLevelId !== "number" || body.gymLevelId <= 0) {
+        return HttpResponse.json<ApiResultVoid>(
+          { message: "잘못된 요청입니다.", data: undefined },
+          { status: 400 }
+        );
+      }
+      return HttpResponse.json<ApiResultVoid>({
+        message: "레벨이 성공적으로 설정되었습니다.",
+        data: undefined,
       });
     }
   ),
@@ -247,25 +245,7 @@ export const handlers = [
         nickname: "클라이머",
         imageUrl: "https://example.com/profile.jpg",
         sr: 1500,
-        onboardingCompleted: true,
-        gymLevel: {
-          id: 3,
-          brandName: "더클라임",
-          gymLevelName: "BLUE",
-          levelName: "도전의 재미가 시작되는 단계",
-          srMin: 1000,
-          srMax: 1999,
-          sortOrder: 3,
-        },
-        gym: {
-          id: 1,
-          brandId: 1,
-          brandName: "더클라임",
-          branchName: "강남점",
-          fullName: "더클라임 강남점",
-          address: "서울특별시 강남구 강남대로 123",
-          imageUrl: "https://example.com/gym.jpg",
-        },
+        onboardingCompleted: false,
       },
     });
   }),

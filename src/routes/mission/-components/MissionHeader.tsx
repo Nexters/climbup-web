@@ -95,7 +95,7 @@ export default function MissionHeader() {
             </Select.Root>
           </div>
           <Link
-            to={`/users/${userStatus?.id ?? ""}`}
+            to="/my"
             className="w-11 h-11 rounded-full bg-neutral-900 hover:opacity-90 transition-opacity"
           ></Link>
         </div>

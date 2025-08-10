@@ -15,7 +15,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as MyIndexRouteImport } from './routes/my/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as MissionResultIndexRouteImport } from './routes/mission-result/index'
-import { Route as UsersUserIdRouteImport } from './routes/users/$userId'
 import { Route as OnboardingLevelIndexRouteImport } from './routes/onboarding/level/index'
 import { Route as OnboardingGymIndexRouteImport } from './routes/onboarding/gym/index'
 import { Route as Oauth2RedirectIndexRouteImport } from './routes/oauth2/redirect/index'
@@ -50,11 +49,6 @@ const MissionResultIndexRoute = MissionResultIndexRouteImport.update({
   path: '/mission-result/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsersUserIdRoute = UsersUserIdRouteImport.update({
-  id: '/users/$userId',
-  path: '/users/$userId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OnboardingLevelIndexRoute = OnboardingLevelIndexRouteImport.update({
   id: '/onboarding/level/',
   path: '/onboarding/level/',
@@ -79,7 +73,6 @@ const MissionMissionIdIndexRoute = MissionMissionIdIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
-  '/users/$userId': typeof UsersUserIdRoute
   '/mission-result': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
   '/my': typeof MyIndexRoute
@@ -90,7 +83,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/users/$userId': typeof UsersUserIdRoute
   '/mission-result': typeof MissionResultIndexRoute
   '/mission': typeof MissionIndexRoute
   '/my': typeof MyIndexRoute
@@ -104,7 +96,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRoute
-  '/users/$userId': typeof UsersUserIdRoute
   '/mission-result/': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
   '/my/': typeof MyIndexRoute
@@ -118,7 +109,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/mission'
-    | '/users/$userId'
     | '/mission-result'
     | '/mission/'
     | '/my'
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/users/$userId'
     | '/mission-result'
     | '/mission'
     | '/my'
@@ -142,7 +131,6 @@ export interface FileRouteTypes {
     | '/'
     | '/mission'
     | '/_authenticated'
-    | '/users/$userId'
     | '/mission-result/'
     | '/mission/'
     | '/my/'
@@ -156,7 +144,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MissionRouteRoute: typeof MissionRouteRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRoute
-  UsersUserIdRoute: typeof UsersUserIdRoute
   MissionResultIndexRoute: typeof MissionResultIndexRoute
   MyIndexRoute: typeof MyIndexRoute
   Oauth2RedirectIndexRoute: typeof Oauth2RedirectIndexRoute
@@ -208,13 +195,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MissionResultIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users/$userId': {
-      id: '/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof UsersUserIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/onboarding/level/': {
       id: '/onboarding/level/'
       path: '/onboarding/level'
@@ -264,7 +244,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MissionRouteRoute: MissionRouteRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRoute,
-  UsersUserIdRoute: UsersUserIdRoute,
   MissionResultIndexRoute: MissionResultIndexRoute,
   MyIndexRoute: MyIndexRoute,
   Oauth2RedirectIndexRoute: Oauth2RedirectIndexRoute,
