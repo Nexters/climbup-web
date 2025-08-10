@@ -12,7 +12,11 @@ import { getStorage, removeStorage, setStorage } from "@/utils/storage";
 import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
-export default function MissionTimer() {
+export default function MissionTimer({
+  showMockStopButton,
+}: {
+  showMockStopButton: boolean;
+}) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -20,6 +24,7 @@ export default function MissionTimer() {
   const [time, setTime] = useState(0);
 
   const storageSessionId = getStorage(USER_SESSION_STORAGE_KEY);
+  const showStopButton = isRunning || showMockStopButton;
 
   const { data: sessionData } = useQuery({
     queryKey: ["userSession"],
@@ -112,10 +117,11 @@ export default function MissionTimer() {
         <button
           type="button"
           onClick={handleToggle}
+          id={showStopButton ? "timer-stop-button" : "timer-play-button"}
           className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center"
-          aria-label={isRunning ? "정지하기" : "시작하기"}
+          aria-label={showStopButton ? "정지하기" : "시작하기"}
         >
-          {isRunning ? (
+          {showStopButton ? (
             <StopIcon variant="dark" width={16} height={16} />
           ) : (
             <PlayIcon variant="dark" width={16} height={16} />
