@@ -116,7 +116,7 @@ function RouteComponent() {
       </button>
       <div className="flex items-center justify-center w-full mt-auto px-10 py-4">
         <Button asChild className="w-full">
-          <Link to="/my-page">완등 영상 보기</Link>
+          <Link to="/my">완등 영상 보기</Link>
         </Button>
       </div>
     </div>
