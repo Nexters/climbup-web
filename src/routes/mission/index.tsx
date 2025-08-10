@@ -1,16 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { countBy } from "es-toolkit/compat";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
-import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
+import {
+  MISSION_GUIDE_COMPLETED_KEY,
+  USER_SESSION_STORAGE_KEY,
+} from "@/constants/mission";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
 import { getUserSession } from "@/generated/user-session/user-session";
+import {
+  type DriverGuideStepsFactory,
+  useDriverGuide,
+} from "@/hooks/useDriverGuide";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
-import { getStorage } from "@/utils/storage";
+import { getStorage, setStorage } from "@/utils/storage";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
@@ -104,8 +111,17 @@ function Mission() {
 
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
+  const [showGuide, setShowGuide] = useState(
+    () => !getStorage(MISSION_GUIDE_COMPLETED_KEY)
+  );
+  const [showMockStopButton, setShowMockStopButton] = useState(false);
 
   const { emblaRef, selectedIndex } = useCarousel();
+
+  const handleGuideComplete = useCallback(() => {
+    setShowGuide(false);
+    setShowMockStopButton(false);
+  }, []);
 
   const filteredRecommendations = recommendations.filter((mission) => {
     if (filter === "all") return true;
@@ -116,16 +132,63 @@ function Mission() {
     setViewMode((prev) => (prev === "card" ? "list" : "card"));
   };
 
+  const steps: DriverGuideStepsFactory = ({ stop, driverRef }) => [
+    {
+      element: "#timer-play-button",
+      popover: {
+        align: "center",
+        side: "top",
+        title: "세션 시작",
+        description: "재생 버튼을 누르면 오늘의 세션을 시작해요.",
+        onNextClick: () => {
+          setShowMockStopButton(true);
+          driverRef.current?.moveNext();
+        },
+      },
+    },
+    {
+      element: "#mission-carousel",
+      popover: {
+        align: "center",
+        side: "bottom",
+        title: "루트 미션",
+        description: "내 레벨에 맞는 미션에 도전하고 해설 영상을 확인해보세요.",
+      },
+    },
+    {
+      element: "#timer-stop-button",
+      popover: {
+        align: "center",
+        side: "top",
+        title: "세션 종료",
+        description:
+          "멈춤 버튼을 길게 누르면 오늘의 세션이 종료돼요. 종료 후 기록을 확인할 수 있어요.",
+        onNextClick: () => {
+          stop();
+        },
+      },
+    },
+  ];
+
+  useDriverGuide({
+    enabled: showGuide,
+    onStart: () => {
+      setStorage(MISSION_GUIDE_COMPLETED_KEY, "true");
+    },
+    onComplete: handleGuideComplete,
+    steps,
+  });
+
   return (
-    <div className="flex flex-col gap-4 pb-20">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center px-4">
-        <div className="flex gap-2">
+        <div id="mission-filters" className="flex gap-2">
           {(["all", "not_tried", "failed", "success"] as const).map((type) => (
             <button
               key={type}
               type="button"
               className={cn(
-                "h-9 px-4 rounded-3xl t-p-14-recommendation transition-colors",
+                "h-9 px-4 rounded-3xl whitespace-nowrap t-p-12-m sm:t-p-14-m transition-colors",
                 filter === type
                   ? "bg-neutral-600 text-neutral-100"
                   : "text-neutral-100"
@@ -137,6 +200,7 @@ function Mission() {
           ))}
         </div>
         <button
+          id="mission-view-toggle"
           type="button"
           className="w-6 h-6 text-neutral-100"
           onClick={toggleViewMode}
@@ -151,7 +215,7 @@ function Mission() {
       </div>
 
       {viewMode === "card" ? (
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-1 px-[10vw]">
             {filteredRecommendations.map((mission, index) => (
               <div
@@ -171,7 +235,7 @@ function Mission() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-2 px-4">
+        <div id="mission-list" className="flex flex-col gap-2 px-4">
           {filteredRecommendations.map((mission) => (
             <MissionListCard
               key={mission.missionId}
@@ -181,7 +245,7 @@ function Mission() {
         </div>
       )}
 
-      <MissionTimer />
+      <MissionTimer showMockStopButton={showMockStopButton} />
     </div>
   );
 }

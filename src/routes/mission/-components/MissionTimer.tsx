@@ -1,25 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Timer } from "@/components/timer/Timer";
 import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
 import {
   endUserSession,
   getUserSession,
   startUserSession,
 } from "@/generated/user-session/user-session";
+import useToast from "@/hooks/useToast";
 import { getHeaderToken } from "@/utils/cookie";
 import { getStorage, removeStorage, setStorage } from "@/utils/storage";
 import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
-export default function MissionTimer() {
+const HOLD_MS = 1200;
+
+export default function MissionTimer({
+  showMockStopButton,
+}: {
+  showMockStopButton: boolean;
+}) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
 
+  const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const storageSessionId = getStorage(USER_SESSION_STORAGE_KEY);
+  const showStopButton = isRunning || showMockStopButton;
 
   const { data: sessionData } = useQuery({
     queryKey: ["userSession"],
@@ -80,22 +92,9 @@ export default function MissionTimer() {
     };
   }, [sessionData]);
 
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(
-      2,
-      "0"
-    )} : ${String(remainingSeconds).padStart(2, "0")}`;
-  };
-
   const handleToggle = async () => {
     try {
-      if (isRunning) {
-        await endSession(Number(storageSessionId));
-      } else {
+      if (!showStopButton) {
         await startSession();
       }
     } catch (error) {
@@ -103,25 +102,70 @@ export default function MissionTimer() {
     }
   };
 
+  const [isHolding, setIsHolding] = useState(false);
+
+  const startHoldToStop = () => {
+    if (!showStopButton) return;
+    if (!isRunning) return;
+    if (holdTimeoutRef.current) return;
+
+    setIsHolding(true);
+
+    holdTimeoutRef.current = setTimeout(async () => {
+      try {
+        await endSession(Number(storageSessionId));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (holdTimeoutRef.current) {
+          clearTimeout(holdTimeoutRef.current);
+          holdTimeoutRef.current = null;
+        }
+        setIsHolding(false);
+      }
+    }, HOLD_MS);
+  };
+
+  const cancelHoldToStop = () => {
+    const hadPendingHold = !!holdTimeoutRef.current;
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
+    }
+    if (hadPendingHold && showStopButton && isRunning) {
+      showToast("정지 버튼을 길게 누르면\n오늘의 세션을 종료할 수 있어요.");
+    }
+    setIsHolding(false);
+  };
+
   return (
-    <div className="fixed bottom-0 left-0 right-0">
-      <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto px-[27px] py-4">
-        <div className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]">
-          {formatTime(time)}
-        </div>
-        <button
-          type="button"
-          onClick={handleToggle}
-          className="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center"
-          aria-label={isRunning ? "정지하기" : "시작하기"}
-        >
-          {isRunning ? (
-            <StopIcon variant="dark" width={16} height={16} />
-          ) : (
-            <PlayIcon variant="dark" width={16} height={16} />
-          )}
-        </button>
-      </div>
+    <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto">
+      <Timer
+        seconds={time}
+        className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
+      />
+      <button
+        type="button"
+        onClick={handleToggle}
+        onMouseDown={startHoldToStop}
+        onMouseUp={cancelHoldToStop}
+        onMouseLeave={cancelHoldToStop}
+        onTouchStart={startHoldToStop}
+        onTouchEnd={cancelHoldToStop}
+        id={showStopButton ? "timer-stop-button" : "timer-play-button"}
+        className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
+          isHolding && showStopButton
+            ? "scale-95 bg-neutral-200"
+            : "bg-neutral-100"
+        }`}
+        aria-label={showStopButton ? "정지하기" : "시작하기"}
+      >
+        {showStopButton ? (
+          <StopIcon variant="dark" width={16} height={16} />
+        ) : (
+          <PlayIcon variant="dark" width={16} height={16} />
+        )}
+      </button>
     </div>
   );
 }
