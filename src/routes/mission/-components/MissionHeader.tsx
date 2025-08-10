@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { isNil } from "es-toolkit/compat";
+import { motion } from "motion/react";
 import { Select } from "radix-ui";
 import { getAllGyms } from "@/generated/climbing-gym/climbing-gym";
 import { setGym } from "@/generated/onboarding/onboarding";
@@ -58,38 +59,46 @@ export default function MissionHeader() {
               </Select.Trigger>
               <Select.Portal>
                 <Select.Content
+                  asChild
                   position="popper"
                   sideOffset={8}
-                  className="overflow-hidden bg-neutral-100 rounded-3xl shadow-lg z-50 min-w-[177px]"
+                  className=""
                 >
-                  <Select.Viewport className="p-6">
-                    <Select.Group className="space-y-2">
-                      {!isNil(gyms) &&
-                        gyms.map((gym) => (
-                          <Select.Item
-                            key={gym.id}
-                            value={gym.id?.toString() || ""}
-                            className={cn(
-                              "relative flex items-center gap-4 py-1.5 t-p-16-m cursor-pointer select-none outline-none transition-colors",
-                              selectedGymId === gym.id?.toString()
-                                ? "text-neutral-900"
-                                : "text-neutral-600"
-                            )}
-                          >
-                            <Select.ItemText>{gym.fullName}</Select.ItemText>
-                            {selectedGymId === gym.id?.toString() && (
-                              <Select.ItemIndicator>
-                                <CheckIcon
-                                  variant="dark"
-                                  width={24}
-                                  height={24}
-                                />
-                              </Select.ItemIndicator>
-                            )}
-                          </Select.Item>
-                        ))}
-                    </Select.Group>
-                  </Select.Viewport>
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.18, ease: "easeInOut" }}
+                    className="bg-neutral-100 rounded-3xl z-[100] min-w-[177px] shadow-[0_16px_40px_rgba(0,0,0,0.32),0_2px_8px_rgba(0,0,0,0.18)]"
+                  >
+                    <Select.Viewport className="p-6">
+                      <Select.Group className="space-y-2">
+                        {!isNil(gyms) &&
+                          gyms.map((gym) => (
+                            <Select.Item
+                              key={gym.id}
+                              value={gym.id?.toString() || ""}
+                              className={cn(
+                                "relative flex items-center gap-4 py-1.5 t-p-16-m cursor-pointer select-none outline-none transition-colors",
+                                selectedGymId === gym.id?.toString()
+                                  ? "text-neutral-900"
+                                  : "text-neutral-600"
+                              )}
+                            >
+                              <Select.ItemText>{gym.fullName}</Select.ItemText>
+                              {selectedGymId === gym.id?.toString() && (
+                                <Select.ItemIndicator>
+                                  <CheckIcon
+                                    variant="dark"
+                                    width={24}
+                                    height={24}
+                                  />
+                                </Select.ItemIndicator>
+                              )}
+                            </Select.Item>
+                          ))}
+                      </Select.Group>
+                    </Select.Viewport>
+                  </motion.div>
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
