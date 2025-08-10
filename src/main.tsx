@@ -18,13 +18,10 @@ const startApp = () => {
 };
 
 // MSW가 활성화된 경우에만 worker 시작
-if (__MSW_ENABLED__) {
-  worker.start().then(() => {
-    startApp();
-  });
-} else {
+// TODO: 추후 환경변수로 관리
+worker.start().then(() => {
   startApp();
-}
+});
 
 const siteId = 6472888;
 const hotjarVersion = 6;
