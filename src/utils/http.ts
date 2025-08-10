@@ -2,7 +2,8 @@ import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 
 const createApiInstance = () => {
   const instance = axios.create({
-    baseURL: import.meta.env.PROD ? "/api" : "https://dev-api.holdy.kr",
+    // TODO: 추후 환경변수로 관리
+    baseURL: "https://dev-api.holdy.kr",
     headers: {
       "Content-Type": "application/json",
     },
