@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import Button from "@/components/Button";
+import { Tag } from "@/components/tag/Tag";
 import { cn } from "@/utils/cn";
 import FrownIcon from "../../../components/icons/FrownIcon";
 import LockIcon from "../../../components/icons/LockIcon";
@@ -41,7 +42,7 @@ export default function MissionGridCard({
     >
       <div
         className={cn(
-          "relative h-full p-5",
+          "relative h-full p-4 xs:p-5",
           status === "not_tried"
             ? ""
             : "bg-neutral-100 border-[1px] border-neutral-300 rounded-[32px]"
@@ -58,19 +59,21 @@ export default function MissionGridCard({
           />
         )}
         <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 xs:gap-2">
             <div className="flex items-center justify-between gap-1">
-              <span
-                className={cn("px-2 py-1 rounded-3xl t-p-10-sb", {
-                  "bg-blue-100 text-blue-800": status === "success",
-                  "bg-red-100 text-red-800": status === "failed",
-                  "bg-neutral-300 text-neutral-600": status === "not_tried",
-                })}
+              <Tag
+                variant={
+                  status === "success"
+                    ? "BLUE"
+                    : status === "failed"
+                      ? "RED"
+                      : "NEUTRAL"
+                }
               >
                 {status === "success" && "성공"}
                 {status === "failed" && "실패"}
                 {status === "not_tried" && sectorName}
-              </span>
+              </Tag>
               {completedAt && (
                 <span className="t-p-10-sb text-neutral-400">
                   {new Date(completedAt).toLocaleDateString("ko-KR", {
@@ -92,7 +95,7 @@ export default function MissionGridCard({
               )}
             </div>
             <div
-              className={cn("t-m-56-b", {
+              className={cn("t-m-48-b xs:t-m-56-b", {
                 "text-neutral-100": status === "not_tried",
                 "text-neutral-900": status !== "not_tried",
               })}
@@ -119,16 +122,16 @@ export default function MissionGridCard({
                 </>
               )}
             </div>
+            {status !== "not_tried" && (
+              <div className="flex justify-center items-center py-2 xs:py-3">
+                <img
+                  src={holdImageUrl}
+                  alt="mission-image"
+                  className="w-[140px] h-[140px] xs:w-[180px] xs:h-[180px] object-cover"
+                />
+              </div>
+            )}
           </div>
-          {status !== "not_tried" && (
-            <div className="flex justify-center items-center">
-              <img
-                src={holdImageUrl}
-                alt="mission-image"
-                className="w-[180px] h-[180px] object-cover"
-              />
-            </div>
-          )}
           {status !== "not_tried" && (
             <div className="flex flex-col gap-1 border-t border-neutral-300 pt-3">
               <div className="flex justify-between items-center">
@@ -144,18 +147,10 @@ export default function MissionGridCard({
             </div>
           )}
           {status === "not_tried" && (
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
               {isLocked && (
-                <Button asChild>
-                  <Link
-                    to="/mission/$missionId"
-                    params={{ missionId }}
-                    disabled={
-                      !missionId || (isLocked && status === "not_tried")
-                    }
-                  >
-                    <LockIcon variant="white" />
-                  </Link>
+                <Button type="button" disabled>
+                  <LockIcon variant="white" />
                 </Button>
               )}
               {onStart && <Button onClick={onStart}>도전</Button>}

@@ -27,7 +27,7 @@ export default function MissionNotTriedFailed({
           </p>
         </div>
 
-        <div className="max-w-[80vw] h-[60vh] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+        <div className="max-w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
           <video
             src={videoUrl}
             className="w-full h-full object-cover"
