@@ -32,7 +32,7 @@ function RouteComponent() {
       <LayoutGroup>
         <div className="flex flex-col h-full relative">
           <header className="flex-center h-[52px] w-full">
-            <Link to="/" className="flex-center">
+            <Link to="/mission" className="flex-center">
               <h1 className="t-m-24-b text-neutral-800">Holdy</h1>
             </Link>
           </header>
