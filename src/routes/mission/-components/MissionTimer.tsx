@@ -139,35 +139,33 @@ export default function MissionTimer({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0">
-      <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto px-[27px] py-4">
-        <Timer
-          seconds={time}
-          className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
-        />
-        <button
-          type="button"
-          onClick={handleToggle}
-          onMouseDown={startHoldToStop}
-          onMouseUp={cancelHoldToStop}
-          onMouseLeave={cancelHoldToStop}
-          onTouchStart={startHoldToStop}
-          onTouchEnd={cancelHoldToStop}
-          id={showStopButton ? "timer-stop-button" : "timer-play-button"}
-          className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
-            isHolding && showStopButton
-              ? "scale-95 bg-neutral-200"
-              : "bg-neutral-100"
-          }`}
-          aria-label={showStopButton ? "정지하기" : "시작하기"}
-        >
-          {showStopButton ? (
-            <StopIcon variant="dark" width={16} height={16} />
-          ) : (
-            <PlayIcon variant="dark" width={16} height={16} />
-          )}
-        </button>
-      </div>
+    <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto">
+      <Timer
+        seconds={time}
+        className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
+      />
+      <button
+        type="button"
+        onClick={handleToggle}
+        onMouseDown={startHoldToStop}
+        onMouseUp={cancelHoldToStop}
+        onMouseLeave={cancelHoldToStop}
+        onTouchStart={startHoldToStop}
+        onTouchEnd={cancelHoldToStop}
+        id={showStopButton ? "timer-stop-button" : "timer-play-button"}
+        className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
+          isHolding && showStopButton
+            ? "scale-95 bg-neutral-200"
+            : "bg-neutral-100"
+        }`}
+        aria-label={showStopButton ? "정지하기" : "시작하기"}
+      >
+        {showStopButton ? (
+          <StopIcon variant="dark" width={16} height={16} />
+        ) : (
+          <PlayIcon variant="dark" width={16} height={16} />
+        )}
+      </button>
     </div>
   );
 }

@@ -180,7 +180,7 @@ function Mission() {
   });
 
   return (
-    <div className="flex flex-col gap-4 pb-20">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center px-4">
         <div id="mission-filters" className="flex gap-2">
           {(["all", "not_tried", "failed", "success"] as const).map((type) => (
@@ -188,7 +188,7 @@ function Mission() {
               key={type}
               type="button"
               className={cn(
-                "h-9 px-4 rounded-3xl t-p-14-recommendation transition-colors",
+                "h-9 px-4 rounded-3xl whitespace-nowrap t-p-12-m sm:t-p-14-m transition-colors",
                 filter === type
                   ? "bg-neutral-600 text-neutral-100"
                   : "text-neutral-100"
