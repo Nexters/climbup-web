@@ -9,7 +9,7 @@ export default function MissionDetailHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center justify-end px-4 py-3">
+    <header className="flex items-center justify-end pt-4">
       <button
         type="button"
         onClick={() => {

@@ -18,8 +18,8 @@ export default function MissionNotTriedReviewing({
     <div className="flex-1 flex flex-col">
       <MissionDetailHeader type="mypage" />
 
-      <div className="flex-1 flex flex-col items-center pt-[14vh]">
-        <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
+      <div className="flex-1 flex flex-col items-center">
+        <div className="w-full flex flex-col items-center gap-1 mb-6 px-4">
           <h1 className="t-p-22-sb text-neutral-100 leading-[1.4] tracking-[-0.024em] text-center">
             영상 확인 후 결과를 알려주세요
           </h1>
@@ -28,10 +28,10 @@ export default function MissionNotTriedReviewing({
           </p>
         </div>
 
-        <div className="w-[85vw] aspect-video bg-neutral-800 border-8 border-neutral-100 rounded-2xl overflow-hidden">
+        <div className="max-w-[80vw] h-[60vh] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
           <video
             src={videoUrl}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
             controls
             playsInline
           >
@@ -40,7 +40,7 @@ export default function MissionNotTriedReviewing({
         </div>
       </div>
 
-      <div className="flex justify-center gap-2 px-[30px] pb-6">
+      <div className="flex justify-center gap-2 pb-6">
         <Button onClick={onFailed}>실패</Button>
         <Button onClick={onRetry}>재촬영</Button>
         <Button onClick={onSuccess}>성공</Button>

@@ -66,26 +66,40 @@ export default function MissionResultView({
               {missionData?.attempts?.map((attempt, index) => (
                 <div
                   key={attempt.missionAttemptId}
-                  className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden"
+                  className="flex-[0_0_80vw] flex items-center justify-center"
                   style={{
                     transform:
                       index === selectedIndex ? "scale(1)" : "scale(0.9)",
                     transition: "transform 0.3s ease",
                   }}
                 >
-                  <video src={attempt.videoUrl} controls playsInline>
-                    <track kind="captions" />
-                  </video>
+                  <div className="max-w-[80vw] h-[60vh] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+                    <video
+                      src={attempt.videoUrl}
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                    >
+                      <track kind="captions" />
+                    </video>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         ) : (
           <div className="w-full flex justify-center items-center">
-            <div className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
-              <video src={missionData?.videoUrl} controls playsInline>
-                <track kind="captions" />
-              </video>
+            <div className="flex-[0_0_80vw] flex items-center justify-center">
+              <div className="max-w-[80vw] h-[60vh] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+                <video
+                  src={missionData?.videoUrl}
+                  className="w-full h-full object-cover"
+                  controls
+                  playsInline
+                >
+                  <track kind="captions" />
+                </video>
+              </div>
             </div>
           </div>
         )}
