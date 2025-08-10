@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
+import { Dialog } from "radix-ui";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -18,15 +19,11 @@ type VideoDetailItem = {
 interface VideoDetailSwiperProps {
   items: VideoDetailItem[];
   initialIndex: number;
-  onClose: () => void;
-  sharedLayoutId: string;
 }
 
 export const VideoDetailSwiper = ({
   items,
   initialIndex,
-  onClose,
-  sharedLayoutId,
 }: VideoDetailSwiperProps) => {
   const [isHintVisible, setIsHintVisible] = useState(true);
 
@@ -36,12 +33,7 @@ export const VideoDetailSwiper = ({
   }, []);
 
   return (
-    <motion.div
-      layout
-      layoutId={sharedLayoutId}
-      className="fixed inset-0 z-[100]"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="relative w-full h-dvh">
       {/* Guide Overlay */}
       <AnimatePresence>
         {isHintVisible ? (
@@ -86,14 +78,15 @@ export const VideoDetailSwiper = ({
           </>
         ) : null}
       </AnimatePresence>
-      <button
-        type="button"
-        aria-label="닫기"
-        className="absolute left-4 top-4 z-[110] w-8 h-8 rounded-full text-white flex-center"
-        onClick={onClose}
-      >
-        <ChevronDownIcon className="rotate-90" />
-      </button>
+      <Dialog.Close asChild>
+        <button
+          type="button"
+          aria-label="닫기"
+          className="absolute left-4 top-4 z-[110] w-8 h-8 rounded-full text-white flex-center"
+        >
+          <ChevronDownIcon className="rotate-90" />
+        </button>
+      </Dialog.Close>
       <Swiper
         className="w-full h-dvh"
         direction="vertical"
@@ -128,6 +121,6 @@ export const VideoDetailSwiper = ({
           </SwiperSlide>
         ))}
       </Swiper>
-    </motion.div>
+    </div>
   );
 };

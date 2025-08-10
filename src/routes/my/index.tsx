@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, LayoutGroup, motion } from "motion/react";
+import { LayoutGroup, motion } from "motion/react";
+import { Dialog } from "radix-ui";
 import { useMemo, useState } from "react";
 import { MyInfo } from "./-components/MyInfo";
 import { MyScore } from "./-components/MyScore";
@@ -99,11 +100,10 @@ function RouteComponent() {
           <div className="grid grid-cols-2 gap-x-2 gap-y-3 px-4">
             {items.map((item, index) => {
               const key = `video-card-${index}`;
-              const layoutId = `video-card-${index}`;
               return (
                 <VideoCard
                   key={key}
-                  layoutId={layoutId}
+                  layoutId={`video-card-${index}`}
                   imageUrl={item.imageUrl}
                   sectorName={item.sectorName}
                   score={item.score}
@@ -113,24 +113,27 @@ function RouteComponent() {
               );
             })}
           </div>
-          <AnimatePresence>
-            {openIndex !== null ? (
-              <motion.div
-                className="fixed inset-0 z-[90]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setOpenIndex(null)}
-              >
-                <VideoDetailSwiper
-                  items={items}
-                  initialIndex={openIndex}
-                  onClose={() => setOpenIndex(null)}
-                  sharedLayoutId={`video-card-${openIndex}`}
-                />
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+          <Dialog.Root
+            open={openIndex !== null}
+            onOpenChange={(open: boolean) => {
+              if (!open) setOpenIndex(null);
+            }}
+          >
+            <Dialog.Portal>
+              <Dialog.Overlay className="fixed inset-0 z-[95] bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
+              {openIndex !== null ? (
+                <Dialog.Content asChild>
+                  <motion.div
+                    layout
+                    layoutId={`video-card-${openIndex}`}
+                    className="fixed inset-0 z-[100]"
+                  >
+                    <VideoDetailSwiper items={items} initialIndex={openIndex} />
+                  </motion.div>
+                </Dialog.Content>
+              ) : null}
+            </Dialog.Portal>
+          </Dialog.Root>
         </div>
       </LayoutGroup>
     </main>
