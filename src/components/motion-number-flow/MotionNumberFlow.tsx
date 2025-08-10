@@ -10,9 +10,9 @@ export const MotionNumberFlow = ({ ...props }: MotionNumberFlowProps) => {
     <MotionNumberFlowComponent
       layout
       layoutRoot
-      transformTiming={{ duration: 850, easing: "easeInOut" }}
+      transformTiming={{ duration: 850, easing: "ease-in-out" }}
       spinTiming={{ duration: 750, easing: "linear" }}
-      opacityTiming={{ duration: 350, easing: "easeInOut" }}
+      opacityTiming={{ duration: 350, easing: "ease-in-out" }}
       {...props}
     />
   );

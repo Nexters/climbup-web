@@ -13,12 +13,7 @@ export const Timer = ({ seconds, className }: TimerProps) => {
   const ss = seconds % 60;
   return (
     <NumberFlowGroup>
-      <div
-        className={cn(
-          "flex items-baseline font-semibold tabular-nums t-m-48-b",
-          className
-        )}
-      >
+      <div className={cn("flex items-baseline tabular-nums", className)}>
         <MotionNumberFlow
           trend={1}
           value={hh}
