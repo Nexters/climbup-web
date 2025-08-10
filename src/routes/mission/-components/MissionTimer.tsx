@@ -8,6 +8,7 @@ import {
   getUserSession,
   startUserSession,
 } from "@/generated/user-session/user-session";
+import useToast from "@/hooks/useToast";
 import { getHeaderToken } from "@/utils/cookie";
 import { getStorage, removeStorage, setStorage } from "@/utils/storage";
 import PlayIcon from "../../../components/icons/PlayIcon";
@@ -22,6 +23,7 @@ export default function MissionTimer({
 }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
@@ -125,11 +127,14 @@ export default function MissionTimer({
   };
 
   const cancelHoldToStop = () => {
+    const hadPendingHold = !!holdTimeoutRef.current;
     if (holdTimeoutRef.current) {
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
-
+    if (hadPendingHold && showStopButton && isRunning) {
+      showToast("정지 버튼을 길게 누르면\n오늘의 세션을 종료할 수 있어요.");
+    }
     setIsHolding(false);
   };
 
