@@ -5,10 +5,11 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { ApiResultVoid, GymRequest, LevelRequest } from ".././model";
+
+import type { BodyType } from "../../utils/http";
 
 import { http } from "../../utils/http";
-import type { BodyType } from "../../utils/http";
+import type { ApiResultVoid, GymRequest, LevelRequest } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 

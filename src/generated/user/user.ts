@@ -5,9 +5,9 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { ApiResultUserStatusResponse } from ".././model";
 
 import { http } from "../../utils/http";
+import type { ApiResultUserStatusResponse } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 

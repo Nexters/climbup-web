@@ -5,6 +5,7 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type { CreateAttemptResponseStatus } from "./createAttemptResponseStatus";
 
 /**
  * 루트미션 도전기록 등록 응답
@@ -14,8 +15,8 @@ export interface CreateAttemptResponse {
   missionAttemptId?: number;
   /** 성공 여부 */
   success?: boolean;
-  /** 영상 URL */
-  videoUrl?: string;
+  /** 도전 상태 */
+  status?: CreateAttemptResponseStatus;
   /** 생성 시간 */
   createdAt?: string;
   /** 획득한 SR */

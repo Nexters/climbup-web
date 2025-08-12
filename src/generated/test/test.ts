@@ -5,12 +5,37 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { ApiResultMapStringObject } from ".././model";
+
+import type { BodyType } from "../../utils/http";
 
 import { http } from "../../utils/http";
+import type {
+  ApiResultMapStringObject,
+  ApiResultMapStringString,
+  TestImageUploadBody,
+  TestImageUploadParams,
+  TestVideoUploadBody,
+  TestVideoUploadParams,
+} from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
+export const testVideoUpload = (
+  testVideoUploadBody: BodyType<TestVideoUploadBody>,
+  params?: TestVideoUploadParams,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultMapStringString>(
+    {
+      url: `/api/test/video`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: testVideoUploadBody,
+      params,
+    },
+    options
+  );
+};
 /**
  * 개발/테스트용 브랜드, 레벨, 암장, 브랜드별 레벨, 섹터, 루트 미션 데이터를 생성합니다
  * @summary 테스트 데이터 초기화
@@ -18,6 +43,22 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 export const initTestData = (options?: SecondParameter<typeof http>) => {
   return http<ApiResultMapStringObject>(
     { url: `/api/test/init-data`, method: "POST" },
+    options
+  );
+};
+export const testImageUpload = (
+  testImageUploadBody: BodyType<TestImageUploadBody>,
+  params?: TestImageUploadParams,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultMapStringString>(
+    {
+      url: `/api/test/image`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: testImageUploadBody,
+      params,
+    },
     options
   );
 };
@@ -61,8 +102,14 @@ export const getBrandLevels = (options?: SecondParameter<typeof http>) => {
     options
   );
 };
+export type TestVideoUploadResult = NonNullable<
+  Awaited<ReturnType<typeof testVideoUpload>>
+>;
 export type InitTestDataResult = NonNullable<
   Awaited<ReturnType<typeof initTestData>>
+>;
+export type TestImageUploadResult = NonNullable<
+  Awaited<ReturnType<typeof testImageUpload>>
 >;
 export type ClearTestDataResult = NonNullable<
   Awaited<ReturnType<typeof clearTestData>>

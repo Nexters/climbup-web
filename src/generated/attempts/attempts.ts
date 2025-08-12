@@ -5,20 +5,25 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+
+import type { BodyType } from "../../utils/http";
+
+import { http } from "../../utils/http";
 import type {
+  ApiResultAttemptStatusResponse,
   ApiResultCreateAttemptResponse,
   ApiResultListRouteMissionRecommendationResponse,
+  ApiResultListUserMissionAttemptResponse,
   ApiResultRouteMissionUploadChunkResponse,
   ApiResultRouteMissionUploadSessionFinalizeResponse,
   ApiResultRouteMissionUploadSessionInitializeResponse,
   ApiResultRouteMissionUploadStatusResponse,
+  ApiResultSessionAttemptResponse,
   CreateAttemptRequest,
+  FinalizeRouteMissionUploadSessionBody,
   RouteMissionUploadChunkRequest,
   RouteMissionUploadSessionInitializeRequest,
 } from ".././model";
-
-import { http } from "../../utils/http";
-import type { BodyType } from "../../utils/http";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
@@ -41,18 +46,29 @@ export const createAttempt = (
   );
 };
 /**
- * 해당 도전의 영상 업로드 세션 마무리
+ * 해당 도전의 영상 업로드 세션을 마무리하고 썸네일을 함께 업로드합니다.
  * @summary 해당 도전의 영상 업로드 세션 마무리
  */
 export const finalizeRouteMissionUploadSession = (
   attemptId: number,
   uploadId: string,
+  finalizeRouteMissionUploadSessionBody: BodyType<FinalizeRouteMissionUploadSessionBody>,
   options?: SecondParameter<typeof http>
 ) => {
+  const formData = new FormData();
+  if (finalizeRouteMissionUploadSessionBody.thumbnail !== undefined) {
+    formData.append(
+      `thumbnail`,
+      finalizeRouteMissionUploadSessionBody.thumbnail
+    );
+  }
+
   return http<ApiResultRouteMissionUploadSessionFinalizeResponse>(
     {
       url: `/attempts/${attemptId}/upload/${uploadId}/finalize`,
       method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      data: formData,
     },
     options
   );
@@ -110,6 +126,19 @@ export const getRouteMissionUploadStatus = (
   );
 };
 /**
+ * 도전 기록의 현재 상태를 확인합니다.
+ * @summary 특정 도전 기록의 상태 조회
+ */
+export const getAttemptStatus = (
+  attemptId: number,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultAttemptStatusResponse>(
+    { url: `/attempts/${attemptId}/status`, method: "GET" },
+    options
+  );
+};
+/**
  * 도전한 루트미션과 비슷한 난이도의 루트미션 리스트를 받아보기
  * @summary 도전한 루트미션과 비슷한 난이도의 루트미션 리스트 불러오기
  */
@@ -119,6 +148,31 @@ export const getRouteMissionRecommendationByAttempt = (
 ) => {
   return http<ApiResultListRouteMissionRecommendationResponse>(
     { url: `/attempts/${attemptId}/recommendations`, method: "GET" },
+    options
+  );
+};
+/**
+ * 특정 세션의 도전기록을 성공/실패로 구분하여 조회합니다.
+ * @summary 세션별 도전기록 조회
+ */
+export const getSessionAttempts = (
+  sessionId: number,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultSessionAttemptResponse>(
+    { url: `/attempts/sessions/${sessionId}`, method: "GET" },
+    options
+  );
+};
+/**
+ * 사용자의 업로드가 완료되지 않은 도전 기록들을 조회합니다.
+ * @summary 업로드 미완료 도전 기록 목록 조회
+ */
+export const getIncompleteAttempts = (
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultListUserMissionAttemptResponse>(
+    { url: `/attempts/incomplete`, method: "GET" },
     options
   );
 };
@@ -137,6 +191,15 @@ export type InitializeRouteMissionUploadSessionResult = NonNullable<
 export type GetRouteMissionUploadStatusResult = NonNullable<
   Awaited<ReturnType<typeof getRouteMissionUploadStatus>>
 >;
+export type GetAttemptStatusResult = NonNullable<
+  Awaited<ReturnType<typeof getAttemptStatus>>
+>;
 export type GetRouteMissionRecommendationByAttemptResult = NonNullable<
   Awaited<ReturnType<typeof getRouteMissionRecommendationByAttempt>>
+>;
+export type GetSessionAttemptsResult = NonNullable<
+  Awaited<ReturnType<typeof getSessionAttempts>>
+>;
+export type GetIncompleteAttemptsResult = NonNullable<
+  Awaited<ReturnType<typeof getIncompleteAttempts>>
 >;

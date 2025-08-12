@@ -5,8 +5,9 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { GymLevelInfo } from "./gymLevelInfo";
+
 import type { GymInfo } from "./gymInfo";
+import type { GymLevelInfo } from "./gymLevelInfo";
 
 /**
  * 사용자 상태 정보

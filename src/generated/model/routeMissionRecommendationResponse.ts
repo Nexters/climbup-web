@@ -5,8 +5,9 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
-import type { UserMissionAttemptResponse } from "./userMissionAttemptResponse";
+
 import type { SectorResponse } from "./sectorResponse";
+import type { UserMissionAttemptResponse } from "./userMissionAttemptResponse";
 
 /**
  * 추천 루트미션 리스트 응답

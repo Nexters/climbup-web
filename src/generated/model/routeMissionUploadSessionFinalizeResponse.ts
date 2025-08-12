@@ -7,9 +7,15 @@
  */
 
 /**
- * 영상 업로드 세션 완료 응답
+ * 루트미션 업로드 세션 완료 응답
  */
 export interface RouteMissionUploadSessionFinalizeResponse {
-  /** 파일명 */
+  /** 업로드된 파일명 */
   fileName?: string;
+  /** 업로드된 영상 URL */
+  videoUrl?: string;
+  /** 업로드된 썸네일 URL */
+  thumbnailUrl?: string;
+  /** 썸네일 업로드 여부 */
+  thumbnailUploaded?: boolean;
 }

@@ -5,6 +5,7 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type { UserMissionAttemptResponseStatus } from "./userMissionAttemptResponseStatus";
 
 /**
  * 사용자 미션 시도 정보 응답
@@ -14,8 +15,12 @@ export interface UserMissionAttemptResponse {
   missionAttemptId?: number;
   /** 성공 여부 */
   success?: boolean;
+  /** 도전 상태 */
+  status?: UserMissionAttemptResponseStatus;
   /** 시도 영상 URL */
   videoUrl?: string;
+  /** 썸네일 URL */
+  thumbnailUrl?: string;
   /** 시도 생성 시간 */
   createdAt?: string;
 }

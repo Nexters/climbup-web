@@ -19,7 +19,7 @@ export default defineConfig({
       target: "src/generated",
     },
     hooks: {
-      afterAllFilesWrite: "pnpm run format",
+      afterAllFilesWrite: "biome check --write",
     },
   },
 });
