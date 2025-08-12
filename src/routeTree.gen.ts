@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MyIndexRouteImport } from './routes/my/index'
 import { Route as MissionIndexRouteImport } from './routes/mission/index'
 import { Route as MissionResultIndexRouteImport } from './routes/mission-result/index'
@@ -32,6 +33,11 @@ const MissionRouteRoute = MissionRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyIndexRoute = MyIndexRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/mission-result': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
   '/my': typeof MyIndexRoute
+  '/onboarding': typeof OnboardingIndexRoute
   '/mission/$missionId': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym': typeof OnboardingGymIndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/mission-result': typeof MissionResultIndexRoute
   '/mission': typeof MissionIndexRoute
   '/my': typeof MyIndexRoute
+  '/onboarding': typeof OnboardingIndexRoute
   '/mission/$missionId': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym': typeof OnboardingGymIndexRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   '/mission-result/': typeof MissionResultIndexRoute
   '/mission/': typeof MissionIndexRoute
   '/my/': typeof MyIndexRoute
+  '/onboarding/': typeof OnboardingIndexRoute
   '/mission/$missionId/': typeof MissionMissionIdIndexRoute
   '/oauth2/redirect/': typeof Oauth2RedirectIndexRoute
   '/onboarding/gym/': typeof OnboardingGymIndexRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
     | '/mission-result'
     | '/mission/'
     | '/my'
+    | '/onboarding'
     | '/mission/$missionId'
     | '/oauth2/redirect'
     | '/onboarding/gym'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/mission-result'
     | '/mission'
     | '/my'
+    | '/onboarding'
     | '/mission/$missionId'
     | '/oauth2/redirect'
     | '/onboarding/gym'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/mission-result/'
     | '/mission/'
     | '/my/'
+    | '/onboarding/'
     | '/mission/$missionId/'
     | '/oauth2/redirect/'
     | '/onboarding/gym/'
@@ -146,6 +158,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRoute
   MissionResultIndexRoute: typeof MissionResultIndexRoute
   MyIndexRoute: typeof MyIndexRoute
+  OnboardingIndexRoute: typeof OnboardingIndexRoute
   Oauth2RedirectIndexRoute: typeof Oauth2RedirectIndexRoute
   OnboardingGymIndexRoute: typeof OnboardingGymIndexRoute
   OnboardingLevelIndexRoute: typeof OnboardingLevelIndexRoute
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/': {
+      id: '/onboarding/'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my/': {
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRoute,
   MissionResultIndexRoute: MissionResultIndexRoute,
   MyIndexRoute: MyIndexRoute,
+  OnboardingIndexRoute: OnboardingIndexRoute,
   Oauth2RedirectIndexRoute: Oauth2RedirectIndexRoute,
   OnboardingGymIndexRoute: OnboardingGymIndexRoute,
   OnboardingLevelIndexRoute: OnboardingLevelIndexRoute,

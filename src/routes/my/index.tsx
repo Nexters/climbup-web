@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { LayoutGroup, motion } from "motion/react";
 import { Dialog } from "radix-ui";
 import { useMemo, useState } from "react";
+import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
 import { MyInfo } from "./-components/MyInfo";
 import { MyScore } from "./-components/MyScore";
 import { VideoCard } from "./-components/VideoCard";
@@ -39,30 +40,33 @@ function RouteComponent() {
           <MyInfo />
           <MyScore />
           <div className="flex flex-col gap-4 pt-6 px-6">
-            {/* TODO: 레벨 보기 Dialog */}
-            <button
-              type="button"
-              className="flex items-start justify-between t-p-14-sb text-neutral-500"
-            >
-              <span>레벨은 어떻게 올리나요?</span>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="레벨 보기 바로가기"
-                role="img"
+            <Dialog.Root>
+              <Dialog.Trigger
+                type="button"
+                className="flex items-start justify-between t-p-14-sb text-neutral-500"
               >
-                <path
-                  d="M9 18L15 12L9 6"
-                  stroke="#6C737F"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
+                {/* TODO: 레벨 보기 Dialog */}
+                <span>레벨은 어떻게 올리나요?</span>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="레벨 보기 바로가기"
+                  role="img"
+                >
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="#6C737F"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Dialog.Trigger>
+              <DialogLevelDescriptionContent />
+            </Dialog.Root>
             <a
               target="_blank"
               rel="noopener noreferrer"

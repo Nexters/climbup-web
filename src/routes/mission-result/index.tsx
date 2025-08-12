@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { Dialog } from "radix-ui";
 import { useState } from "react";
 import assetCharacterIcon from "@/assets/images/ic_character.png";
 import assetFailIcon from "@/assets/images/ic_failure.png";
 import assetScoreIcon from "@/assets/images/ic_score.png";
 import assetSuccessIcon from "@/assets/images/ic_success.png";
 import Button from "@/components/Button";
+import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
 import { LevelProgress } from "@/components/level-progress/LevelProgress";
 import { MotionNumberFlow } from "@/components/motion-number-flow/MotionNumberFlow";
 import { Timer } from "@/components/timer/Timer";
@@ -21,11 +23,39 @@ function RouteComponent() {
   const [failureValue] = useState(11);
 
   return (
-    <div className="h-dvh px-4 flex flex-col">
+    <div className=" h-dvh px-4 flex flex-col">
+      <header className="flex justify-end items-center h-[52px] w-full">
+        <Link to="/mission" className="flex-center size-6" replace>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Close icon"
+            role="img"
+          >
+            <path
+              d="M18 6L6 18"
+              stroke="#9DA4AE"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M6 6L18 18"
+              stroke="#9DA4AE"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      </header>
       <div className="flex flex-col justify-between items-center">
         <p className="t-p-14-m">25.07.20 (수)</p>
         <p className="t-p-16-m pt-1">더 클라임 강남점</p>
-        <Timer seconds={2000} className="pt-2" />
+        <Timer seconds={2000} className="pt-2 t-m-48-b" />
       </div>
       <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
         <div className="flex flex-col flex-1 items-center justify-center">
@@ -91,29 +121,32 @@ function RouteComponent() {
           />
         </div>
       </div>
-      <button
-        type="button"
-        className="flex justify-end items-center gap-1 mt-3 w-fit ml-auto"
-      >
-        <p className="t-p-14-m text-neutral-500">레벨 보기</p>
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="레벨 보기 바로가기"
-          role="img"
+      <Dialog.Root>
+        <Dialog.Trigger
+          type="button"
+          className="flex justify-end items-center gap-1 mt-3 w-fit ml-auto"
         >
-          <path
-            className="stroke-neutral-500"
-            d="M6 11.9961L10 7.99609L6 3.99609"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+          <p className="t-p-14-m text-neutral-500">레벨 보기</p>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="레벨 보기 바로가기"
+            role="img"
+          >
+            <path
+              className="stroke-neutral-500"
+              d="M6 11.9961L10 7.99609L6 3.99609"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Dialog.Trigger>
+        <DialogLevelDescriptionContent />
+      </Dialog.Root>
       <div className="flex items-center justify-center w-full mt-auto px-10 py-4">
         <Button asChild className="w-full">
           <Link to="/my">완등 영상 보기</Link>
