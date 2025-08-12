@@ -153,7 +153,7 @@ function OnboardingLevelComponent() {
           </LevelRadioButton>
         ))}
       </RadioGroup.Root>
-      <div className="w-full mt-auto py-4 px-4">
+      <div className="w-full mt-auto py-4 px-10">
         <Button className="w-full" onClick={handleNextClick}>
           다음
         </Button>

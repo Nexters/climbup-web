@@ -183,8 +183,10 @@ export function useUploadAttemptVideo() {
         callbacks.onProgress?.(progress);
       }
 
-      const finalizeResponse =
-        await finalizeUploadMutation.mutateAsync({ attemptId, uploadId });
+      const finalizeResponse = await finalizeUploadMutation.mutateAsync({
+        attemptId,
+        uploadId,
+      });
       const fileName = finalizeResponse.data?.fileName;
 
       setUploadState((prev) => ({
