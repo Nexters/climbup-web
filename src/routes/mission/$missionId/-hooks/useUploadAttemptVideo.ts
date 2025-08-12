@@ -116,9 +116,12 @@ export function useUploadAttemptVideo() {
       attemptId: number;
       uploadId: string;
     }) =>
-      finalizeRouteMissionUploadSession(attemptId, uploadId, {
-        headers: getHeaderToken(),
-      }),
+      finalizeRouteMissionUploadSession(
+        attemptId,
+        uploadId,
+        {},
+        { headers: getHeaderToken() }
+      ),
   });
 
   const uploadVideo = async (

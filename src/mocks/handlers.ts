@@ -113,7 +113,7 @@ export const handlers = [
       data: {
         missionAttemptId: 1,
         success: body.success,
-        videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+        status: "COMPLETED",
         createdAt: new Date().toISOString(),
         srGained: body.success ? 30 : 0,
         currentSr: body.success ? 1530 : 1500,
