@@ -1,7 +1,8 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LayoutGroup, motion } from "motion/react";
 import { Dialog } from "radix-ui";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
 import { MyInfo } from "./-components/MyInfo";
 import { MyScore } from "./-components/MyScore";
@@ -13,20 +14,69 @@ export const Route = createFileRoute("/my/")({
   component: RouteComponent,
 });
 
+type VideoItem = {
+  imageUrl: string;
+  sectorName: string;
+  score: number;
+  completedAt: string;
+};
+
+const PAGE_SIZE = 10;
+const MAX_PAGES = 5; // 목업: 최대 5페이지
+
 function RouteComponent() {
   const [selectedTab, setSelectedTab] = useState<VideoTabId>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const items = useMemo(
-    () =>
-      Array.from({ length: 10 }).map((_, index) => ({
-        imageUrl: "https://picsum.photos/720/1280?random=" + (index + 1),
+  const fetchVideos = async ({
+    pageParam = 0,
+  }: {
+    pageParam?: number;
+  }): Promise<{ items: VideoItem[]; nextPage?: number }> => {
+    // 목업: 네트워크 지연 흉내
+    await new Promise((r) => setTimeout(r, 300));
+    const base = pageParam * PAGE_SIZE;
+    const items: VideoItem[] = Array.from({ length: PAGE_SIZE }).map(
+      (_, idx) => ({
+        imageUrl: `https://picsum.photos/720/1280?random=${base + idx + 1}`,
         sectorName: "강남점",
         score: 100,
         completedAt: "2025-01-01",
-      })),
-    []
-  );
+      })
+    );
+    const hasNext = pageParam + 1 < MAX_PAGES;
+    return { items, nextPage: hasNext ? pageParam + 1 : undefined };
+  };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["my-videos", selectedTab],
+      queryFn: fetchVideos,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    });
+
+  const flatItems = useMemo(() => {
+    return data?.pages.flatMap((page) => page.items) ?? [];
+  }, [data]);
+
+  // 리스트 영역 무한스크롤: sentinel 관찰 시 다음 페이지 로드 (목업)
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const target = sentinelRef.current;
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          void fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <main className="min-h-dvh h-full bg-neutral-200 relative">
@@ -102,7 +152,7 @@ function RouteComponent() {
             />
           </nav>
           <div className="grid grid-cols-2 gap-x-2 gap-y-3 px-4">
-            {items.map((item, index) => {
+            {flatItems.map((item, index) => {
               const key = `video-card-${index}`;
               return (
                 <VideoCard
@@ -116,6 +166,7 @@ function RouteComponent() {
                 />
               );
             })}
+            <div ref={sentinelRef} className="h-6 col-span-2" />
           </div>
           <Dialog.Root
             open={openIndex !== null}
@@ -132,7 +183,13 @@ function RouteComponent() {
                     layoutId={`video-card-${openIndex}`}
                     className="fixed inset-0 z-[100]"
                   >
-                    <VideoDetailSwiper items={items} initialIndex={openIndex} />
+                    <VideoDetailSwiper
+                      items={flatItems}
+                      initialIndex={openIndex}
+                      hasNextPage={!!hasNextPage}
+                      isFetchingNextPage={isFetchingNextPage}
+                      fetchNextPage={() => fetchNextPage()}
+                    />
                   </motion.div>
                 </Dialog.Content>
               ) : null}
