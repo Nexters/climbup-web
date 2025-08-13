@@ -19,7 +19,7 @@ import type {
  * - 하위에 리스트 형태로 추가
  */
 export const handlers = [
-  http.get("https://dev-api.holdy.kr/recommendations", () => {
+  http.get("https://dev-api.holdy.kr/api/recommendations", () => {
     return HttpResponse.json<ApiResultListRouteMissionRecommendationResponse>({
       message: "추천 루트미션을 성공적으로 조회했습니다.",
       data: [

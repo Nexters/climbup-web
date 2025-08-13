@@ -82,6 +82,9 @@ export const getRandomNumber = (options?: SecondParameter<typeof http>) => {
     options
   );
 };
+export const testError = (options?: SecondParameter<typeof http>) => {
+  return http<string>({ url: `/api/test/error`, method: "GET" }, options);
+};
 /**
  * 현재 DB에 있는 모든 데이터 개수를 확인합니다
  * @summary 데이터 현황 조회
@@ -116,6 +119,9 @@ export type ClearTestDataResult = NonNullable<
 >;
 export type GetRandomNumberResult = NonNullable<
   Awaited<ReturnType<typeof getRandomNumber>>
+>;
+export type TestErrorResult = NonNullable<
+  Awaited<ReturnType<typeof testError>>
 >;
 export type GetDataStatusResult = NonNullable<
   Awaited<ReturnType<typeof getDataStatus>>

@@ -37,7 +37,7 @@ export const createAttempt = (
 ) => {
   return http<ApiResultCreateAttemptResponse>(
     {
-      url: `/attempts`,
+      url: `/api/attempts`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: createAttemptRequest,
@@ -65,7 +65,7 @@ export const finalizeRouteMissionUploadSession = (
 
   return http<ApiResultRouteMissionUploadSessionFinalizeResponse>(
     {
-      url: `/attempts/${attemptId}/upload/${uploadId}/finalize`,
+      url: `/api/attempts/${attemptId}/upload/${uploadId}/finalize`,
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
       data: formData,
@@ -85,7 +85,7 @@ export const uploadRouteMissionVideoChunk = (
 ) => {
   return http<ApiResultRouteMissionUploadChunkResponse>(
     {
-      url: `/attempts/${attemptId}/upload/${uploadId}/chunk`,
+      url: `/api/attempts/${attemptId}/upload/${uploadId}/chunk`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: routeMissionUploadChunkRequest,
@@ -104,7 +104,7 @@ export const initializeRouteMissionUploadSession = (
 ) => {
   return http<ApiResultRouteMissionUploadSessionInitializeResponse>(
     {
-      url: `/attempts/${attemptId}/upload/initialize`,
+      url: `/api/attempts/${attemptId}/upload/initialize`,
       method: "POST",
       headers: { "Content-Type": "application/json" },
       data: routeMissionUploadSessionInitializeRequest,
@@ -121,7 +121,7 @@ export const getRouteMissionUploadStatus = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultRouteMissionUploadStatusResponse>(
-    { url: `/attempts/${attemptId}/upload/status`, method: "GET" },
+    { url: `/api/attempts/${attemptId}/upload/status`, method: "GET" },
     options
   );
 };
@@ -134,7 +134,7 @@ export const getAttemptStatus = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultAttemptStatusResponse>(
-    { url: `/attempts/${attemptId}/status`, method: "GET" },
+    { url: `/api/attempts/${attemptId}/status`, method: "GET" },
     options
   );
 };
@@ -147,7 +147,7 @@ export const getRouteMissionRecommendationByAttempt = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultListRouteMissionRecommendationResponse>(
-    { url: `/attempts/${attemptId}/recommendations`, method: "GET" },
+    { url: `/api/attempts/${attemptId}/recommendations`, method: "GET" },
     options
   );
 };
@@ -160,7 +160,7 @@ export const getSessionAttempts = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultSessionAttemptResponse>(
-    { url: `/attempts/sessions/${sessionId}`, method: "GET" },
+    { url: `/api/attempts/sessions/${sessionId}`, method: "GET" },
     options
   );
 };
@@ -172,7 +172,7 @@ export const getIncompleteAttempts = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultListUserMissionAttemptResponse>(
-    { url: `/attempts/incomplete`, method: "GET" },
+    { url: `/api/attempts/incomplete`, method: "GET" },
     options
   );
 };
