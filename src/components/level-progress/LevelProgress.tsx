@@ -1,6 +1,12 @@
 import { motion } from "motion/react";
 import { Progress as ProgressPrimitive } from "radix-ui";
 import { useCallback, useEffect, useState } from "react";
+import { match } from "ts-pattern";
+import assetLevel1 from "@/assets/images/ic_lv1.png";
+import assetLevel2 from "@/assets/images/ic_lv2.png";
+import assetLevel3 from "@/assets/images/ic_lv3.png";
+import assetLevel4 from "@/assets/images/ic_lv4.png";
+import assetLevel5 from "@/assets/images/ic_lv5.png";
 import { cn } from "@/utils/cn";
 
 interface LevelProgressProps {
@@ -130,29 +136,50 @@ export const LevelProgress = ({
 
       {/* 레벨 표시 원형 컴포넌트 */}
       <div className="relative w-8 h-8 shrink-0">
-        {/* 원형 배경 */}
-        <div className="w-full h-full bg-neutral-100 border-2 border-neutral-300 rounded-full" />
-
-        {/* 다이아몬드 아이콘 
+        {match(level)
+          .with(1, () => (
+            <img src={assetLevel1} className="size-full" alt="레벨 1" />
+          ))
+          .with(2, () => (
+            <img src={assetLevel2} className="size-full" alt="레벨 2" />
+          ))
+          .with(3, () => (
+            <img src={assetLevel3} className="size-full" alt="레벨 3" />
+          ))
+          .with(4, () => (
+            <img src={assetLevel4} className="size-full" alt="레벨 4" />
+          ))
+          .with(5, () => (
+            <img src={assetLevel5} className="size-full" alt="레벨 5" />
+          ))
+          .otherwise(() => (
+            <>
+              <div className="w-full h-full bg-neutral-100 border-2 border-neutral-300 rounded-full" />
+              {/* 다이아몬드 아이콘 
         TODO: 추후 변경 필요 */}
-        <i className="absolute top-[8.47px] left-[5.65px] w-[14.12px] h-[11.29px]">
-          <svg
-            width="14"
-            height="12"
-            viewBox="0 0 14 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Diamond Icon</title>
-            <path d="M7 0L13.0622 6L7 12L0.937822 6L7 0Z" fill="#D2D6DB" />
-          </svg>
-        </i>
-        {/* 레벨 숫자 */}
-        <div className="absolute bottom-[8.47px] right-[6.59px] w-[8.47px] h-[8.47px] flex items-center justify-center">
-          <span className="text-[8px] font-semibold text-neutral-700 leading-none">
-            {level}
-          </span>
-        </div>
+              <i className="absolute top-[8.47px] left-[5.65px] w-[14.12px] h-[11.29px]">
+                <svg
+                  width="14"
+                  height="12"
+                  viewBox="0 0 14 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title>Diamond Icon</title>
+                  <path
+                    d="M7 0L13.0622 6L7 12L0.937822 6L7 0Z"
+                    fill="#D2D6DB"
+                  />
+                </svg>
+              </i>
+              {/* 레벨 숫자 */}
+              <div className="absolute bottom-[8.47px] right-[6.59px] w-[8.47px] h-[8.47px] flex items-center justify-center">
+                <span className="text-[8px] font-semibold text-neutral-700 leading-none">
+                  {level}
+                </span>
+              </div>
+            </>
+          ))}
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export const getRouteMissionRecommendations = (
   options?: SecondParameter<typeof http>
 ) => {
   return http<ApiResultListRouteMissionRecommendationResponse>(
-    { url: `/recommendations`, method: "GET" },
+    { url: `/api/recommendations`, method: "GET" },
     options
   );
 };

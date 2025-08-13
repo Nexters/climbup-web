@@ -23,7 +23,7 @@ export const VideoCard = ({
   return (
     <motion.button
       type="button"
-      className="w-full min-h-[224px] rounded-[24px] overflow-hidden bg-neutral-100 relative aspect-[168 / 224]"
+      className="w-full rounded-[24px] overflow-hidden bg-neutral-100 relative aspect-[3/4]"
       layout
       layoutId={layoutId}
       onClick={onClick}
