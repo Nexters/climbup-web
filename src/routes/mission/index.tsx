@@ -33,7 +33,8 @@ type FilterType = "all" | "failed" | "success" | "not_tried";
 const getFilterLabels = (
   recommendations: (RouteMissionRecommendationResponse & {
     status: "not_tried" | "success" | "failed";
-  })[]
+  })[],
+  currentFilter: FilterType
 ) => {
   const counts = countBy(recommendations, ({ status }) => status);
 
@@ -42,10 +43,10 @@ const getFilterLabels = (
   const success = counts.success || 0;
 
   return {
-    all: `전체 ${recommendations.length}`,
-    not_tried: `미도전 ${notTried}`,
-    failed: `실패 ${failed}`,
-    success: `성공 ${success}`,
+    all: currentFilter === "all" ? `전체 ${recommendations.length}` : "전체",
+    not_tried: currentFilter === "not_tried" ? `미도전 ${notTried}` : "미도전",
+    failed: currentFilter === "failed" ? `실패 ${failed}` : "실패",
+    success: currentFilter === "success" ? `성공 ${success}` : "성공",
   };
 };
 
@@ -195,7 +196,7 @@ function Mission() {
               )}
               onClick={() => setFilter(type)}
             >
-              {getFilterLabels(recommendations)[type]}
+              {getFilterLabels(recommendations, filter)[type]}
             </button>
           ))}
         </div>
