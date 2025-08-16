@@ -100,6 +100,51 @@ export const handlers = [
           postedAt: "2024-03-30T00:00:00Z",
           recommendedOrder: 3,
         },
+        {
+          missionId: 4,
+          gymId: 1,
+          attempts: [
+            {
+              missionAttemptId: 3,
+              success: true,
+              videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+              createdAt: "2024-03-05T16:45:00Z",
+            },
+          ],
+          sector: {
+            id: 4,
+            name: "섹터 7·8",
+            imageUrl:
+              "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+4",
+          },
+          difficulty: "6D",
+          score: 60,
+          imageUrl:
+            "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+4",
+          videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+          removedAt: "2024-05-05T00:00:00Z",
+          postedAt: "2024-04-05T00:00:00Z",
+          recommendedOrder: 4,
+        },
+        {
+          missionId: 5,
+          gymId: 1,
+          attempts: [],
+          sector: {
+            id: 5,
+            name: "섹터 9·10",
+            imageUrl:
+              "https://placehold.co/88x46/4D5761/FCFCFD.png?text=Sector+5",
+          },
+          difficulty: "7A",
+          score: 70,
+          imageUrl:
+            "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+5",
+          videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+          removedAt: "2024-05-10T00:00:00Z",
+          postedAt: "2024-04-10T00:00:00Z",
+          recommendedOrder: 5,
+        },
       ],
     });
   }),

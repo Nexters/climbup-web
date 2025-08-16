@@ -139,7 +139,7 @@ export default function MissionTimer({
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 gap-3 max-w-7xl mx-auto bg-neutral-500">
       <Timer
         seconds={time}
         className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
