@@ -18,7 +18,7 @@ export default function MissionNotTriedDefault({
   onStart,
 }: MissionNotTriedDefaultProps) {
   return (
-    <div className="flex flex-col bg-neutral-900">
+    <div className="fixed inset-0 flex flex-col bg-neutral-900">
       <MissionDetailHeader type="close" />
 
       <div className="flex-1 flex flex-col items-center gap-4 px-4">
@@ -40,7 +40,7 @@ export default function MissionNotTriedDefault({
           </div>
         </div>
 
-        <div className="w-full h-full max-w-[85vw] flex items-center justify-center">
+        <div className="w-full max-w-[85vw] flex items-center justify-center">
           <MissionGridCard
             sectorName={sectorName}
             difficulty={difficulty}

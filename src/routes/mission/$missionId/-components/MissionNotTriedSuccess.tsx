@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { getRouteMissionRecommendationByAttempt } from "@/generated/attempts/attempts";
+import { getHeaderToken } from "@/utils/cookie";
 import MissionGridCard from "../../-components/MissionGridCard";
 import { useCarousel } from "../../-hooks/useCarousel";
 import MissionDetailHeader from "./MissionDetailHeader";
@@ -17,7 +18,10 @@ export default function MissionNotTriedSuccess({
 
   const { data: missions } = useQuery({
     queryKey: ["mission-not-tried-success", attemptId],
-    queryFn: () => getRouteMissionRecommendationByAttempt(attemptId ?? 0),
+    queryFn: () =>
+      getRouteMissionRecommendationByAttempt(attemptId ?? 0, {
+        headers: getHeaderToken(),
+      }),
     select: (data) => data.data ?? [],
   });
 
