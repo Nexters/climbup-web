@@ -25,6 +25,12 @@ export interface UserStatusResponse {
   sr?: number;
   /** 온보딩 완료 여부 */
   onboardingCompleted?: boolean;
+  /** 도전 성공 횟수 */
+  successCount?: number;
+  /** 도전 실패 횟수 */
+  failureCount?: number;
+  /** 총 도전 횟수 */
+  totalAttempts?: number;
   /** 선택된 레벨 정보 */
   gymLevel?: GymLevelInfo;
   /** 선택된 암장 정보 */

@@ -10,6 +10,8 @@ import { http } from "../../utils/http";
 import type {
   ApiResultGymResponse,
   ApiResultListGymResponse,
+  ApiResultPageGymAttemptResponse,
+  GetMySuccessfulAttemptsParams,
 } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -38,6 +40,20 @@ export const getGymById = (
   );
 };
 /**
+ * 사용자가 특정 암장에서 성공한 도전 기록들을 최신순으로 조회합니다.
+ * @summary 내 암장별 성공한 도전 기록 조회
+ */
+export const getMySuccessfulAttempts = (
+  gymId: number,
+  params?: GetMySuccessfulAttemptsParams,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultPageGymAttemptResponse>(
+    { url: `/api/gyms/${gymId}/attempts/my-success`, method: "GET", params },
+    options
+  );
+};
+/**
  * 특정 브랜드의 모든 지점을 조회합니다
  * @summary 브랜드별 암장 리스트 조회
  */
@@ -55,6 +71,9 @@ export type GetAllGymsResult = NonNullable<
 >;
 export type GetGymByIdResult = NonNullable<
   Awaited<ReturnType<typeof getGymById>>
+>;
+export type GetMySuccessfulAttemptsResult = NonNullable<
+  Awaited<ReturnType<typeof getMySuccessfulAttempts>>
 >;
 export type GetGymsByBrandResult = NonNullable<
   Awaited<ReturnType<typeof getGymsByBrand>>
