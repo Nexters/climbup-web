@@ -343,7 +343,7 @@ export const handlers = [
           description: "클라이밍이 처음이라면 가볍게 시작해보세요!",
           srMin: 600,
           srMax: 649,
-          imageUrl: "https://example.com/level1",
+          imageUrls: ["https://example.com/level1"],
           sortOrder: 1,
         },
         {
@@ -356,7 +356,7 @@ export const handlers = [
           description: "규칙도 익히고, 슬슬 재미가 붙은 단계네요!",
           srMin: 650,
           srMax: 999,
-          imageUrl: "https://example.com/level2",
+          imageUrls: ["https://example.com/level2"],
           sortOrder: 2,
         },
         {
@@ -369,7 +369,7 @@ export const handlers = [
           description: "도전의 재미가 본격적으로 느껴지실 거예요.",
           srMin: 1000,
           srMax: 1999,
-          imageUrl: "https://example.com/level3",
+          imageUrls: ["https://example.com/level3"],
           sortOrder: 3,
         },
         {
@@ -382,7 +382,7 @@ export const handlers = [
           description: "이제 다양한 루트도 거뜬하죠? 멋져요!",
           srMin: 2000,
           srMax: 2999,
-          imageUrl: "https://example.com/level4",
+          imageUrls: ["https://example.com/level4"],
           sortOrder: 4,
         },
         {
@@ -394,7 +394,7 @@ export const handlers = [
           levelName: "어디서든 인정받는 단계",
           description: "누구나 인정할 실력자시군요. 정말 대단해요!",
           srMin: 3000,
-          imageUrl: "https://example.com/level5",
+          imageUrls: ["https://example.com/level5"],
           sortOrder: 5,
         },
       ],
