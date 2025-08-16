@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:msw": "MSW_ENABLED=true vite",
+    "dev:msw": "VITE_MSW_ENABLED=true vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "format": "biome format --write .",

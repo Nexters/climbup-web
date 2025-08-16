@@ -17,11 +17,16 @@ const startApp = () => {
   );
 };
 
-// MSW가 활성화된 경우에만 worker 시작
-// TODO: 추후 환경변수로 관리
-worker.start().then(() => {
+// MSW_ENABLED 환경변수가 true인 경우에만 worker 시작
+const isMswEnabled = import.meta.env.VITE_MSW_ENABLED === "true";
+
+if (isMswEnabled) {
+  worker.start().then(() => {
+    startApp();
+  });
+} else {
   startApp();
-});
+}
 
 const siteId = 6472888;
 const hotjarVersion = 6;
