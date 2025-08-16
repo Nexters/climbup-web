@@ -2,15 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Timer } from "@/components/timer/Timer";
-import { USER_SESSION_STORAGE_KEY } from "@/constants/mission";
 import {
   endUserSession,
-  getUserSession,
+  getCurrentUserSession,
   startUserSession,
 } from "@/generated/user-session/user-session";
 import useToast from "@/hooks/useToast";
 import { getHeaderToken } from "@/utils/cookie";
-import { getStorage, removeStorage, setStorage } from "@/utils/storage";
 import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
@@ -30,25 +28,17 @@ export default function MissionTimer({
 
   const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const storageSessionId = getStorage(USER_SESSION_STORAGE_KEY);
   const showStopButton = isRunning || showMockStopButton;
 
   const { data: sessionData } = useQuery({
     queryKey: ["userSession"],
-    queryFn: () =>
-      storageSessionId
-        ? getUserSession(Number(storageSessionId), {
-            headers: getHeaderToken(),
-          })
-        : null,
+    queryFn: () => getCurrentUserSession({ headers: getHeaderToken() }),
     select: (data) => data?.data ?? null,
-    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
   });
 
   const { mutateAsync: startSession } = useMutation({
     mutationFn: () => startUserSession({ headers: getHeaderToken() }),
-    onSuccess: (data) => {
-      setStorage(USER_SESSION_STORAGE_KEY, data.data?.id?.toString() ?? "");
+    onSuccess: () => {
       setIsRunning(true);
       setTime(0);
       queryClient.invalidateQueries({ queryKey: ["userSession"] });
@@ -59,7 +49,6 @@ export default function MissionTimer({
     mutationFn: (sessionId: number) =>
       endUserSession(sessionId, { headers: getHeaderToken() }),
     onSuccess: () => {
-      removeStorage(USER_SESSION_STORAGE_KEY);
       setIsRunning(false);
       setTime(0);
       queryClient.invalidateQueries({ queryKey: ["userSession"] });
@@ -70,7 +59,7 @@ export default function MissionTimer({
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
-    if (sessionData?.startedAt && !sessionData?.endedAt) {
+    if (sessionData?.startedAt) {
       setIsRunning(true);
       const startTime = new Date(sessionData.startedAt).getTime();
       const currentTime = Date.now();
@@ -113,7 +102,7 @@ export default function MissionTimer({
 
     holdTimeoutRef.current = setTimeout(async () => {
       try {
-        await endSession(Number(storageSessionId));
+        await endSession(sessionData?.id ?? 0);
       } catch (error) {
         console.error(error);
       } finally {

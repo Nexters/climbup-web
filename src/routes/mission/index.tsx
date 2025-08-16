@@ -3,13 +3,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { countBy } from "es-toolkit/compat";
 import { useCallback, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
-import {
-  MISSION_GUIDE_COMPLETED_KEY,
-  USER_SESSION_STORAGE_KEY,
-} from "@/constants/mission";
+import { MISSION_GUIDE_COMPLETED_KEY } from "@/constants/mission";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
-import { getUserSession } from "@/generated/user-session/user-session";
+import { getCurrentUserSession } from "@/generated/user-session/user-session";
 import {
   type DriverGuideStepsFactory,
   useDriverGuide,
@@ -86,6 +83,14 @@ const createMissionCardProps = (
 };
 
 function Mission() {
+  const { data: sessionData } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () => getCurrentUserSession({ headers: getHeaderToken() }),
+    select: (data) => data?.data ?? null,
+  });
+
+  const isSessionStarted = !!sessionData?.startedAt;
+
   const { data: recommendations = [] } = useQuery({
     queryKey: ["recommendations"],
     queryFn: () =>
@@ -97,29 +102,15 @@ function Mission() {
         status: calculateMissionStatus(mission.attempts),
       }));
     },
-    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
-  });
-
-  const { data: sessionData } = useQuery({
-    queryKey: ["userSession"],
-    queryFn: () =>
-      getStorage(USER_SESSION_STORAGE_KEY)
-        ? getUserSession(Number(getStorage(USER_SESSION_STORAGE_KEY)), {
-            headers: getHeaderToken(),
-          })
-        : null,
-    select: (data) => data?.data ?? null,
-    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
+    enabled: isSessionStarted,
   });
 
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [filter, setFilter] = useState<FilterType>("all");
+  const [showMockStopButton, setShowMockStopButton] = useState(false);
   const [showGuide, setShowGuide] = useState(
     () => !getStorage(MISSION_GUIDE_COMPLETED_KEY)
   );
-
-  const isSessionStarted = !!sessionData?.startedAt;
-  const [showMockStopButton, setShowMockStopButton] = useState(false);
 
   const { emblaRef, selectedIndex } = useCarousel();
 
