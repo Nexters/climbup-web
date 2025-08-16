@@ -1,21 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 
-import assetCharacterIcon from "@/assets/images/ic_character.png";
 import assetFailIcon from "@/assets/images/ic_failure.png";
-import assetScoreIcon from "@/assets/images/ic_score.png";
+import assetScoreIcon from "@/assets/images/ic_score.gif";
 import assetSuccessIcon from "@/assets/images/ic_success.png";
 import Button from "@/components/Button";
 import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
-import { LevelProgress } from "@/components/level-progress/LevelProgress";
 import { MotionNumberFlow } from "@/components/motion-number-flow/MotionNumberFlow";
 import { Timer } from "@/components/timer/Timer";
 import { getUserSession } from "@/generated/user-session/user-session";
+import { useToast } from "@/hooks/useToast";
 import { getHeaderToken } from "@/utils/cookie";
-import { getLevelDisplayText, getLevelInfo } from "@/utils/level";
+import { getLevelInfo } from "@/utils/level";
+import { SessionLevelProgress } from "../-components/session-level-progress";
 
 // 날짜를 한국어 형식으로 포맷팅하는 함수
 function formatDateToKorean(dateString?: string): string {
@@ -38,6 +37,7 @@ export const Route = createFileRoute("/session/$sessionId/")({
 
 function RouteComponent() {
   const { sessionId } = Route.useParams();
+  const { showToast } = useToast();
 
   // currentExp 제어를 위한 상태 (훅은 최상단에 위치)
   const [currentExp, setCurrentExp] = useState(0);
@@ -55,6 +55,13 @@ function RouteComponent() {
   // 점수 애니메이션 완료 후 currentExp 적용
   const handleScoreAnimationComplete = () => {
     setCurrentExp(levelInfo.currentExp);
+  };
+
+  // 레벨업 축하 메시지
+  const handleLevelUp = () => {
+    showToast(
+      `🎉 레벨업!\n축하합니다! 레벨 ${levelInfo.displayLevel}에 도달했습니다!`
+    );
   };
 
   // 로딩 상태 처리
@@ -89,7 +96,6 @@ function RouteComponent() {
 
   // 레벨 정보 계산
   const levelInfo = getLevelInfo(totalScore);
-  const levelDisplayText = getLevelDisplayText(totalScore);
 
   return (
     <div className=" h-dvh px-4 flex flex-col">
@@ -136,11 +142,11 @@ function RouteComponent() {
           <img
             src={assetSuccessIcon}
             alt="성공 횟수"
-            className="object-cover w-12 h-12"
+            className="object-cover w-[56px] h-[56px]"
           />
           <MotionNumberFlow
             value={successValue}
-            className="t-p-22-sb text-neutral-800"
+            className="t-m-24-b text-neutral-800"
           />
           <p className="t-p-14-m pt-1 text-neutral-500">성공</p>
         </div>
@@ -148,11 +154,11 @@ function RouteComponent() {
           <img
             src={assetFailIcon}
             alt="실패 횟수"
-            className="object-cover w-12 h-12"
+            className="object-cover w-[56px] h-[56px]"
           />
           <MotionNumberFlow
             value={failureValue}
-            className="t-p-22-sb text-neutral-800"
+            className="t-m-24-b text-neutral-800"
           />
           <p className="t-p-14-m pt-1 text-neutral-500">실패</p>
         </div>
@@ -160,38 +166,25 @@ function RouteComponent() {
           <img
             src={assetScoreIcon}
             alt="점수"
-            className="object-cover w-12 h-12"
+            className="object-cover w-[56px] h-[56px]"
           />
           <MotionNumberFlow
             prefix="+"
             value={scoreValue}
-            className="t-p-22-sb text-neutral-800"
+            className="t-m-24-b text-neutral-800"
             onAnimationComplete={handleScoreAnimationComplete}
           />
           <p className="t-p-14-m pt-1 text-neutral-500">점수</p>
         </div>
       </div>
       <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
-        <img
-          src={assetCharacterIcon}
-          alt="레벨"
-          className="w-[60px] h-[60px] object-cover"
-        />
         <div className="flex flex-col flex-1">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="t-p-12-m text-neutral-800 pb-2"
-          >
-            {levelDisplayText}
-          </motion.p>
-          <LevelProgress
+          <SessionLevelProgress
             level={levelInfo.displayLevel}
             currentExp={currentExp}
             levelExp={levelInfo.levelExp}
             progressWrapperClassName="w-full"
+            onLevelUp={handleLevelUp}
           />
         </div>
       </div>

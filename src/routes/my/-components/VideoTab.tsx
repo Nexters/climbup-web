@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 
 const TABS = [
   {
-    id: "all",
+    id: null,
     name: "전체",
   },
   {

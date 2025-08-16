@@ -4,6 +4,7 @@ import { LayoutGroup, motion } from "motion/react";
 import { Dialog } from "radix-ui";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
+import { getAttempts } from "@/generated/attempts/attempts";
 import { MyInfo } from "./-components/MyInfo";
 import { MyScore } from "./-components/MyScore";
 import { VideoCard } from "./-components/VideoCard";
@@ -16,16 +17,16 @@ export const Route = createFileRoute("/my/")({
 
 type VideoItem = {
   imageUrl: string;
+  videoUrl: string;
   sectorName: string;
   score: number;
   completedAt: string;
 };
 
 const PAGE_SIZE = 10;
-const MAX_PAGES = 5; // 목업: 최대 5페이지
 
 function RouteComponent() {
-  const [selectedTab, setSelectedTab] = useState<VideoTabId>("all");
+  const [selectedTab, setSelectedTab] = useState<VideoTabId>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const fetchVideos = async ({
@@ -33,19 +34,30 @@ function RouteComponent() {
   }: {
     pageParam?: number;
   }): Promise<{ items: VideoItem[]; nextPage?: number }> => {
-    // 목업: 네트워크 지연 흉내
-    await new Promise((r) => setTimeout(r, 300));
-    const base = pageParam * PAGE_SIZE;
-    const items: VideoItem[] = Array.from({ length: PAGE_SIZE }).map(
-      (_, idx) => ({
-        imageUrl: `https://picsum.photos/720/1280?random=${base + idx + 1}`,
-        sectorName: "강남점",
-        score: 100,
-        completedAt: "2025-01-01",
+    const gymId = selectedTab ? Number(selectedTab) : undefined;
+
+    const response = await getAttempts({
+      page: pageParam,
+      size: PAGE_SIZE,
+      gymId,
+      success: true,
+    });
+
+    const items: VideoItem[] = (response.data?.content ?? []).map(
+      (attempt) => ({
+        imageUrl: attempt.thumbnailUrl ?? "",
+        videoUrl: attempt.videoUrl ?? "",
+        sectorName: attempt.sectorName ?? "",
+        score: attempt.routeScore ?? 0,
+        completedAt: attempt.attemptedAt ?? "",
       })
     );
-    const hasNext = pageParam + 1 < MAX_PAGES;
-    return { items, nextPage: hasNext ? pageParam + 1 : undefined };
+
+    const hasNext = !response.data?.last;
+    return {
+      items,
+      nextPage: hasNext ? pageParam + 1 : undefined,
+    };
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

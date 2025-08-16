@@ -3,7 +3,6 @@ import { Dialog } from "radix-ui";
 import type { Swiper as SwiperType } from "swiper";
 import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import MOCK_VIDEO from "@/assets/video/mock-mission-answer-video.mp4";
 import "swiper/css";
 import "swiper/css/virtual";
 import {
@@ -14,12 +13,19 @@ import {
 } from "react";
 import assetScrollDown from "@/assets/images/ic_scroll_down.png";
 import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
+import DownloadIcon from "@/components/icons/DownloadIcon";
 import PlayIcon from "@/components/icons/PlayIcon";
 import StopIcon from "@/components/icons/StopIcon";
 import { cn } from "@/utils/cn";
+import {
+  type DownloadProgress,
+  downloadVideo,
+  generateSafeFilename,
+} from "@/utils/download";
 
 type VideoDetailItem = {
   imageUrl: string;
+  videoUrl: string;
   sectorName: string;
   score: number;
   completedAt: string;
@@ -46,6 +52,9 @@ export const VideoDetailSwiper = ({
   const [controlHintAction, setControlHintAction] = useState<"play" | "pause">(
     "play"
   );
+  const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
+  const [downloadProgress, setDownloadProgress] =
+    useState<DownloadProgress | null>(null);
   const controlHintTimerRef = useRef<number | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -88,6 +97,40 @@ export const VideoDetailSwiper = ({
       setIsControlHintVisible(false);
       controlHintTimerRef.current = null;
     }, 700);
+  };
+
+  const handleDownload = async (item: VideoDetailItem, index: number) => {
+    if (downloadingIndex !== null) return; // 이미 다운로드 중인 경우 차단
+
+    try {
+      setDownloadingIndex(index);
+      setDownloadProgress(null);
+
+      const filename = generateSafeFilename(
+        item.sectorName,
+        item.completedAt,
+        item.score
+      );
+
+      await downloadVideo(item.videoUrl, {
+        filename,
+        onProgress: (progress) => {
+          setDownloadProgress(progress);
+        },
+        onError: (error) => {
+          console.error("Download failed:", error);
+          alert("다운로드에 실패했습니다. 다시 시도해주세요.");
+        },
+        onComplete: () => {
+          console.log("Download completed successfully");
+        },
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+    } finally {
+      setDownloadingIndex(null);
+      setDownloadProgress(null);
+    }
   };
 
   useEffect(
@@ -176,6 +219,7 @@ export const VideoDetailSwiper = ({
       >
         {items.map((item, index) => {
           const isActive = index === activeIndex;
+          const isDownloading = downloadingIndex === index;
           return (
             <SwiperSlide key={`video-detail-slide-${item.imageUrl}`}>
               <div className="relative w-full h-dvh">
@@ -186,10 +230,37 @@ export const VideoDetailSwiper = ({
                   loop
                   playsInline
                   autoPlay={isActive}
-                  src={isActive ? MOCK_VIDEO : undefined}
+                  src={isActive ? item.videoUrl : undefined}
                   onClick={handleVideoClick}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+
+                {/* 다운로드 버튼 */}
+                <button
+                  type="button"
+                  aria-label="영상 다운로드"
+                  className={cn(
+                    "absolute right-4 top-4 z-[110] w-10 h-10 rounded-full bg-black/40 text-white flex-center transition-all duration-200",
+                    isDownloading
+                      ? "opacity-70 cursor-not-allowed"
+                      : "hover:bg-black/60"
+                  )}
+                  onClick={() => handleDownload(item, index)}
+                  disabled={isDownloading}
+                >
+                  {isDownloading ? (
+                    <div className="flex flex-col items-center">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      {downloadProgress && (
+                        <span className="text-[8px] mt-0.5 font-medium">
+                          {downloadProgress.percentage}%
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <DownloadIcon variant="white" size={20} />
+                  )}
+                </button>
                 <AnimatePresence>
                   {isActive && isControlHintVisible ? (
                     <motion.div

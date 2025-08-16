@@ -5,6 +5,7 @@ import type {
   ApiResultFinishUserSession,
   ApiResultListGymLevelResponse,
   ApiResultListRouteMissionRecommendationResponse,
+  ApiResultPageAttemptResponse,
   ApiResultRouteMissionUploadChunkResponse,
   ApiResultRouteMissionUploadSessionFinalizeResponse,
   ApiResultRouteMissionUploadSessionInitializeResponse,
@@ -12,13 +13,294 @@ import type {
   ApiResultUserSessionState,
   ApiResultUserStatusResponse,
   ApiResultVoid,
+  AttemptResponse,
 } from "@/generated/model";
 
 /**
  * 모의 서버 핸들러
  * - 하위에 리스트 형태로 추가
  */
+// Mock 도전 기록 데이터
+const mockAttempts: AttemptResponse[] = [
+  // 강남점 (gymId: 1) 데이터
+  {
+    attemptId: 1,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "BLUE",
+    gymLevelImageUrls: ["https://example.com/level3"],
+    attemptedAt: "2024-01-15T14:30:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=1",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 1·2",
+    routeScore: 45,
+  },
+  {
+    attemptId: 2,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "RED",
+    gymLevelImageUrls: ["https://example.com/level4"],
+    attemptedAt: "2024-01-14T16:20:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=2",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 3·4",
+    routeScore: 65,
+  },
+  {
+    attemptId: 3,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "GREEN",
+    gymLevelImageUrls: ["https://example.com/level2"],
+    attemptedAt: "2024-01-13T18:45:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=3",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 5·6",
+    routeScore: 35,
+  },
+  {
+    attemptId: 4,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "PURPLE",
+    gymLevelImageUrls: ["https://example.com/level5"],
+    attemptedAt: "2024-01-12T12:15:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=4",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 7·8",
+    routeScore: 85,
+  },
+  {
+    attemptId: 5,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "ORANGE",
+    gymLevelImageUrls: ["https://example.com/level1"],
+    attemptedAt: "2024-01-11T19:30:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=5",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 9·10",
+    routeScore: 25,
+  },
+  // 양재점 (gymId: 2) 데이터
+  {
+    attemptId: 6,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "BLUE",
+    gymLevelImageUrls: ["https://example.com/level3"],
+    attemptedAt: "2024-01-10T15:20:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=6",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "A섹터",
+    routeScore: 50,
+  },
+  {
+    attemptId: 7,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "GREEN",
+    gymLevelImageUrls: ["https://example.com/level2"],
+    attemptedAt: "2024-01-09T11:45:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=7",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "B섹터",
+    routeScore: 40,
+  },
+  {
+    attemptId: 8,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "RED",
+    gymLevelImageUrls: ["https://example.com/level4"],
+    attemptedAt: "2024-01-08T17:10:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=8",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "C섹터",
+    routeScore: 70,
+  },
+  {
+    attemptId: 9,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "PURPLE",
+    gymLevelImageUrls: ["https://example.com/level5"],
+    attemptedAt: "2024-01-07T13:25:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=9",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "D섹터",
+    routeScore: 90,
+  },
+  {
+    attemptId: 10,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "ORANGE",
+    gymLevelImageUrls: ["https://example.com/level1"],
+    attemptedAt: "2024-01-06T20:00:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=10",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "E섹터",
+    routeScore: 30,
+  },
+  // 추가 데이터 (페이지네이션 테스트용)
+  {
+    attemptId: 11,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "BLUE",
+    gymLevelImageUrls: ["https://example.com/level3"],
+    attemptedAt: "2024-01-05T14:30:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=11",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 11·12",
+    routeScore: 55,
+  },
+  {
+    attemptId: 12,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "GREEN",
+    gymLevelImageUrls: ["https://example.com/level2"],
+    attemptedAt: "2024-01-04T16:45:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=12",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 13·14",
+    routeScore: 40,
+  },
+  {
+    attemptId: 13,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "RED",
+    gymLevelImageUrls: ["https://example.com/level4"],
+    attemptedAt: "2024-01-03T12:20:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=13",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "F섹터",
+    routeScore: 75,
+  },
+  {
+    attemptId: 14,
+    gymId: 2,
+    brandName: "더클라임",
+    branchName: "양재점",
+    gymLevelName: "BLUE",
+    gymLevelImageUrls: ["https://example.com/level3"],
+    attemptedAt: "2024-01-02T18:15:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=14",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "G섹터",
+    routeScore: 45,
+  },
+  {
+    attemptId: 15,
+    gymId: 1,
+    brandName: "더클라임",
+    branchName: "강남점",
+    gymLevelName: "PURPLE",
+    gymLevelImageUrls: ["https://example.com/level5"],
+    attemptedAt: "2024-01-01T15:30:00Z",
+    success: true,
+    thumbnailUrl: "https://picsum.photos/720/1280?random=15",
+    videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
+    sectorName: "섹터 15·16",
+    routeScore: 95,
+  },
+];
+
 export const handlers = [
+  // 성공한 도전 기록 조회 API
+  http.get("https://dev-api.holdy.kr/api/attempts", ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page")) || 0;
+    const size = Number(url.searchParams.get("size")) || 10;
+    const gymId = url.searchParams.get("gymId")
+      ? Number(url.searchParams.get("gymId"))
+      : undefined;
+    const success = url.searchParams.get("success") !== "false";
+
+    // 필터링: gymId가 있으면 해당 암장만, 없으면 전체
+    let filteredAttempts = mockAttempts.filter(
+      (attempt) => attempt.success === success
+    );
+
+    if (gymId) {
+      filteredAttempts = filteredAttempts.filter(
+        (attempt) => attempt.gymId === gymId
+      );
+    }
+
+    // 페이지네이션
+    const startIndex = page * size;
+    const endIndex = startIndex + size;
+    const paginatedAttempts = filteredAttempts.slice(startIndex, endIndex);
+
+    const totalElements = filteredAttempts.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const isLast = page >= totalPages - 1;
+    const isFirst = page === 0;
+
+    return HttpResponse.json<ApiResultPageAttemptResponse>({
+      message: "성공한 도전 기록을 성공적으로 조회했습니다.",
+      data: {
+        content: paginatedAttempts,
+        totalElements,
+        totalPages,
+        number: page,
+        size,
+        numberOfElements: paginatedAttempts.length,
+        first: isFirst,
+        last: isLast,
+        empty: paginatedAttempts.length === 0,
+        pageable: {
+          pageNumber: page,
+          pageSize: size,
+          sort: {
+            empty: true,
+            sorted: false,
+            unsorted: true,
+          },
+          offset: startIndex,
+          paged: true,
+          unpaged: false,
+        },
+        sort: {
+          empty: true,
+          sorted: false,
+          unsorted: true,
+        },
+      },
+    });
+  }),
   http.get("https://dev-api.holdy.kr/api/recommendations", () => {
     return HttpResponse.json<ApiResultListRouteMissionRecommendationResponse>({
       message: "추천 루트미션을 성공적으로 조회했습니다.",
