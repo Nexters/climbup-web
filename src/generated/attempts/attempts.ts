@@ -14,6 +14,7 @@ import type {
   ApiResultCreateAttemptResponse,
   ApiResultListRouteMissionRecommendationResponse,
   ApiResultListUserMissionAttemptResponse,
+  ApiResultPageAttemptResponse,
   ApiResultRouteMissionUploadChunkResponse,
   ApiResultRouteMissionUploadSessionFinalizeResponse,
   ApiResultRouteMissionUploadSessionInitializeResponse,
@@ -21,12 +22,26 @@ import type {
   ApiResultSessionAttemptResponse,
   CreateAttemptRequest,
   FinalizeRouteMissionUploadSessionBody,
+  GetAttemptsParams,
   RouteMissionUploadChunkRequest,
   RouteMissionUploadSessionInitializeRequest,
 } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
+/**
+ * 사용자가 성공한 모든 도전 기록들을 최신순으로 조회합니다.
+ * @summary 성공한 도전 기록 조회
+ */
+export const getAttempts = (
+  params?: GetAttemptsParams,
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultPageAttemptResponse>(
+    { url: `/api/attempts`, method: "GET", params },
+    options
+  );
+};
 /**
  * 루트미션에 대한 도전기록을 등록합니다. 성공 시 SR이 증가합니다.
  * @summary 루트미션 도전기록 등록
@@ -176,6 +191,9 @@ export const getIncompleteAttempts = (
     options
   );
 };
+export type GetAttemptsResult = NonNullable<
+  Awaited<ReturnType<typeof getAttempts>>
+>;
 export type CreateAttemptResult = NonNullable<
   Awaited<ReturnType<typeof createAttempt>>
 >;
