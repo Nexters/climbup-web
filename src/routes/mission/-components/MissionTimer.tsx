@@ -97,7 +97,10 @@ export default function MissionTimer({
       try {
         await endSession(sessionData?.id ?? 0);
         queryClient.invalidateQueries({ queryKey: ["userSession"] });
-        navigate({ to: "/mission-result" });
+        navigate({
+          to: "/session/$sessionId",
+          params: { sessionId: sessionData?.id?.toString() ?? "" },
+        });
       } catch (error) {
         console.error(error);
       } finally {
