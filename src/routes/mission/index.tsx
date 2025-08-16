@@ -83,13 +83,13 @@ const createMissionCardProps = (
 };
 
 function Mission() {
-  const { data: sessionData } = useQuery({
+  const { data: sessionData, isError: isSessionError } = useQuery({
     queryKey: ["userSession"],
     queryFn: () => getCurrentUserSession({ headers: getHeaderToken() }),
     select: (data) => data?.data ?? null,
   });
 
-  const isSessionStarted = !!sessionData?.startedAt;
+  const isSessionStarted = !!sessionData?.startedAt && !isSessionError;
 
   const { data: recommendations = [] } = useQuery({
     queryKey: ["recommendations"],

@@ -1,14 +1,20 @@
 import type { SVGProps } from "react";
 
 interface StopIconProps extends SVGProps<SVGSVGElement> {
-  variant?: "dark" | "white";
+  variant?: "dark" | "white" | "red";
 }
+
+const FILL_COLOR = {
+  dark: "#121315",
+  white: "#FCFCFD",
+  red: "#da2445",
+} as const;
 
 export default function StopIcon({
   variant = "dark",
   ...props
 }: StopIconProps) {
-  const fill = variant === "dark" ? "#121315" : "#FCFCFD";
+  const fill = FILL_COLOR[variant];
 
   return (
     <svg

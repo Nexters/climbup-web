@@ -12,7 +12,7 @@ import { getHeaderToken } from "@/utils/cookie";
 import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
-const HOLD_MS = 1200;
+const HOLD_MS = 1000;
 
 export default function MissionTimer({
   showMockStopButton,
@@ -23,44 +23,32 @@ export default function MissionTimer({
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const [isRunning, setIsRunning] = useState(false);
   const [time, setTime] = useState(0);
 
   const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const showStopButton = isRunning || showMockStopButton;
-
-  const { data: sessionData } = useQuery({
+  const { data: sessionData, isError: isSessionError } = useQuery({
     queryKey: ["userSession"],
     queryFn: () => getCurrentUserSession({ headers: getHeaderToken() }),
     select: (data) => data?.data ?? null,
   });
 
+  const isRunning = !!sessionData?.startedAt && !isSessionError;
+  const showStopButton = isRunning || showMockStopButton;
+
   const { mutateAsync: startSession } = useMutation({
     mutationFn: () => startUserSession({ headers: getHeaderToken() }),
-    onSuccess: () => {
-      setIsRunning(true);
-      setTime(0);
-      queryClient.invalidateQueries({ queryKey: ["userSession"] });
-    },
   });
 
   const { mutateAsync: endSession } = useMutation({
     mutationFn: (sessionId: number) =>
       endUserSession(sessionId, { headers: getHeaderToken() }),
-    onSuccess: () => {
-      setIsRunning(false);
-      setTime(0);
-      queryClient.invalidateQueries({ queryKey: ["userSession"] });
-      navigate({ to: "/mission-result" });
-    },
   });
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
-    if (sessionData?.startedAt) {
-      setIsRunning(true);
+    if (sessionData?.startedAt && !isSessionError) {
       const startTime = new Date(sessionData.startedAt).getTime();
       const currentTime = Date.now();
       const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
@@ -70,7 +58,6 @@ export default function MissionTimer({
         setTime((prevTime) => prevTime + 1);
       }, 1000);
     } else {
-      setIsRunning(false);
       setTime(0);
     }
 
@@ -79,12 +66,14 @@ export default function MissionTimer({
         clearInterval(intervalId);
       }
     };
-  }, [sessionData]);
+  }, [sessionData, isSessionError]);
 
   const handleToggle = async () => {
     try {
       if (!showStopButton) {
         await startSession();
+        setTime(0);
+        queryClient.invalidateQueries({ queryKey: ["userSession"] });
       }
     } catch (error) {
       console.error("세션 처리 중 오류가 발생했습니다:", error);
@@ -98,11 +87,18 @@ export default function MissionTimer({
     if (!isRunning) return;
     if (holdTimeoutRef.current) return;
 
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
+    }
+
     setIsHolding(true);
 
     holdTimeoutRef.current = setTimeout(async () => {
       try {
         await endSession(sessionData?.id ?? 0);
+        queryClient.invalidateQueries({ queryKey: ["userSession"] });
+        navigate({ to: "/mission-result" });
       } catch (error) {
         console.error(error);
       } finally {
@@ -117,10 +113,12 @@ export default function MissionTimer({
 
   const cancelHoldToStop = () => {
     const hadPendingHold = !!holdTimeoutRef.current;
+
     if (holdTimeoutRef.current) {
       clearTimeout(holdTimeoutRef.current);
       holdTimeoutRef.current = null;
     }
+
     if (hadPendingHold && showStopButton && isRunning) {
       showToast("정지 버튼을 길게 누르면\n오늘의 세션을 종료할 수 있어요.");
     }
@@ -143,15 +141,19 @@ export default function MissionTimer({
         onTouchEnd={cancelHoldToStop}
         onContextMenu={(e) => e.preventDefault()}
         id={showStopButton ? "timer-stop-button" : "timer-play-button"}
-        className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
+        className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-1000 ease-in ${
           isHolding && showStopButton
-            ? "scale-95 bg-neutral-200"
+            ? "scale-150 bg-neutral-200"
             : "bg-neutral-100"
         }`}
         aria-label={showStopButton ? "정지하기" : "시작하기"}
       >
         {showStopButton ? (
-          <StopIcon variant="dark" width={16} height={16} />
+          <StopIcon
+            variant={isHolding ? "red" : "dark"}
+            width={16}
+            height={16}
+          />
         ) : (
           <PlayIcon variant="dark" width={16} height={16} />
         )}
