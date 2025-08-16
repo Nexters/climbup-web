@@ -38,7 +38,7 @@ export const handlers = [
           imageUrl:
             "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+1",
           videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
-          removedAt: "2024-04-20T00:00:00Z",
+          removedAt: "2025-08-25T00:00:00Z",
           postedAt: "2024-03-20T00:00:00Z",
           recommendedOrder: 1,
         },
@@ -70,7 +70,7 @@ export const handlers = [
           imageUrl:
             "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+2",
           videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
-          removedAt: "2024-04-25T00:00:00Z",
+          removedAt: "2025-08-25T00:00:00Z",
           postedAt: "2024-03-25T00:00:00Z",
           recommendedOrder: 2,
         },
@@ -96,7 +96,7 @@ export const handlers = [
           imageUrl:
             "https://placehold.co/400x600/4D5761/FCFCFD.png?text=Mission+3",
           videoUrl: "/src/assets/video/mock-mission-answer-video.mp4",
-          removedAt: "2024-04-30T00:00:00Z",
+          removedAt: "2025-08-25T00:00:00Z",
           postedAt: "2024-03-30T00:00:00Z",
           recommendedOrder: 3,
         },
