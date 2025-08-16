@@ -9,13 +9,15 @@ import { useCarousel } from "../../-hooks/useCarousel";
 export default function MissionResultView({
   status,
   missionData,
+  onRetry,
 }: {
   status: "success" | "failed";
   missionData: RouteMissionRecommendationResponse;
+  onRetry?: () => void;
 }) {
   const { emblaRef, emblaApi, selectedIndex } = useCarousel();
   const activeTab = useMemo(
-    () => (selectedIndex === 0 ? "my-video" : "answer"),
+    () => (selectedIndex === 0 ? "answer" : "my-video"),
     [selectedIndex]
   );
   const latestAttemptUrl = missionData?.attempts?.[0]?.videoUrl;
@@ -50,24 +52,24 @@ export default function MissionResultView({
             onClick={() => emblaApi?.scrollTo(0)}
             className={cn(
               "px-4 py-2 rounded-3xl t-p-14-m transition-colors",
-              activeTab === "my-video"
-                ? "bg-neutral-600 text-neutral-100"
-                : "bg-transparent text-neutral-100"
-            )}
-          >
-            내 영상
-          </button>
-          <button
-            type="button"
-            onClick={() => emblaApi?.scrollTo(1)}
-            className={cn(
-              "px-4 py-2 rounded-3xl t-p-14-m transition-colors",
               activeTab === "answer"
                 ? "bg-neutral-600 text-neutral-100"
                 : "bg-transparent text-neutral-100"
             )}
           >
             답지
+          </button>
+          <button
+            type="button"
+            onClick={() => emblaApi?.scrollTo(1)}
+            className={cn(
+              "px-4 py-2 rounded-3xl t-p-14-m transition-colors",
+              activeTab === "my-video"
+                ? "bg-neutral-600 text-neutral-100"
+                : "bg-transparent text-neutral-100"
+            )}
+          >
+            내 영상
           </button>
         </div>
       </div>
@@ -79,30 +81,6 @@ export default function MissionResultView({
               className="flex-[0_0_80vw] flex items-center justify-center"
               style={{
                 transform: selectedIndex === 0 ? "scale(1)" : "scale(0.9)",
-                transition: "transform 0.3s ease",
-              }}
-            >
-              <div className="max-w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
-                {latestAttemptUrl ? (
-                  <video
-                    src={latestAttemptUrl}
-                    className="w-full h-full object-cover"
-                    controls
-                    playsInline
-                  >
-                    <track kind="captions" />
-                  </video>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-neutral-400 t-p-14-m">
-                    영상이 없습니다
-                  </div>
-                )}
-              </div>
-            </div>
-            <div
-              className="flex-[0_0_80vw] flex items-center justify-center"
-              style={{
-                transform: selectedIndex === 1 ? "scale(1)" : "scale(0.9)",
                 transition: "transform 0.3s ease",
               }}
             >
@@ -123,11 +101,36 @@ export default function MissionResultView({
                 )}
               </div>
             </div>
+            <div
+              className="flex-[0_0_80vw] flex items-center justify-center"
+              style={{
+                transform: selectedIndex === 1 ? "scale(1)" : "scale(0.9)",
+                transition: "transform 0.3s ease",
+              }}
+            >
+              <div className="max-w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+                {latestAttemptUrl ? (
+                  <video
+                    src={latestAttemptUrl}
+                    className="w-full h-full object-cover"
+                    controls
+                    playsInline
+                  >
+                    <track kind="captions" />
+                  </video>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-neutral-400 t-p-14-m">
+                    영상이 없습니다
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="flex justify-center gap-4 px-4 py-6">
+        {onRetry && <Button onClick={onRetry}>다시 도전</Button>}
         {latestAttemptUrl && (
           <Button
             onClick={() =>
