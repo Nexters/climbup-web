@@ -14,8 +14,8 @@ export interface SessionAttemptDetail {
   success?: boolean;
   /** 난이도 */
   difficulty?: string;
-  /** 난이도 이미지 URL */
-  difficultyImageUrl?: string;
+  /** 난이도 이미지 URL 목록 */
+  difficultyImageUrls?: string[];
   /** 루트미션 탈거일 */
   removedAt?: string;
   /** 가이드 썸네일 URL */

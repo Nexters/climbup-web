@@ -28,8 +28,8 @@ export interface GymLevelResponse {
   srMin?: number;
   /** 최대 SR */
   srMax?: number;
-  /** 암장별 레벨 이미지 URL */
-  imageUrl?: string;
+  /** 암장별 레벨 이미지 URL 목록 */
+  imageUrls?: string[];
   /** 정렬 순서 */
   sortOrder?: number;
 }
