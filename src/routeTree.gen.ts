@@ -19,6 +19,8 @@ import { Route as OnboardingLevelIndexRouteImport } from './routes/onboarding/le
 import { Route as OnboardingGymIndexRouteImport } from './routes/onboarding/gym/index'
 import { Route as Oauth2RedirectIndexRouteImport } from './routes/oauth2/redirect/index'
 import { Route as MissionMissionIdIndexRouteImport } from './routes/mission/$missionId/index'
+import { Route as MissionMissionIdSuccessIndexRouteImport } from './routes/mission/$missionId/success/index'
+import { Route as MissionMissionIdFailedIndexRouteImport } from './routes/mission/$missionId/failed/index'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
@@ -69,6 +71,18 @@ const MissionMissionIdIndexRoute = MissionMissionIdIndexRouteImport.update({
   path: '/$missionId/',
   getParentRoute: () => MissionRouteRoute,
 } as any)
+const MissionMissionIdSuccessIndexRoute =
+  MissionMissionIdSuccessIndexRouteImport.update({
+    id: '/$missionId/success/',
+    path: '/$missionId/success/',
+    getParentRoute: () => MissionRouteRoute,
+  } as any)
+const MissionMissionIdFailedIndexRoute =
+  MissionMissionIdFailedIndexRouteImport.update({
+    id: '/$missionId/failed/',
+    path: '/$missionId/failed/',
+    getParentRoute: () => MissionRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/onboarding/gym': typeof OnboardingGymIndexRoute
   '/onboarding/level': typeof OnboardingLevelIndexRoute
   '/session/$sessionId': typeof SessionSessionIdIndexRoute
+  '/mission/$missionId/failed': typeof MissionMissionIdFailedIndexRoute
+  '/mission/$missionId/success': typeof MissionMissionIdSuccessIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,6 +106,8 @@ export interface FileRoutesByTo {
   '/onboarding/gym': typeof OnboardingGymIndexRoute
   '/onboarding/level': typeof OnboardingLevelIndexRoute
   '/session/$sessionId': typeof SessionSessionIdIndexRoute
+  '/mission/$missionId/failed': typeof MissionMissionIdFailedIndexRoute
+  '/mission/$missionId/success': typeof MissionMissionIdSuccessIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,6 +121,8 @@ export interface FileRoutesById {
   '/onboarding/gym/': typeof OnboardingGymIndexRoute
   '/onboarding/level/': typeof OnboardingLevelIndexRoute
   '/session/$sessionId/': typeof SessionSessionIdIndexRoute
+  '/mission/$missionId/failed/': typeof MissionMissionIdFailedIndexRoute
+  '/mission/$missionId/success/': typeof MissionMissionIdSuccessIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,6 +136,8 @@ export interface FileRouteTypes {
     | '/onboarding/gym'
     | '/onboarding/level'
     | '/session/$sessionId'
+    | '/mission/$missionId/failed'
+    | '/mission/$missionId/success'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -126,6 +148,8 @@ export interface FileRouteTypes {
     | '/onboarding/gym'
     | '/onboarding/level'
     | '/session/$sessionId'
+    | '/mission/$missionId/failed'
+    | '/mission/$missionId/success'
   id:
     | '__root__'
     | '/'
@@ -138,6 +162,8 @@ export interface FileRouteTypes {
     | '/onboarding/gym/'
     | '/onboarding/level/'
     | '/session/$sessionId/'
+    | '/mission/$missionId/failed/'
+    | '/mission/$missionId/success/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -223,17 +249,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MissionMissionIdIndexRouteImport
       parentRoute: typeof MissionRouteRoute
     }
+    '/mission/$missionId/success/': {
+      id: '/mission/$missionId/success/'
+      path: '/$missionId/success'
+      fullPath: '/mission/$missionId/success'
+      preLoaderRoute: typeof MissionMissionIdSuccessIndexRouteImport
+      parentRoute: typeof MissionRouteRoute
+    }
+    '/mission/$missionId/failed/': {
+      id: '/mission/$missionId/failed/'
+      path: '/$missionId/failed'
+      fullPath: '/mission/$missionId/failed'
+      preLoaderRoute: typeof MissionMissionIdFailedIndexRouteImport
+      parentRoute: typeof MissionRouteRoute
+    }
   }
 }
 
 interface MissionRouteRouteChildren {
   MissionIndexRoute: typeof MissionIndexRoute
   MissionMissionIdIndexRoute: typeof MissionMissionIdIndexRoute
+  MissionMissionIdFailedIndexRoute: typeof MissionMissionIdFailedIndexRoute
+  MissionMissionIdSuccessIndexRoute: typeof MissionMissionIdSuccessIndexRoute
 }
 
 const MissionRouteRouteChildren: MissionRouteRouteChildren = {
   MissionIndexRoute: MissionIndexRoute,
   MissionMissionIdIndexRoute: MissionMissionIdIndexRoute,
+  MissionMissionIdFailedIndexRoute: MissionMissionIdFailedIndexRoute,
+  MissionMissionIdSuccessIndexRoute: MissionMissionIdSuccessIndexRoute,
 }
 
 const MissionRouteRouteWithChildren = MissionRouteRoute._addFileChildren(

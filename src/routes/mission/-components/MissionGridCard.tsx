@@ -36,8 +36,7 @@ export default function MissionGridCard({
 }: MissionGridCardProps) {
   return (
     <Link
-      to="/mission/$missionId"
-      params={{ missionId }}
+      to={`/mission/${missionId}/${status === "not_tried" ? "" : status}`}
       disabled={!missionId || (isLocked && status === "not_tried")}
       className="w-full aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
     >

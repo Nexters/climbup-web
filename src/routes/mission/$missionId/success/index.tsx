@@ -3,13 +3,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getRouteMissionRecommendations } from "@/generated/route-mission-recommendations/route-mission-recommendations";
 import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
-import MissionNotTried from "./-components/MissionNotTried";
+import MissionDetailHeader from "../-components/MissionDetailHeader";
+import MissionResultView from "../-components/MissionResultView";
 
-export const Route = createFileRoute("/mission/$missionId/")({
-  component: MissionDetail,
+export const Route = createFileRoute("/mission/$missionId/success/")({
+  component: MissionSuccess,
 });
 
-function MissionDetail() {
+function MissionSuccess() {
   const { missionId } = Route.useParams();
 
   const { data: currentMission } = useQuery({
@@ -42,17 +43,9 @@ function MissionDetail() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-neutral-900">
-      <MissionNotTried
-        missionId={Number(missionId)}
-        sectorName={currentMission.sector?.name ?? ""}
-        difficulty={currentMission.difficulty ?? ""}
-        sectorImage={currentMission.sector?.imageUrl ?? ""}
-        missionImage={currentMission.imageUrl ?? ""}
-        score={currentMission.score ?? 0}
-        videoUrl={currentMission.videoUrl ?? ""}
-        attemptId={currentMission.attempts?.[0]?.missionAttemptId ?? null}
-      />
+    <div className="fixed inset-0 flex flex-col h-full bg-neutral-900">
+      <MissionDetailHeader type="close" />
+      <MissionResultView status="success" missionData={currentMission} />
     </div>
   );
 }
