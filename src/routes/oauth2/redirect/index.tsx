@@ -23,7 +23,6 @@ export const Route = createFileRoute("/oauth2/redirect/")({
     const { data } = await getCurrentUserStatus({
       headers: getHeaderToken(),
     });
-
     return data;
   },
 });

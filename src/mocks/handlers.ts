@@ -224,18 +224,79 @@ export const handlers = [
       },
     });
   }),
-  http.get("https://dev-api.holdy.kr/api/sessions/:id", () => {
-    return HttpResponse.json<ApiResultUserSessionState>({
-      message: "세션 정보를 성공적으로 조회했습니다.",
-      data: {
+  /**
+   * 특정 세션 정보 조회 API
+   * GET /api/sessions/:id
+   *
+   * 다양한 세션 시나리오를 제공:
+   * - ID 1: 일반적인 성공적인 세션
+   * - ID 2: 짧은 시간의 보통 세션
+   * - ID 3: 높은 성과의 긴 세션
+   * - ID 4: 현재 진행 중인 세션 (endedAt = undefined)
+   * - ID 5: 실패가 많은 어려운 세션
+   */
+  http.get("https://dev-api.holdy.kr/api/sessions/:id", ({ params }) => {
+    const sessionId = Number(params.id);
+
+    // 세션 ID에 따른 다양한 mock 데이터 시나리오
+    const mockSessionData = {
+      1: {
+        sessionDate: "2024-01-15",
+        startedAt: "2024-01-15T10:30:00Z",
+        endedAt: "2024-01-15T12:45:00Z",
+        totalDuration: 8100, // 2시간 15분 (초 단위)
+        srGained: 180,
+        completedCount: 6,
+        attemptedCount: 10,
+      },
+      2: {
+        sessionDate: "2024-01-14",
+        startedAt: "2024-01-14T14:20:00Z",
+        endedAt: "2024-01-14T16:00:00Z",
+        totalDuration: 6000, // 1시간 40분
+        srGained: 1001,
+        completedCount: 3,
+        attemptedCount: 7,
+      },
+      3: {
+        sessionDate: "2024-01-13",
+        startedAt: "2024-01-13T09:15:00Z",
+        endedAt: "2024-01-13T11:30:00Z",
+        totalDuration: 8100, // 2시간 15분
+        srGained: 250,
+        completedCount: 8,
+        attemptedCount: 12,
+      },
+      // 진행 중인 세션 (endedAt이 없음)
+      4: {
         sessionDate: new Date().toISOString().split("T")[0],
-        startedAt: new Date().toISOString(),
+        startedAt: new Date(Date.now() - 3600000).toISOString(), // 1시간 전 시작
         endedAt: undefined,
-        totalDuration: 7200,
-        srGained: 150,
-        completedCount: 5,
+        totalDuration: 3600, // 1시간
+        srGained: 45,
+        completedCount: 2,
+        attemptedCount: 4,
+      },
+      // 실패가 많은 어려운 세션
+      5: {
+        sessionDate: "2024-01-12",
+        startedAt: "2024-01-12T19:00:00Z",
+        endedAt: "2024-01-12T21:15:00Z",
+        totalDuration: 8100, // 2시간 15분
+        srGained: 30,
+        completedCount: 1,
         attemptedCount: 8,
       },
+    };
+
+    // 기본값: ID 1 데이터 사용
+    const sessionData =
+      mockSessionData[sessionId as keyof typeof mockSessionData] ||
+      mockSessionData[1];
+
+    return HttpResponse.json<ApiResultUserSessionState>({
+      message: "세션 정보를 성공적으로 조회했습니다.",
+      data: sessionData,
     });
   }),
   http.post("https://dev-api.holdy.kr/api/sessions/:id", () => {

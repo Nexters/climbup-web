@@ -6,11 +6,11 @@ const TABS = [
     name: "전체",
   },
   {
-    id: "gangnam",
+    id: "1",
     name: "강남점",
   },
   {
-    id: "yangjae",
+    id: "2",
     name: "양재점",
   },
 ] as const;
