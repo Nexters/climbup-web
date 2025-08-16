@@ -139,7 +139,7 @@ export default function MissionTimer({
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 max-w-7xl mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 gap-3 max-w-7xl mx-auto bg-neutral-500">
       <Timer
         seconds={time}
         className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
@@ -152,6 +152,7 @@ export default function MissionTimer({
         onMouseLeave={cancelHoldToStop}
         onTouchStart={startHoldToStop}
         onTouchEnd={cancelHoldToStop}
+        onContextMenu={(e) => e.preventDefault()}
         id={showStopButton ? "timer-stop-button" : "timer-play-button"}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
           isHolding && showStopButton

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import Button from "@/components/Button";
 import { Tag } from "@/components/tag/Tag";
 import { cn } from "@/utils/cn";
+import { getDiffFromNow } from "@/utils/date";
 import FrownIcon from "../../../components/icons/FrownIcon";
 import LockIcon from "../../../components/icons/LockIcon";
 import ThumbsUpIcon from "../../../components/icons/ThumbsUpIcon";
@@ -61,19 +62,24 @@ export default function MissionGridCard({
         <div className="flex flex-col justify-between h-full">
           <div className="flex flex-col gap-1 xs:gap-2">
             <div className="flex items-center justify-between gap-1">
-              <Tag
-                variant={
-                  status === "success"
-                    ? "BLUE"
-                    : status === "failed"
-                      ? "RED"
-                      : "NEUTRAL"
-                }
-              >
-                {status === "success" && "성공"}
-                {status === "failed" && "실패"}
-                {status === "not_tried" && sectorName}
-              </Tag>
+              <div className="flex items-center gap-1">
+                <Tag
+                  variant={
+                    status === "success"
+                      ? "BLUE"
+                      : status === "failed"
+                        ? "RED"
+                        : "NEUTRAL"
+                  }
+                >
+                  {status === "success" && "성공"}
+                  {status === "failed" && "실패"}
+                  {status === "not_tried" && sectorName}
+                </Tag>
+                {status === "failed" && removedAt && (
+                  <Tag variant="RED">D-{getDiffFromNow(removedAt)}</Tag>
+                )}
+              </div>
               {completedAt && (
                 <span className="t-p-10-sb text-neutral-400">
                   {new Date(completedAt).toLocaleDateString("ko-KR", {
