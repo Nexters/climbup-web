@@ -32,6 +32,7 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
 
   const [state, setState] = useState<MissionState>("DEFAULT");
   const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
+  const [successAttemptId, setSuccessAttemptId] = useState<number | null>(null);
   const [currentUploadInfo, setCurrentUploadInfo] = useState<{
     isSuccess: boolean;
     attemptId: number | null;
@@ -91,12 +92,15 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
 
         await uploadVideo(newAttemptId, capturedMedia.file, {
           onSuccess: () => {
-            setTimeout(() => setState(isSuccess ? "SUCCESS" : "FAILED"), 500);
+            if (isSuccess) {
+              setSuccessAttemptId(newAttemptId);
+            }
+            setState(isSuccess ? "SUCCESS" : "FAILED");
             setCurrentUploadInfo(null);
           },
           onError: (error) => {
             console.error("Upload failed:", error);
-            setTimeout(() => setState("FAILED"), 500);
+            setState("FAILED");
             setCurrentUploadInfo(null);
           },
         });
@@ -152,11 +156,7 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
               />
             );
           case "SUCCESS":
-            return (
-              <MissionNotTriedSuccess
-                attemptId={currentUploadInfo?.attemptId ?? null}
-              />
-            );
+            return <MissionNotTriedSuccess attemptId={successAttemptId} />;
           case "FAILED":
             return (
               <MissionNotTriedFailed

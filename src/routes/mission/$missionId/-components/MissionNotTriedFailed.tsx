@@ -17,7 +17,7 @@ export default function MissionNotTriedFailed({
     <div className="flex-1 flex flex-col bg-neutral-500">
       <MissionDetailHeader type="mypage" />
 
-      <div className="flex-1 flex flex-col items-center pt-[14dvh]">
+      <div className="flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
           <h1 className="t-p-22-sb text-neutral-100 leading-[1.4] tracking-[-0.024em] text-center">
             성공 영상을 보며 루트를 떠올려보세요
