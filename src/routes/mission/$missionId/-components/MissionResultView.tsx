@@ -130,7 +130,6 @@ export default function MissionResultView({
       </div>
 
       <div className="flex justify-center gap-4 px-4 py-6">
-        {onRetry && <Button onClick={onRetry}>다시 도전</Button>}
         {latestAttemptUrl && (
           <Button
             onClick={() =>
@@ -140,9 +139,10 @@ export default function MissionResultView({
               )
             }
           >
-            내 영상 다운로드
+            저장
           </Button>
         )}
+        {onRetry && <Button onClick={onRetry}>다시 도전</Button>}
       </div>
     </>
   );
