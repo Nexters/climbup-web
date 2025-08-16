@@ -176,8 +176,8 @@ function Mission() {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center px-4">
+    <div className="flex flex-col">
+      <div className="flex justify-between sticky top-[78px] items-center px-4 bg-neutral-500 pb-4">
         <div id="mission-filters" className="flex gap-2">
           {(["all", "not_tried", "failed", "success"] as const).map((type) => (
             <button

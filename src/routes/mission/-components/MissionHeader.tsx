@@ -46,7 +46,7 @@ export default function MissionHeader() {
   };
 
   return (
-    <div className="py-4 px-4">
+    <div className="sticky top-0 py-4 px-4 bg-neutral-500 h-[78px]">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
