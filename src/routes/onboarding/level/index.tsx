@@ -119,7 +119,7 @@ function OnboardingLevelComponent() {
           >
             <AspectRatio.Root ratio={1 / 1}>
               <img
-                src={selectedLevel.imageUrl}
+                src={selectedLevel.imageUrls?.[0]}
                 className="size-full object-cover"
                 alt={selectedLevel.gymLevelName}
               />
