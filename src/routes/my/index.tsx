@@ -5,6 +5,7 @@ import { Dialog } from "radix-ui";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
 import { getAttempts } from "@/generated/attempts/attempts";
+import { getHeaderToken } from "@/utils/cookie";
 import { MyInfo } from "./-components/MyInfo";
 import { MyScore } from "./-components/MyScore";
 import { VideoCard } from "./-components/VideoCard";
@@ -36,12 +37,17 @@ function RouteComponent() {
   }): Promise<{ items: VideoItem[]; nextPage?: number }> => {
     const gymId = selectedTab ? Number(selectedTab) : undefined;
 
-    const response = await getAttempts({
-      page: pageParam,
-      size: PAGE_SIZE,
-      gymId,
-      success: true,
-    });
+    const response = await getAttempts(
+      {
+        page: pageParam,
+        size: PAGE_SIZE,
+        gymId,
+        success: true,
+      },
+      {
+        headers: getHeaderToken(),
+      }
+    );
 
     const items: VideoItem[] = (response.data?.content ?? []).map(
       (attempt) => ({

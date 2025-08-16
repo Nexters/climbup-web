@@ -1,17 +1,21 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { camelCase, upperFirst } from "es-toolkit/compat";
 import { AnimatePresence, motion } from "motion/react";
 import { AspectRatio, RadioGroup } from "radix-ui";
 import { useEffect, useState } from "react";
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 import Button from "@/components/Button";
 import { Tag, type TagVariant } from "@/components/tag/Tag";
-
 import { getBrandLevels1 } from "@/generated/brand/brand";
 import type { GymLevelResponse } from "@/generated/model";
 import { setLevel } from "@/generated/onboarding/onboarding";
 import { getHeaderToken } from "@/utils/cookie";
 import { LevelRadioButton } from "./-components/LevelRadioButton";
+
+const convertPascalCase = (value: string) => {
+  return upperFirst(camelCase(value));
+};
 
 export const Route = createFileRoute("/onboarding/level/")({
   component: OnboardingLevelComponent,
@@ -69,11 +73,9 @@ function OnboardingLevelComponent() {
 
   const selectedLabel = match(selectedLevel)
     .with(null, () => "")
-    .with({ gymLevelName: "ORANGE" }, () => "주황")
-    .with({ gymLevelName: "GREEN" }, () => "초록")
-    .with({ gymLevelName: "BLUE" }, () => "파랑")
-    .with({ gymLevelName: "RED" }, () => "빨강")
-    .with({ gymLevelName: "PURPLE" }, () => "보라")
+    .with({ gymLevelName: P.string }, (level) =>
+      convertPascalCase(level.gymLevelName)
+    )
     .otherwise(() => "");
 
   useEffect(
@@ -143,13 +145,7 @@ function OnboardingLevelComponent() {
             value={level.id?.toString() ?? ""}
             checked={level.id === selectedLevel?.id}
           >
-            {match(level.gymLevelName)
-              .with("ORANGE", () => "주황")
-              .with("GREEN", () => "초록")
-              .with("BLUE", () => "파랑")
-              .with("RED", () => "빨강")
-              .with("PURPLE", () => "보라")
-              .otherwise(() => level.gymLevelName)}
+            {level.gymLevelName && convertPascalCase(level.gymLevelName)}
           </LevelRadioButton>
         ))}
       </RadioGroup.Root>

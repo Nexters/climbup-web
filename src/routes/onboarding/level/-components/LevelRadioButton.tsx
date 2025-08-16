@@ -12,7 +12,7 @@ export const LevelRadioButton = ({
     <RadioGroup.Item
       {...props}
       className={cn(
-        "flex-center flex-1 max-w-14 max-h-14 min-w-10 min-h-10 rounded-[16px] overflow-hidden mt-auto shrink-0 bg-neutral-300 text-neutral-400",
+        "flex-center w-14 h-14 rounded-[16px] overflow-hidden mt-auto shrink-0 bg-neutral-300 text-neutral-400 t-p-14-sb",
         "data-[state=checked]:bg-neutral-600 data-[state=checked]:text-neutral-100",
         "aspect-square"
       )}
