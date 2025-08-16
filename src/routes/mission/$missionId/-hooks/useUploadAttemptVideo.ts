@@ -8,7 +8,7 @@ import {
 } from "@/generated/attempts/attempts";
 import { getHeaderToken } from "@/utils/cookie";
 
-const CHUNK_SIZE = 1024 * 1024;
+const CHUNK_SIZE = 256 * 1024;
 
 export interface UploadProgress {
   currentChunk: number;
@@ -112,17 +112,57 @@ export function useUploadAttemptVideo() {
     mutationFn: ({
       attemptId,
       uploadId,
+      thumbnail,
     }: {
       attemptId: number;
       uploadId: string;
+      thumbnail: File;
     }) =>
       finalizeRouteMissionUploadSession(
         attemptId,
         uploadId,
-        {},
+        { thumbnail },
         { headers: getHeaderToken() }
       ),
   });
+
+  const createThumbnailFromVideo = (videoFile: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement("video");
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      video.onloadedmetadata = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      };
+
+      video.onseeked = () => {
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const thumbnailFile = new File([blob], "thumbnail.jpg", {
+                  type: "image/jpeg",
+                });
+                resolve(thumbnailFile);
+              } else {
+                reject(new Error("썸네일 생성 실패"));
+              }
+            },
+            "image/jpeg",
+            0.8
+          );
+        }
+      };
+
+      video.onerror = () => reject(new Error("비디오 로드 실패"));
+
+      video.src = URL.createObjectURL(videoFile);
+      video.currentTime = 0.1;
+    });
+  };
 
   const uploadVideo = async (
     attemptId: number,
@@ -186,9 +226,12 @@ export function useUploadAttemptVideo() {
         callbacks.onProgress?.(progress);
       }
 
+      const thumbnail = await createThumbnailFromVideo(file);
+
       const finalizeResponse = await finalizeUploadMutation.mutateAsync({
         attemptId,
         uploadId,
+        thumbnail,
       });
       const fileName = finalizeResponse.data?.fileName;
 
