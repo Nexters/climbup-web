@@ -28,27 +28,27 @@ export default function MissionListCard({
     <Link
       to="/mission/$missionId"
       params={{ missionId }}
-      className="flex items-center gap-4 p-4 bg-neutral-100 rounded-[32px]"
+      className="flex items-center bg-neutral-100 rounded-[32px] h-[112px] p-3 gap-3"
     >
-      <div className="w-[66px] h-[90px] flex items-center">
+      <div className="w-full max-w-[66px] h-full flex items-center">
         {status === "not_tried" && imageUrl && (
           <img
             src={imageUrl}
             alt=""
-            className="w-[66px] h-[66px] rounded-[20px] object-cover"
+            className="w-full h-full rounded-[20px] object-cover"
           />
         )}
         {status !== "not_tried" && holdImageUrl && (
           <img
             src={holdImageUrl}
             alt=""
-            className="w-[66px] h-[66px] rounded-[20px] object-cover"
+            className="w-full h-full rounded-[20px] object-cover"
           />
         )}
       </div>
-      <div className="w-[1px] h-[114px] -my-4 bg-neutral-300" />
-      <div className="flex-1 flex flex-col gap-[6px]">
-        <div className="flex items-center gap-2">
+      <div className="w-[1px] h-full bg-neutral-300" />
+      <div className="flex-1 flex flex-col">
+        <div className="flex items-center gap-2 mb-1">
           <span
             className={cn(
               "px-2 py-1 rounded-3xl t-p-10-sb",
@@ -81,8 +81,8 @@ export default function MissionListCard({
             </span>
           )}
         </div>
-        <div className="t-m-24-b text-neutral-900">{difficulty}</div>
-        <div className="t-p-12-m text-neutral-600">
+        <div className="t-m-24-b text-neutral-900 mb-[6px]">{difficulty}</div>
+        <div className="t-p-12-m text-neutral-600 mb-1">
           {status === "not_tried" && "이 루트가 궁금하지 않으신가요?"}
           {status === "success" && "완등 ! 대단히 상당히 멋져요!"}
           {status === "failed" && "한 번 더 도전해보세요!"}
