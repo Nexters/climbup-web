@@ -12,6 +12,8 @@ export interface UserSessionState {
   endedAt?: string;
   totalDuration?: number;
   srGained?: number;
+  currentSr?: number;
+  previousSr?: number;
   completedCount?: number;
   attemptedCount?: number;
 }

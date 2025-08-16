@@ -10,11 +10,24 @@ import { http } from "../../utils/http";
 import type {
   ApiResultCreateUserSession,
   ApiResultFinishUserSession,
+  ApiResultUserActiveSession,
   ApiResultUserSessionState,
 } from ".././model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
+/**
+ * 유저의 진행중인 세션 받아오기
+ * @summary 진행중인 세션 받아오기
+ */
+export const getCurrentUserSession = (
+  options?: SecondParameter<typeof http>
+) => {
+  return http<ApiResultUserActiveSession>(
+    { url: `/api/sessions`, method: "GET" },
+    options
+  );
+};
 /**
  * 유저의 오늘의 세션을 시작
  * @summary 오늘의 세션 시작하기
@@ -51,6 +64,9 @@ export const endUserSession = (
     options
   );
 };
+export type GetCurrentUserSessionResult = NonNullable<
+  Awaited<ReturnType<typeof getCurrentUserSession>>
+>;
 export type StartUserSessionResult = NonNullable<
   Awaited<ReturnType<typeof startUserSession>>
 >;
