@@ -6,6 +6,7 @@ import { Select } from "radix-ui";
 import { getAllGyms } from "@/generated/climbing-gym/climbing-gym";
 import { setGym } from "@/generated/onboarding/onboarding";
 import { getCurrentUserStatus } from "@/generated/user/user";
+import { getCurrentUserSession } from "@/generated/user-session/user-session";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
 import CheckIcon from "../../../components/icons/CheckIcon";
@@ -26,6 +27,13 @@ export default function MissionHeader() {
     select: (data) => data.data,
   });
 
+  const { data: sessionData, isError: isSessionError } = useQuery({
+    queryKey: ["userSession"],
+    queryFn: () => getCurrentUserSession({ headers: getHeaderToken() }),
+    select: (data) => data?.data ?? null,
+  });
+
+  const isSessionStarted = !!sessionData?.startedAt && !isSessionError;
   const selectedGymId = userStatus?.gym?.id?.toString() ?? "";
 
   const { mutateAsync: setGymMutation } = useMutation({
@@ -50,8 +58,19 @@ export default function MissionHeader() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Select.Root value={selectedGymId} onValueChange={handleGymChange}>
-              <Select.Trigger className="inline-flex items-center justify-center gap-2 py-2 t-p-22-sb text-neutral-100 hover:opacity-90 focus:outline-none">
+            <Select.Root
+              value={selectedGymId}
+              onValueChange={handleGymChange}
+              disabled={isSessionStarted}
+            >
+              <Select.Trigger
+                className={cn(
+                  "inline-flex items-center justify-center gap-2 py-2 t-p-22-sb text-neutral-100 focus:outline-none",
+                  isSessionStarted
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:opacity-90"
+                )}
+              >
                 <Select.Value placeholder="암장 선택" />
                 <Select.Icon>
                   <ChevronDownIcon variant="white" />
