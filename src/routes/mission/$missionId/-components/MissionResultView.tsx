@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import Button from "@/components/Button";
 import FrownIcon from "@/components/icons/FrownIcon";
 import ThumbsUpIcon from "@/components/icons/ThumbsUpIcon";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
@@ -18,6 +19,17 @@ export default function MissionResultView({
     [selectedIndex]
   );
   const latestAttemptUrl = missionData?.attempts?.[0]?.videoUrl;
+
+  const handleDownload = (url: string | undefined, filename: string) => {
+    if (!url) return;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <>
@@ -113,6 +125,21 @@ export default function MissionResultView({
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-center gap-4 px-4 py-6">
+        {latestAttemptUrl && (
+          <Button
+            onClick={() =>
+              handleDownload(
+                latestAttemptUrl,
+                `my-video-${missionData.missionId}.mp4`
+              )
+            }
+          >
+            내 영상 다운로드
+          </Button>
+        )}
       </div>
     </>
   );

@@ -24,6 +24,7 @@ export default function MissionTimer({
   const { showToast } = useToast();
 
   const [time, setTime] = useState(0);
+  const [isHolding, setIsHolding] = useState(false);
 
   const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -79,8 +80,6 @@ export default function MissionTimer({
       console.error("세션 처리 중 오류가 발생했습니다:", error);
     }
   };
-
-  const [isHolding, setIsHolding] = useState(false);
 
   const startHoldToStop = () => {
     if (!showStopButton) return;
