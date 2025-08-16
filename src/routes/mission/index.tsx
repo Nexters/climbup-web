@@ -96,6 +96,7 @@ function Mission() {
         status: calculateMissionStatus(mission.attempts),
       }));
     },
+    enabled: !!getStorage(USER_SESSION_STORAGE_KEY),
   });
 
   const { data: sessionData } = useQuery({
@@ -115,6 +116,8 @@ function Mission() {
   const [showGuide, setShowGuide] = useState(
     () => !getStorage(MISSION_GUIDE_COMPLETED_KEY)
   );
+
+  const isSessionStarted = !!sessionData?.startedAt;
   const [showMockStopButton, setShowMockStopButton] = useState(false);
 
   const { emblaRef, selectedIndex } = useCarousel();
@@ -200,39 +203,54 @@ function Mission() {
             </button>
           ))}
         </div>
-        <button
-          id="mission-view-toggle"
-          type="button"
-          className="w-6 h-6 text-neutral-100"
-          onClick={toggleViewMode}
-          aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
-        >
-          {viewMode === "card" ? (
-            <ListIcon variant="white" />
-          ) : (
-            <GridIcon variant="white" />
-          )}
-        </button>
+        {isSessionStarted && (
+          <button
+            id="mission-view-toggle"
+            type="button"
+            className="w-6 h-6 text-neutral-100"
+            onClick={toggleViewMode}
+            aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
+          >
+            {viewMode === "card" ? (
+              <ListIcon variant="white" />
+            ) : (
+              <GridIcon variant="white" />
+            )}
+          </button>
+        )}
       </div>
 
       {viewMode === "card" ? (
         <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-1 px-[10vw]">
-            {filteredRecommendations.map((mission, index) => (
-              <div
-                key={mission.missionId}
-                className="flex-[0_0_80vw] flex items-center justify-center"
-                style={{
-                  transform:
-                    index === selectedIndex ? "scale(1)" : "scale(0.9)",
-                  transition: "transform 0.3s ease",
-                }}
-              >
-                <MissionGridCard
-                  {...createMissionCardProps(mission, !sessionData?.startedAt)}
+            {isSessionStarted ? (
+              filteredRecommendations.map((mission, index) => (
+                <div
+                  key={mission.missionId}
+                  className="flex-[0_0_80vw] flex items-center justify-center"
+                  style={{
+                    transform:
+                      index === selectedIndex ? "scale(1)" : "scale(0.9)",
+                    transition: "transform 0.3s ease",
+                  }}
+                >
+                  <MissionGridCard
+                    {...createMissionCardProps(
+                      mission,
+                      !sessionData?.startedAt
+                    )}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
+                <img
+                  src="/mission-start-mock.png"
+                  alt="클라이밍 이미지"
+                  className="blur-sm"
                 />
               </div>
-            ))}
+            )}
           </div>
         </div>
       ) : (
