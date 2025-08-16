@@ -152,6 +152,7 @@ export default function MissionTimer({
         onMouseLeave={cancelHoldToStop}
         onTouchStart={startHoldToStop}
         onTouchEnd={cancelHoldToStop}
+        onContextMenu={(e) => e.preventDefault()}
         id={showStopButton ? "timer-stop-button" : "timer-play-button"}
         className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-150 ease-in-out ${
           isHolding && showStopButton
