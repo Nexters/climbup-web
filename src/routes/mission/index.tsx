@@ -38,12 +38,13 @@ const getFilterLabels = (
 ) => {
   const counts = countBy(recommendations, ({ status }) => status);
 
-  const notTried = counts.not_tried || 0;
-  const failed = counts.failed || 0;
-  const success = counts.success || 0;
+  const notTried = counts.not_tried || "";
+  const failed = counts.failed || "";
+  const success = counts.success || "";
 
   return {
-    all: currentFilter === "all" ? `전체 ${recommendations.length}` : "전체",
+    all:
+      currentFilter === "all" ? `전체 ${recommendations.length || ""}` : "전체",
     not_tried: currentFilter === "not_tried" ? `미도전 ${notTried}` : "미도전",
     failed: currentFilter === "failed" ? `실패 ${failed}` : "실패",
     success: currentFilter === "success" ? `성공 ${success}` : "성공",
