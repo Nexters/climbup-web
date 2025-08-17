@@ -528,6 +528,8 @@ export const handlers = [
         endedAt: "2024-01-15T12:45:00Z",
         totalDuration: 8100, // 2시간 15분 (초 단위)
         srGained: 180,
+        previousSr: 900,
+        currentSr: 1080,
         completedCount: 6,
         attemptedCount: 10,
       },
@@ -537,6 +539,8 @@ export const handlers = [
         endedAt: "2024-01-14T16:00:00Z",
         totalDuration: 6000, // 1시간 40분
         srGained: 1001,
+        previousSr: 1200,
+        currentSr: 2201,
         completedCount: 3,
         attemptedCount: 7,
       },
@@ -546,6 +550,8 @@ export const handlers = [
         endedAt: "2024-01-13T11:30:00Z",
         totalDuration: 8100, // 2시간 15분
         srGained: 250,
+        previousSr: 1500,
+        currentSr: 1750,
         completedCount: 8,
         attemptedCount: 12,
       },
@@ -556,6 +562,8 @@ export const handlers = [
         endedAt: undefined,
         totalDuration: 3600, // 1시간
         srGained: 45,
+        previousSr: 800,
+        currentSr: 845,
         completedCount: 2,
         attemptedCount: 4,
       },
@@ -566,6 +574,8 @@ export const handlers = [
         endedAt: "2024-01-12T21:15:00Z",
         totalDuration: 8100, // 2시간 15분
         srGained: 30,
+        previousSr: 640,
+        currentSr: 670,
         completedCount: 1,
         attemptedCount: 8,
       },

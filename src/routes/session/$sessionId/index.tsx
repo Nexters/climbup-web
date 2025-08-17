@@ -1,22 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Dialog } from "radix-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import assetFailIcon from "@/assets/images/ic_failure.png";
-import assetScoreIcon from "@/assets/images/ic_score.gif";
+import assetScoreIcon from "@/assets/images/ic_score.png";
 import assetSuccessIcon from "@/assets/images/ic_success.png";
 import Button from "@/components/Button";
 import { DialogLevelDescriptionContent } from "@/components/dialog-level-description-content/DialogLevelDescriptionContent";
 import { MotionNumberFlow } from "@/components/motion-number-flow/MotionNumberFlow";
 import { Timer } from "@/components/timer/Timer";
 import { getUserSession } from "@/generated/user-session/user-session";
-import { useToast } from "@/hooks/useToast";
 import { getHeaderToken } from "@/utils/cookie";
 import { getLevelInfo } from "@/utils/level";
 import { SessionLevelProgress } from "../-components/session-level-progress";
 
-// 날짜를 한국어 형식으로 포맷팅하는 함수
 function formatDateToKorean(dateString?: string): string {
   if (!dateString) return "";
 
@@ -37,10 +35,6 @@ export const Route = createFileRoute("/session/$sessionId/")({
 
 function RouteComponent() {
   const { sessionId } = Route.useParams();
-  const { showToast } = useToast();
-
-  // currentExp 제어를 위한 상태 (훅은 최상단에 위치)
-  const [currentExp, setCurrentExp] = useState(0);
 
   const {
     data: sessionInfo,
@@ -52,16 +46,45 @@ function RouteComponent() {
     select: (data) => data.data,
   });
 
-  // 점수 애니메이션 완료 후 currentExp 적용
-  const handleScoreAnimationComplete = () => {
-    setCurrentExp(levelInfo.currentExp);
-  };
+  // 서버 데이터를 사용하여 값 계산
+  const scoreValue = sessionInfo?.srGained ?? 0;
+  const successValue = sessionInfo?.completedCount ?? 0;
+  const failureValue =
+    (sessionInfo?.attemptedCount ?? 0) - (sessionInfo?.completedCount ?? 0);
 
-  // 레벨업 축하 메시지
-  const handleLevelUp = () => {
-    showToast(
-      `🎉 레벨업!\n축하합니다! 레벨 ${levelInfo.displayLevel}에 도달했습니다!`
-    );
+  // 이전/현재 점수 기반 레벨 정보 계산
+  const previousSr = sessionInfo?.previousSr ?? 0;
+  const currentSr = sessionInfo?.currentSr ?? previousSr;
+  const prevLevelInfo = getLevelInfo(previousSr);
+  const nextLevelInfo = getLevelInfo(currentSr);
+
+  // Progress 표시용 상태: 이전 점수 상태로 시작 → 점수 애니메이션 완료 후 현재 점수 상태로 전환
+  const [displayLevel, setDisplayLevel] = useState(prevLevelInfo.displayLevel);
+  const [displayCurrentExp, setDisplayCurrentExp] = useState(
+    prevLevelInfo.currentExp
+  );
+  const [displayLevelExp, setDisplayLevelExp] = useState(
+    prevLevelInfo.levelExp
+  );
+
+  // 세션 정보가 바뀌면 초기 표시 상태를 이전 점수 기준으로 재설정
+  useEffect(() => {
+    setDisplayLevel(prevLevelInfo.displayLevel);
+    setDisplayCurrentExp(prevLevelInfo.currentExp);
+    setDisplayLevelExp(prevLevelInfo.levelExp);
+  }, [
+    prevLevelInfo.displayLevel,
+    prevLevelInfo.currentExp,
+    prevLevelInfo.levelExp,
+  ]);
+
+  // 점수 애니메이션 완료 후 0.5초 지연 뒤 현재 점수 기준으로 Progress 갱신
+  const handleScoreAnimationComplete = () => {
+    setTimeout(() => {
+      setDisplayLevel(nextLevelInfo.displayLevel);
+      setDisplayCurrentExp(nextLevelInfo.currentExp);
+      setDisplayLevelExp(nextLevelInfo.levelExp);
+    }, 500);
   };
 
   // 로딩 상태 처리
@@ -83,19 +106,6 @@ function RouteComponent() {
       </div>
     );
   }
-
-  // 서버 데이터를 사용하여 값 계산
-  const scoreValue = sessionInfo?.srGained ?? 0;
-  const successValue = sessionInfo?.completedCount ?? 0;
-  const failureValue =
-    (sessionInfo?.attemptedCount ?? 0) - (sessionInfo?.completedCount ?? 0);
-
-  // TODO: sessionInfo에 totalScore 필드가 추가되면 해당 값을 사용
-  // 현재는 임시로 srGained 값을 totalScore로 사용
-  const totalScore = (sessionInfo as any)?.totalScore ?? scoreValue;
-
-  // 레벨 정보 계산
-  const levelInfo = getLevelInfo(totalScore);
 
   return (
     <div className=" h-dvh px-4 flex flex-col">
@@ -137,8 +147,8 @@ function RouteComponent() {
           className="pt-2 t-m-48-b"
         />
       </div>
-      <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
-        <div className="flex flex-col flex-1 items-center justify-center">
+      <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6 relative">
+        <div className="flex flex-col flex-1 items-center justify-center relative">
           <img
             src={assetSuccessIcon}
             alt="성공 횟수"
@@ -162,7 +172,7 @@ function RouteComponent() {
           />
           <p className="t-p-14-m pt-1 text-neutral-500">실패</p>
         </div>
-        <div className="flex flex-col flex-1 items-center justify-center">
+        <div className="flex flex-col flex-1 items-center justify-center relative">
           <img
             src={assetScoreIcon}
             alt="점수"
@@ -180,11 +190,11 @@ function RouteComponent() {
       <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
         <div className="flex flex-col flex-1">
           <SessionLevelProgress
-            level={levelInfo.displayLevel}
-            currentExp={currentExp}
-            levelExp={levelInfo.levelExp}
+            level={displayLevel}
+            currentExp={displayCurrentExp}
+            levelExp={displayLevelExp}
             progressWrapperClassName="w-full"
-            onLevelUp={handleLevelUp}
+            onLevelUp={() => {}}
           />
         </div>
       </div>
