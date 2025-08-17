@@ -1,5 +1,8 @@
+import { type DotLottie, DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Flex } from "@radix-ui/themes";
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import assetLottie from "@/assets/lottie/home-logo.lottie";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -7,14 +10,33 @@ export const Route = createFileRoute("/")({
 
 const KAKAO_LOGIN_URL = `https://dev-api.holdy.kr/login/kakao?redirect_uri=${window.location.origin}/oauth2/redirect`;
 
+const intermission = 1500;
 function Home() {
+  const [dotLottie, setDotLottie] = useState<DotLottie | null>(null);
+
+  useEffect(() => {
+    const onComplete = () => {
+      setTimeout(() => {
+        dotLottie?.play();
+      }, intermission);
+    };
+
+    dotLottie?.addEventListener("complete", onComplete);
+
+    return () => {
+      dotLottie?.removeEventListener("complete", onComplete);
+    };
+  }, [dotLottie]);
+
   return (
     <Flex direction="column" gap="5" className="h-full px-10 py-4">
       <Flex direction="column" align="center" gap="4px" className="mt-[160px]">
-        <img
-          src="/images/logo.png"
-          alt="홀디 로고"
-          className="w-[198px] h-[198px] rounded-full bg-neutral-300"
+        <DotLottieReact
+          dotLottieRefCallback={setDotLottie}
+          src={assetLottie}
+          autoplay
+          loop={false}
+          className="w-[198px] h-[198px]"
         />
         <h2 className="t-p-22-sb pt-6">홀디에 오신 걸 환영해요 :)</h2>
         <p className="t-p-14-m">내 페이스에 맞춰 하나씩 올라가 볼까요?</p>
