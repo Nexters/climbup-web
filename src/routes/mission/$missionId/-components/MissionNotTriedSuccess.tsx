@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { getRouteMissionRecommendationByAttempt } from "@/generated/attempts/attempts";
+import { convertPascalCase } from "@/utils/convert";
 import { getHeaderToken } from "@/utils/cookie";
 import MissionGridCard from "../../-components/MissionGridCard";
 import { useCarousel } from "../../-hooks/useCarousel";
@@ -53,7 +54,7 @@ export default function MissionNotTriedSuccess({
                 <MissionGridCard
                   key={mission.missionId}
                   sectorName={mission.sector?.name ?? ""}
-                  difficulty={mission.difficulty ?? ""}
+                  difficulty={convertPascalCase(mission.difficulty ?? "")}
                   imageUrl={mission.imageUrl}
                   onStart={() => {
                     navigate({

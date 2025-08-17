@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import Button from "@/components/Button";
 import { Tag } from "@/components/tag/Tag";
 import { cn } from "@/utils/cn";
+import { convertPascalCase } from "@/utils/convert";
 import { getDiffFromNow } from "@/utils/date";
 import FrownIcon from "../../../components/icons/FrownIcon";
 import LockIcon from "../../../components/icons/LockIcon";
@@ -105,7 +106,7 @@ export default function MissionGridCard({
                 "text-neutral-900": status !== "not_tried",
               })}
             >
-              {difficulty}
+              {convertPascalCase(difficulty)}
             </div>
             <div className="flex items-center gap-1">
               {status === "not_tried" ? (

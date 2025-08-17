@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/utils/cn";
+import { convertPascalCase } from "@/utils/convert";
 
 interface MissionListCardProps {
   missionId: string;
@@ -81,7 +82,9 @@ export default function MissionListCard({
             </span>
           )}
         </div>
-        <div className="t-m-24-b text-neutral-900 mb-[6px]">{difficulty}</div>
+        <div className="t-m-24-b text-neutral-900 mb-[6px]">
+          {convertPascalCase(difficulty)}
+        </div>
         <div className="t-p-12-m text-neutral-600 mb-1">
           {status === "not_tried" && "이 루트가 궁금하지 않으신가요?"}
           {status === "success" && "완등 ! 대단히 상당히 멋져요!"}

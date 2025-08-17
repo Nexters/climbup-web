@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { camelCase, upperFirst } from "es-toolkit/compat";
 import { AnimatePresence, motion } from "motion/react";
 import { AspectRatio, RadioGroup } from "radix-ui";
 import { useEffect, useState } from "react";
@@ -10,12 +9,9 @@ import { Tag, type TagVariant } from "@/components/tag/Tag";
 import { getBrandLevels1 } from "@/generated/brand/brand";
 import type { GymLevelResponse } from "@/generated/model";
 import { setLevel } from "@/generated/onboarding/onboarding";
+import { convertPascalCase } from "@/utils/convert";
 import { getHeaderToken } from "@/utils/cookie";
 import { LevelRadioButton } from "./-components/LevelRadioButton";
-
-const convertPascalCase = (value: string) => {
-  return upperFirst(camelCase(value));
-};
 
 export const Route = createFileRoute("/onboarding/level/")({
   component: OnboardingLevelComponent,
