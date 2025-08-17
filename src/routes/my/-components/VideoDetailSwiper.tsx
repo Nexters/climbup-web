@@ -17,11 +17,7 @@ import DownloadIcon from "@/components/icons/DownloadIcon";
 import PlayIcon from "@/components/icons/PlayIcon";
 import StopIcon from "@/components/icons/StopIcon";
 import { cn } from "@/utils/cn";
-import {
-  type DownloadProgress,
-  downloadVideo,
-  generateSafeFilename,
-} from "@/utils/download";
+import { downloadVideo, generateSafeFilename } from "@/utils/download";
 
 type VideoDetailItem = {
   imageUrl: string;
@@ -53,8 +49,6 @@ export const VideoDetailSwiper = ({
     "play"
   );
   const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
-  const [downloadProgress, setDownloadProgress] =
-    useState<DownloadProgress | null>(null);
   const controlHintTimerRef = useRef<number | null>(null);
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -104,7 +98,6 @@ export const VideoDetailSwiper = ({
 
     try {
       setDownloadingIndex(index);
-      setDownloadProgress(null);
 
       const filename = generateSafeFilename(
         item.sectorName,
@@ -114,9 +107,6 @@ export const VideoDetailSwiper = ({
 
       await downloadVideo(item.videoUrl, {
         filename,
-        onProgress: (progress) => {
-          setDownloadProgress(progress);
-        },
         onError: (error) => {
           console.error("Download failed:", error);
           alert("다운로드에 실패했습니다. 다시 시도해주세요.");
@@ -129,7 +119,6 @@ export const VideoDetailSwiper = ({
       console.error("Download error:", error);
     } finally {
       setDownloadingIndex(null);
-      setDownloadProgress(null);
     }
   };
 
@@ -251,11 +240,6 @@ export const VideoDetailSwiper = ({
                   {isDownloading ? (
                     <div className="flex flex-col items-center">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      {downloadProgress && (
-                        <span className="text-[8px] mt-0.5 font-medium">
-                          {downloadProgress.percentage}%
-                        </span>
-                      )}
                     </div>
                   ) : (
                     <DownloadIcon variant="white" size={20} />
