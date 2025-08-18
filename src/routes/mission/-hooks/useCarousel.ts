@@ -15,6 +15,14 @@ export function useCarousel() {
     setSelectedIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+    },
+    [emblaApi]
+  );
+
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();
@@ -28,5 +36,6 @@ export function useCarousel() {
     emblaRef,
     emblaApi,
     selectedIndex,
+    scrollTo,
   };
 }

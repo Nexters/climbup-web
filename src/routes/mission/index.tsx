@@ -116,7 +116,9 @@ function Mission() {
     () => !getStorage(MISSION_GUIDE_COMPLETED_KEY)
   );
 
-  const { emblaRef, selectedIndex } = useCarousel();
+  const { emblaRef, selectedIndex, scrollTo } = useCarousel();
+
+  console.log("selectedIndex:", selectedIndex);
 
   const handleGuideComplete = useCallback(() => {
     setShowGuide(false);
@@ -194,7 +196,10 @@ function Mission() {
                   "bg-neutral-600": filter === type && isSessionStarted,
                 })
               )}
-              onClick={() => setFilter(type)}
+              onClick={() => {
+                setFilter(type);
+                scrollTo(0);
+              }}
             >
               {getFilterLabels(recommendations, filter)[type]}
             </button>
@@ -224,13 +229,15 @@ function Mission() {
               filteredRecommendations.map((mission, index) => (
                 <div
                   key={mission.missionId}
-                  className="flex-[0_0_80vw] flex items-center justify-center"
-                  style={{
-                    transform:
-                      index === selectedIndex ? "scale(1)" : "scale(0.9)",
-                    opacity: index === selectedIndex ? 1 : 0.5,
-                    transition: "transform 0.3s ease",
-                  }}
+                  className={cn(
+                    "flex-[0_0_80vw] flex items-center justify-center transition-transform duration-300 ease-in-out",
+                    index === selectedIndex
+                      ? "scale-100 opacity-100"
+                      : "scale-90 opacity-50"
+                  )}
+                  data-selected={index === selectedIndex}
+                  data-index={index}
+                  data-selected-index={selectedIndex}
                 >
                   <MissionGridCard
                     {...createMissionCardProps(mission)}
