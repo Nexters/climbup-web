@@ -39,7 +39,7 @@ export default function MissionGridCard({
     <Link
       to={`/mission/${missionId}/${status === "not_tried" ? "" : status}`}
       disabled={!missionId || (isLocked && status === "not_tried")}
-      className="w-full aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
+      className="w-full max-w-[480px] aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100"
     >
       <div
         className={cn(
