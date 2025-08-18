@@ -57,6 +57,7 @@ export default function MissionGridCard({
               "absolute inset-0 w-full h-full object-cover z-[-1]",
               isLocked && status === "not_tried" && "blur-sm"
             )}
+            loading="lazy"
           />
         )}
         <div className="flex flex-col justify-between h-full">
@@ -134,6 +135,7 @@ export default function MissionGridCard({
                   src={holdImageUrl}
                   alt="mission-image"
                   className="object-contain w-full h-full"
+                  loading="lazy"
                 />
               </div>
             )}

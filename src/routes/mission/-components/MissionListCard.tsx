@@ -37,6 +37,7 @@ export default function MissionListCard({
             src={imageUrl}
             alt=""
             className="w-full h-full rounded-[20px] object-cover"
+            loading="lazy"
           />
         )}
         {status !== "not_tried" && holdImageUrl && (
@@ -44,6 +45,7 @@ export default function MissionListCard({
             src={holdImageUrl}
             alt=""
             className="w-full h-full rounded-[20px] object-contain"
+            loading="lazy"
           />
         )}
       </div>
