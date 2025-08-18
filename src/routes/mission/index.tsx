@@ -189,11 +189,12 @@ function Mission() {
             <button
               key={type}
               type="button"
+              disabled={!isSessionStarted}
               className={cn(
-                "h-9 px-4 rounded-3xl whitespace-nowrap t-p-12-m sm:t-p-14-m transition-colors",
-                filter === type
-                  ? "bg-neutral-600 text-neutral-100"
-                  : "text-neutral-100"
+                "h-9 px-4 rounded-3xl whitespace-nowrap t-p-12-m sm:t-p-14-m transition-colors text-neutral-100",
+                cn({
+                  "bg-neutral-600": filter === type && isSessionStarted,
+                })
               )}
               onClick={() => setFilter(type)}
             >
