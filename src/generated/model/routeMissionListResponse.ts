@@ -5,6 +5,7 @@
  * Holdy API
  * OpenAPI spec version: v1.0
  */
+import type { GymLevelResponse } from "./gymLevelResponse";
 
 /**
  * 루트미션 목록 응답
@@ -18,6 +19,8 @@ export interface RouteMissionListResponse {
   sectorName?: string;
   /** 난이도 */
   difficulty?: string;
+  /** 암장 난이도 */
+  gymLevel?: GymLevelResponse;
   /** 점수 */
   score?: number;
   /** 루트 이미지 URL */

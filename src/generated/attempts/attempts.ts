@@ -70,20 +70,12 @@ export const finalizeRouteMissionUploadSession = (
   finalizeRouteMissionUploadSessionBody: BodyType<FinalizeRouteMissionUploadSessionBody>,
   options?: SecondParameter<typeof http>
 ) => {
-  const formData = new FormData();
-  if (finalizeRouteMissionUploadSessionBody.thumbnail !== undefined) {
-    formData.append(
-      `thumbnail`,
-      finalizeRouteMissionUploadSessionBody.thumbnail
-    );
-  }
-
   return http<ApiResultRouteMissionUploadSessionFinalizeResponse>(
     {
       url: `/api/attempts/${attemptId}/upload/${uploadId}/finalize`,
       method: "POST",
-      headers: { "Content-Type": "multipart/form-data" },
-      data: formData,
+      headers: { "Content-Type": "application/json" },
+      data: finalizeRouteMissionUploadSessionBody,
     },
     options
   );

@@ -6,6 +6,7 @@
  * OpenAPI spec version: v1.0
  */
 
+import type { GymLevelResponse } from "./gymLevelResponse";
 import type { SectorResponse } from "./sectorResponse";
 import type { UserMissionAttemptResponse } from "./userMissionAttemptResponse";
 
@@ -21,6 +22,8 @@ export interface RouteMissionRecommendationResponse {
   attempts?: UserMissionAttemptResponse[];
   /** 섹터 데이터 */
   sector?: SectorResponse;
+  /** 암장 난이도 */
+  gymLevel?: GymLevelResponse;
   /** 루트미션 난이도 */
   difficulty?: string;
   /** 루트 미션 상승 점수 */
