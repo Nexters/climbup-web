@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/virtual";
 import { format } from "date-fns";
-import { sample } from "es-toolkit/compat";
 import {
   type MouseEvent as ReactMouseEvent,
   useEffect,
