@@ -129,11 +129,11 @@ export default function MissionGridCard({
               )}
             </div>
             {status !== "not_tried" && (
-              <div className="flex justify-center items-center py-2 xs:py-3">
+              <div className="flex justify-center items-center max-h-[180px] max-w-[180px] w-full h-full mx-auto">
                 <img
                   src={holdImageUrl}
                   alt="mission-image"
-                  className="w-[140px] h-[140px] xs:w-[180px] xs:h-[180px] object-cover"
+                  className="object-contain w-full h-full"
                 />
               </div>
             )}

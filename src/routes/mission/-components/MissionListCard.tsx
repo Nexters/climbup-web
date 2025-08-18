@@ -43,7 +43,7 @@ export default function MissionListCard({
           <img
             src={holdImageUrl}
             alt=""
-            className="w-full h-full rounded-[20px] object-cover"
+            className="w-full h-full rounded-[20px] object-contain"
           />
         )}
       </div>

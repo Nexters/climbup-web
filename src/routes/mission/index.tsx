@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { countBy } from "es-toolkit/compat";
+import { countBy, sample } from "es-toolkit/compat";
 import { useCallback, useState } from "react";
 import GridIcon from "@/components/icons/GridIcon";
 import { MISSION_GUIDE_COMPLETED_KEY } from "@/constants/mission";
@@ -69,13 +69,13 @@ const createMissionCardProps = (
       return {
         ...baseProps,
         completedAt: mission.attempts?.[0]?.createdAt,
-        holdImageUrl: mission.imageUrl,
+        holdImageUrl: sample(mission.gymLevel?.imageUrls ?? []),
       };
     case "failed":
       return {
         ...baseProps,
         removedAt: mission.removedAt,
-        holdImageUrl: mission.imageUrl,
+        holdImageUrl: sample(mission.gymLevel?.imageUrls ?? []),
       };
     default:
       return baseProps;
@@ -97,10 +97,15 @@ function Mission() {
       getRouteMissionRecommendations({ headers: getHeaderToken() }),
     select: (data) => {
       const missions = data.data ?? [];
-      return missions.map((mission) => ({
-        ...mission,
-        status: calculateMissionStatus(mission.attempts),
-      }));
+      return missions
+        .map((mission) => ({
+          ...mission,
+          status: calculateMissionStatus(mission.attempts),
+        }))
+        .sort((a, b) => {
+          const statusOrder = { not_tried: 0, failed: 1, success: 2 };
+          return statusOrder[a.status] - statusOrder[b.status];
+        });
     },
     enabled: isSessionStarted,
   });
