@@ -11,7 +11,7 @@ const TABS = [
   },
   {
     id: "2",
-    name: "양재점",
+    name: "논현점",
   },
 ] as const;
 

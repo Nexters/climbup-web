@@ -5,6 +5,8 @@ import { Virtual } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/virtual";
+import { format } from "date-fns";
+import { sample } from "es-toolkit/compat";
 import {
   type MouseEvent as ReactMouseEvent,
   useEffect,
@@ -20,11 +22,13 @@ import { cn } from "@/utils/cn";
 import { downloadVideo, generateSafeFilename } from "@/utils/download";
 
 type VideoDetailItem = {
-  imageUrl: string;
+  thumbnailUrl: string;
+  gymLevelImageUrls: string[];
   videoUrl: string;
   sectorName: string;
   score: number;
   completedAt: string;
+  id: number;
 };
 
 interface VideoDetailSwiperProps {
@@ -209,11 +213,12 @@ export const VideoDetailSwiper = ({
         {items.map((item, index) => {
           const isActive = index === activeIndex;
           const isDownloading = downloadingIndex === index;
+          const difficultyImageUrl = sample(item.gymLevelImageUrls);
           return (
-            <SwiperSlide key={`video-detail-slide-${item.imageUrl}`}>
+            <SwiperSlide key={`video-detail-slide-${item.id}`}>
               <div className="relative w-full h-dvh">
                 <video
-                  poster={item.imageUrl}
+                  poster={item.thumbnailUrl}
                   className="absolute inset-0 w-full h-full object-cover"
                   muted
                   loop
@@ -224,27 +229,6 @@ export const VideoDetailSwiper = ({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
-                {/* 다운로드 버튼 */}
-                <button
-                  type="button"
-                  aria-label="영상 다운로드"
-                  className={cn(
-                    "absolute right-4 top-4 z-[110] w-10 h-10 rounded-full bg-black/40 text-white flex-center transition-all duration-200",
-                    isDownloading
-                      ? "opacity-70 cursor-not-allowed"
-                      : "hover:bg-black/60"
-                  )}
-                  onClick={() => handleDownload(item, index)}
-                  disabled={isDownloading}
-                >
-                  {isDownloading ? (
-                    <div className="flex flex-col items-center">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    </div>
-                  ) : (
-                    <DownloadIcon variant="white" size={20} />
-                  )}
-                </button>
                 <AnimatePresence>
                   {isActive && isControlHintVisible ? (
                     <motion.div
@@ -265,19 +249,38 @@ export const VideoDetailSwiper = ({
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
-                <div className="absolute bottom-8 left-6 right-6 flex items-end justify-between gap-4">
+                <div className="absolute bottom-8 left-6 right-6 flex items-center gap-4">
+                  <div className="size-10 flex-center relative">
+                    <img
+                      src={difficultyImageUrl}
+                      alt="난이도"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <div className="flex flex-col items-start gap-1">
-                    <span className="t-p-16-sb text-neutral-100">
-                      {item.sectorName}
+                    <span className="t-p-14-m text-neutral-100">
+                      SEC {item.sectorName}
                     </span>
-                    <span className="t-p-12-m text-neutral-200">
-                      SCORE +{item.score}
+                    <span className="t-p-12-m text-neutral-300">
+                      {format(item.completedAt, "yyyy.MM.dd")}
                     </span>
                   </div>
-                  <span className="t-p-12-sb text-neutral-300">
-                    {item.completedAt}
-                  </span>
                 </div>
+                {/* 다운로드 버튼 */}
+                <button
+                  type="button"
+                  aria-label="영상 다운로드"
+                  className={cn(
+                    "absolute right-6 bottom-8 z-[110] w-10 h-10 rounded-full bg-black/40 text-white flex-center transition-all duration-200",
+                    isDownloading
+                      ? "opacity-70 cursor-not-allowed"
+                      : "hover:bg-black/60"
+                  )}
+                  onClick={() => handleDownload(item, index)}
+                  disabled={isDownloading}
+                >
+                  <DownloadIcon variant="white" size={20} />
+                </button>
               </div>
             </SwiperSlide>
           );

@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { sample } from "es-toolkit/compat";
 import { LayoutGroup, motion } from "motion/react";
 import { Dialog } from "radix-ui";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -16,25 +17,13 @@ export const Route = createFileRoute("/my/")({
   component: RouteComponent,
 });
 
-type VideoItem = {
-  imageUrl: string;
-  videoUrl: string;
-  sectorName: string;
-  score: number;
-  completedAt: string;
-};
-
 const PAGE_SIZE = 10;
 
 function RouteComponent() {
   const [selectedTab, setSelectedTab] = useState<VideoTabId>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const fetchVideos = async ({
-    pageParam = 0,
-  }: {
-    pageParam?: number;
-  }): Promise<{ items: VideoItem[]; nextPage?: number }> => {
+  const fetchVideos = async ({ pageParam = 0 }: { pageParam?: number }) => {
     const gymId = selectedTab ? Number(selectedTab) : undefined;
 
     const response = await getAttempts(
@@ -49,15 +38,15 @@ function RouteComponent() {
       }
     );
 
-    const items: VideoItem[] = (response.data?.content ?? []).map(
-      (attempt) => ({
-        imageUrl: attempt.thumbnailUrl ?? "",
-        videoUrl: attempt.videoUrl ?? "",
-        sectorName: attempt.sectorName ?? "",
-        score: attempt.routeScore ?? 0,
-        completedAt: attempt.attemptedAt ?? "",
-      })
-    );
+    const items = (response.data?.content ?? []).map((attempt) => ({
+      id: attempt.attemptId ?? 0,
+      thumbnailUrl: attempt.thumbnailUrl ?? "",
+      gymLevelImageUrls: attempt.gymLevelImageUrls ?? [],
+      videoUrl: attempt.videoUrl ?? "",
+      sectorName: attempt.sectorName ?? "",
+      score: attempt.routeScore ?? 0,
+      completedAt: attempt.attemptedAt ?? "",
+    }));
 
     const hasNext = !response.data?.last;
     return {
@@ -172,11 +161,13 @@ function RouteComponent() {
           <div className="grid grid-cols-2 gap-x-2 gap-y-3 px-4">
             {flatItems.map((item, index) => {
               const key = `video-card-${index}`;
+              const selectedDifficulty = sample(item.gymLevelImageUrls);
               return (
                 <VideoCard
                   key={key}
+                  difficultyImageUrl={selectedDifficulty ?? ""}
                   layoutId={`video-card-${index}`}
-                  imageUrl={item.imageUrl}
+                  thumbnailUrl={item.thumbnailUrl}
                   sectorName={item.sectorName}
                   score={item.score}
                   completedAt={item.completedAt}
@@ -201,6 +192,12 @@ function RouteComponent() {
                     layoutId={`video-card-${openIndex}`}
                     className="fixed inset-0 z-[100]"
                   >
+                    <Dialog.Title className="hidden">
+                      영상 상세 보기
+                    </Dialog.Title>
+                    <Dialog.Description className="hidden">
+                      영상 상세 보기
+                    </Dialog.Description>
                     <VideoDetailSwiper
                       items={flatItems}
                       initialIndex={openIndex}

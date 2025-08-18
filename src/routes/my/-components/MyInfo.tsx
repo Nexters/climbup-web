@@ -17,6 +17,7 @@ export const MyInfo = () => {
   // 로딩 중일 때 기본값 사용
   const totalScore = userStatus?.sr ?? 0;
   const nickname = userStatus?.nickname ?? "사용자";
+  const imageUrl = userStatus?.imageUrl ?? "";
 
   // 레벨 정보 계산
   const levelInfo = getLevelInfo(totalScore);
@@ -25,13 +26,7 @@ export const MyInfo = () => {
   if (isLoading) {
     return (
       <div className="flex w-full gap-3 h-[114px] items-center px-4">
-        <div className="flex-center size-[84px] outline outline-4 -outline-offset-4 outline-neutral-100 rounded-full bg-neutral-300 relative shrink-0 animate-pulse">
-          <img
-            alt="캐릭터"
-            src={assetMyCharacter}
-            className="object-cover absolute bottom-[15px] left-1/2 -translate-x-1/2 w-[73px] h-[99px]"
-          />
-        </div>
+        <div className="flex-center size-[84px] outline outline-4 -outline-offset-4 outline-neutral-100 rounded-full bg-neutral-300 relative shrink-0 animate-pulse"></div>
         <div className="flex flex-col gap-2 flex-1 min-w-0">
           <div className="flex items-end gap-2 flex-1">
             <div className="bg-neutral-200 rounded-full px-2 py-1 animate-pulse h-6 w-12" />
@@ -48,11 +43,11 @@ export const MyInfo = () => {
 
   return (
     <div className="flex w-full gap-3 h-[114px] items-center px-4">
-      <div className="flex-center size-[84px] outline outline-4 -outline-offset-4 outline-neutral-100 rounded-full bg-neutral-300 relative shrink-0">
+      <div className="flex-center size-[84px] relative shrink-0">
         <img
           alt="캐릭터"
-          src={assetMyCharacter}
-          className="object-cover absolute bottom-[15px] left-1/2 -translate-x-1/2 w-[73px] h-[99px]"
+          src={imageUrl ?? assetMyCharacter}
+          className="object-cover absolute size-full"
         />
       </div>
       <div className="flex flex-col gap-2 flex-1 min-w-0">

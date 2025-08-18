@@ -60,6 +60,8 @@ export const DialogLevelDescriptionContent = () => {
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
       <Dialog.Content className="fixed z-50 px-4 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[32px] w-full max-w-[420px]">
+        <Dialog.Title className="hidden">레벨 보기</Dialog.Title>
+        <Dialog.Description className="hidden">레벨 보기</Dialog.Description>
         <div className="bg-neutral-100 rounded-[32px] p-6 shadow-[2px_2px_16px_0px_rgba(0,0,0,0.4)]">
           <header className="flex justify-between items-center mb-5">
             <h2 className="t-p-16-m text-neutral-800">레벨 보기</h2>
