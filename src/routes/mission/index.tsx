@@ -36,9 +36,9 @@ const getFilterLabels = (
 ) => {
   const counts = countBy(recommendations, ({ status }) => status);
 
-  const notTried = counts.not_tried || "";
-  const failed = counts.failed || "";
-  const success = counts.success || "";
+  const notTried = counts.not_tried || 0;
+  const failed = counts.failed || 0;
+  const success = counts.success || 0;
 
   return {
     all:
@@ -52,8 +52,7 @@ const getFilterLabels = (
 const createMissionCardProps = (
   mission: RouteMissionRecommendationResponse & {
     status: "not_tried" | "success" | "failed";
-  },
-  isLocked: boolean
+  }
 ) => {
   const baseProps = {
     missionId: mission.missionId?.toString() ?? "",
@@ -61,7 +60,6 @@ const createMissionCardProps = (
     difficulty: mission.difficulty ?? "",
     imageUrl: mission.imageUrl,
     status: mission.status,
-    isLocked,
     score: mission.score,
   };
 
@@ -221,7 +219,7 @@ function Mission() {
 
       {viewMode === "card" ? (
         <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-1 px-[10vw]">
+          <div className="flex gap-1 px-[10vw] p-2 pb-4">
             {isSessionStarted ? (
               filteredRecommendations.map((mission, index) => (
                 <div
@@ -230,14 +228,13 @@ function Mission() {
                   style={{
                     transform:
                       index === selectedIndex ? "scale(1)" : "scale(0.9)",
+                    opacity: index === selectedIndex ? 1 : 0.5,
                     transition: "transform 0.3s ease",
                   }}
                 >
                   <MissionGridCard
-                    {...createMissionCardProps(
-                      mission,
-                      !sessionData?.startedAt
-                    )}
+                    {...createMissionCardProps(mission)}
+                    type="main"
                   />
                 </div>
               ))
@@ -251,7 +248,7 @@ function Mission() {
           {filteredRecommendations.map((mission) => (
             <MissionListCard
               key={mission.missionId}
-              {...createMissionCardProps(mission, !sessionData?.startedAt)}
+              {...createMissionCardProps(mission)}
             />
           ))}
         </div>
