@@ -75,7 +75,7 @@ export default function MissionGridCard({
                 >
                   {status === "success" && "성공"}
                   {status === "failed" && "실패"}
-                  {status === "not_tried" && sectorName}
+                  {status === "not_tried" && `SEC ${sectorName}`}
                 </Tag>
                 {status === "failed" && removedAt && (
                   <Tag variant="RED">D-{getDiffFromNow(removedAt)}</Tag>
