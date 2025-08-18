@@ -13,6 +13,7 @@ import { Timer } from "@/components/timer/Timer";
 import { getUserSession } from "@/generated/user-session/user-session";
 import { getHeaderToken } from "@/utils/cookie";
 import { getLevelInfo } from "@/utils/level";
+import { LevelUpPopup } from "../-components/level-up-popup";
 import { SessionLevelProgress } from "../-components/session-level-progress";
 
 function formatDateToKorean(dateString?: string): string {
@@ -67,6 +68,10 @@ function RouteComponent() {
     prevLevelInfo.levelExp
   );
 
+  // 레벨업 팝업 상태 관리
+  const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
+  const [newLevelForPopup, setNewLevelForPopup] = useState(1);
+
   // 세션 정보가 바뀌면 초기 표시 상태를 이전 점수 기준으로 재설정
   useEffect(() => {
     setDisplayLevel(prevLevelInfo.displayLevel);
@@ -85,6 +90,17 @@ function RouteComponent() {
       setDisplayCurrentExp(nextLevelInfo.currentExp);
       setDisplayLevelExp(nextLevelInfo.levelExp);
     }, 500);
+  };
+
+  // 레벨업 발생 시 팝업 표시
+  const handleLevelUp = () => {
+    setNewLevelForPopup(nextLevelInfo.displayLevel);
+    setIsLevelUpPopupOpen(true);
+  };
+
+  // 레벨업 팝업 닫기
+  const handleCloseLevelUpPopup = () => {
+    setIsLevelUpPopupOpen(false);
   };
 
   // 로딩 상태 처리
@@ -194,7 +210,7 @@ function RouteComponent() {
             currentExp={displayCurrentExp}
             levelExp={displayLevelExp}
             progressWrapperClassName="w-full"
-            onLevelUp={() => {}}
+            onLevelUp={handleLevelUp}
           />
         </div>
       </div>
@@ -229,6 +245,13 @@ function RouteComponent() {
           <Link to="/my">완등 영상 보기</Link>
         </Button>
       </div>
+
+      {/* 레벨업 팝업 */}
+      <LevelUpPopup
+        isOpen={isLevelUpPopupOpen}
+        onClose={handleCloseLevelUpPopup}
+        newLevel={newLevelForPopup}
+      />
     </div>
   );
 }
