@@ -64,6 +64,16 @@ export default function MissionGridCard({
           <div className="flex flex-col gap-1 xs:gap-2">
             <div className="flex items-center justify-between gap-1">
               <div className="flex items-center gap-1">
+                {status === "not_tried" && (
+                  <Tag variant="NEUTRAL">
+                    <img
+                      src="/score-star.png"
+                      alt="score-star"
+                      className="w-2.5 h-2.5 mr-1"
+                    />
+                    +{score}
+                  </Tag>
+                )}
                 <Tag
                   variant={
                     status === "success"
