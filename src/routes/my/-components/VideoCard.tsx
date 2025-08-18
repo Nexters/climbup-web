@@ -36,6 +36,7 @@ export const VideoCard = ({
           src={thumbnailUrl}
           alt="캐릭터"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
       )}
       <div className="p-3 relative h-full z-[15]">
