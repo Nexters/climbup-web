@@ -18,7 +18,7 @@ export default function MissionNotTriedDefault({
   onStart,
 }: MissionNotTriedDefaultProps) {
   return (
-    <div className="fixed inset-0 flex flex-col bg-neutral-900">
+    <>
       <MissionDetailHeader type="close" />
 
       <div className="flex-1 flex flex-col items-center gap-4 px-4">
@@ -47,9 +47,10 @@ export default function MissionNotTriedDefault({
             imageUrl={missionImage}
             status="not_tried"
             onStart={onStart}
+            type="detail"
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }

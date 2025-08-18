@@ -124,7 +124,7 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
 
   return (
     <div
-      className={`fixed inset-0 flex flex-col ${state === "REVIEWING" ? "bg-neutral-500" : "bg-neutral-900"}`}
+      className={`fixed inset-0 flex flex-col ${state === "REVIEWING" || state === "FAILED" ? "bg-neutral-500" : "bg-neutral-800"}`}
     >
       <input
         ref={fileInputRef}
@@ -156,7 +156,12 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
               />
             );
           case "SUCCESS":
-            return <MissionNotTriedSuccess attemptId={successAttemptId} />;
+            return (
+              <MissionNotTriedSuccess
+                attemptId={successAttemptId}
+                onStart={() => setState("DEFAULT")}
+              />
+            );
           case "FAILED":
             return (
               <MissionNotTriedFailed

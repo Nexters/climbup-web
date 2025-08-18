@@ -14,7 +14,7 @@ export default function MissionNotTriedFailed({
   const navigate = useNavigate();
 
   return (
-    <div className="flex-1 flex flex-col bg-neutral-500">
+    <>
       <MissionDetailHeader type="mypage" />
 
       <div className="flex-1 flex flex-col items-center">
@@ -43,6 +43,6 @@ export default function MissionNotTriedFailed({
         <Button onClick={() => navigate({ to: "/mission" })}>홈</Button>
         <Button onClick={onRetry}>재도전</Button>
       </div>
-    </div>
+    </>
   );
 }

@@ -9,10 +9,12 @@ import MissionDetailHeader from "./MissionDetailHeader";
 
 interface MissionNotTriedSuccessProps {
   attemptId: number | null;
+  onStart: () => void;
 }
 
 export default function MissionNotTriedSuccess({
   attemptId,
+  onStart,
 }: MissionNotTriedSuccessProps) {
   const navigate = useNavigate();
   const { emblaRef, selectedIndex } = useCarousel();
@@ -27,7 +29,7 @@ export default function MissionNotTriedSuccess({
   });
 
   return (
-    <div className="flex-1 flex flex-col">
+    <>
       <MissionDetailHeader type="close" />
 
       <div className="flex-1 flex flex-col items-center">
@@ -61,7 +63,9 @@ export default function MissionNotTriedSuccess({
                       to: "/mission/$missionId",
                       params: { missionId: mission.missionId?.toString() },
                     });
+                    onStart();
                   }}
+                  type="recommendation"
                 />
               </div>
             ))}
@@ -74,6 +78,6 @@ export default function MissionNotTriedSuccess({
           <span className="text-neutral-400">{missions?.length}</span>
         </div>
       </div>
-    </div>
+    </>
   );
 }

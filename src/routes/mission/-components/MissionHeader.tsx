@@ -1,18 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { isNil } from "es-toolkit/compat";
 import { motion } from "motion/react";
 import { Select } from "radix-ui";
-import assetMyCharacter from "@/assets/images/ic_my_character.png";
 import { getAllGyms } from "@/generated/climbing-gym/climbing-gym";
 import { setGym } from "@/generated/onboarding/onboarding";
 import { getCurrentUserStatus } from "@/generated/user/user";
 import { getCurrentUserSession } from "@/generated/user-session/user-session";
 import { cn } from "@/utils/cn";
 import { getHeaderToken } from "@/utils/cookie";
-import { getLevelInfo } from "@/utils/level";
 import CheckIcon from "../../../components/icons/CheckIcon";
 import ChevronDownIcon from "../../../components/icons/ChevronDownIcon";
+import MissionMyProfile from "./MissionMyProfile";
 
 export default function MissionHeader() {
   const queryClient = useQueryClient();
@@ -37,7 +35,6 @@ export default function MissionHeader() {
 
   const isSessionStarted = !!sessionData?.startedAt && !isSessionError;
   const selectedGymId = userStatus?.gym?.id?.toString() ?? "";
-  const levelInfo = getLevelInfo(userStatus?.sr ?? 0);
 
   const { mutateAsync: setGymMutation } = useMutation({
     mutationFn: (gymId: string) => {
@@ -66,18 +63,13 @@ export default function MissionHeader() {
               onValueChange={handleGymChange}
               disabled={isSessionStarted}
             >
-              <Select.Trigger
-                className={cn(
-                  "inline-flex items-center justify-center gap-2 py-2 t-p-22-sb text-neutral-100 focus:outline-none",
-                  isSessionStarted
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:opacity-90"
-                )}
-              >
+              <Select.Trigger className="inline-flex items-center justify-center gap-2 py-2 t-p-22-sb text-neutral-100 focus:outline-none">
                 <Select.Value placeholder="암장 선택" />
-                <Select.Icon>
-                  <ChevronDownIcon variant="white" />
-                </Select.Icon>
+                {!isSessionStarted && (
+                  <Select.Icon>
+                    <ChevronDownIcon variant="white" />
+                  </Select.Icon>
+                )}
               </Select.Trigger>
               <Select.Portal>
                 <Select.Content
@@ -125,19 +117,7 @@ export default function MissionHeader() {
               </Select.Portal>
             </Select.Root>
           </div>
-          <Link
-            to="/my"
-            className="relative w-[55px] h-[46px] hover:opacity-90 transition-opacity"
-          >
-            <img
-              src={userStatus?.imageUrl ?? assetMyCharacter}
-              alt="user-profile"
-              className="w-10 h-10 object-cover rounded-full"
-            />
-            <span className="absolute bottom-[6px] right-0 t-p-10-sb text-neutral-100 bg-neutral-500 border-2 border-neutral-100 rounded-full py-0.5 px-1">
-              LV.{levelInfo.displayLevel}
-            </span>
-          </Link>
+          <MissionMyProfile />
         </div>
       </div>
     </div>

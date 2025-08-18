@@ -15,7 +15,7 @@ export default function MissionNotTriedReviewing({
   onRetry,
 }: MissionNotTriedReviewingProps) {
   return (
-    <div className="flex-1 flex flex-col">
+    <>
       <MissionDetailHeader type="mypage" />
 
       <div className="flex-1 flex flex-col items-center">
@@ -45,6 +45,6 @@ export default function MissionNotTriedReviewing({
         <Button onClick={onRetry}>재촬영</Button>
         <Button onClick={onSuccess}>성공</Button>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import CloseIcon from "@/components/icons/CloseIcon";
+import MissionMyProfile from "../../-components/MissionMyProfile";
 
 export default function MissionDetailHeader({
   type = "close",
@@ -9,7 +10,7 @@ export default function MissionDetailHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center justify-end pt-4">
+    <header className="flex items-center justify-end p-4">
       <button
         type="button"
         onClick={() => {
@@ -20,14 +21,13 @@ export default function MissionDetailHeader({
             navigate({ to: "/mypage" });
           }
         }}
-        className="p-2"
       >
         {type === "close" && (
-          <CloseIcon variant="white" width={24} height={24} />
+          <div className="p-2">
+            <CloseIcon variant="white" width={24} height={24} />
+          </div>
         )}
-        {type === "mypage" && (
-          <div className="w-[42px] h-[42px] bg-neutral-100 rounded-full" />
-        )}
+        {type === "mypage" && <MissionMyProfile />}
       </button>
     </header>
   );

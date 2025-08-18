@@ -42,7 +42,7 @@ function MissionDetail() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-neutral-900">
+    <div className="fixed inset-0 flex flex-col">
       <MissionNotTried
         missionId={Number(missionId)}
         sectorName={currentMission.sector?.name ?? ""}
