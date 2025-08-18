@@ -18,6 +18,7 @@ import { getStorage, setStorage } from "@/utils/storage";
 import ListIcon from "../../components/icons/ListIcon";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
+import MissionLockCard from "./-components/MissionLockCard";
 import MissionTimer from "./-components/MissionTimer";
 import { useCarousel } from "./-hooks/useCarousel";
 
@@ -240,13 +241,7 @@ function Mission() {
                 </div>
               ))
             ) : (
-              <div className="flex-[0_0_80vw] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
-                <img
-                  src="/mission-start-mock.png"
-                  alt="클라이밍 이미지"
-                  className="blur-sm"
-                />
-              </div>
+              <MissionLockCard />
             )}
           </div>
         </div>
