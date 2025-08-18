@@ -161,7 +161,8 @@ function RouteComponent() {
           <div className="grid grid-cols-2 gap-x-2 gap-y-3 px-4">
             {flatItems.map((item, index) => {
               const key = `video-card-${index}`;
-              const selectedDifficulty = sample(item.gymLevelImageUrls);
+              const selectedDifficulty =
+                item.gymLevelImageUrls[index % item.gymLevelImageUrls.length];
               return (
                 <VideoCard
                   key={key}

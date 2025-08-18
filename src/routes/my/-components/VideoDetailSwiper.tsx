@@ -213,7 +213,8 @@ export const VideoDetailSwiper = ({
         {items.map((item, index) => {
           const isActive = index === activeIndex;
           const isDownloading = downloadingIndex === index;
-          const difficultyImageUrl = sample(item.gymLevelImageUrls);
+          const difficultyImageUrl =
+            item.gymLevelImageUrls[index % item.gymLevelImageUrls.length];
           return (
             <SwiperSlide key={`video-detail-slide-${item.id}`}>
               <div className="relative w-full h-dvh">

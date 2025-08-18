@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as MissionRouteRouteImport } from './routes/mission/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MyIndexRouteImport } from './routes/my/index'
@@ -22,10 +21,6 @@ import { Route as MissionMissionIdIndexRouteImport } from './routes/mission/$mis
 import { Route as MissionMissionIdSuccessIndexRouteImport } from './routes/mission/$missionId/success/index'
 import { Route as MissionMissionIdFailedIndexRouteImport } from './routes/mission/$missionId/failed/index'
 
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MissionRouteRoute = MissionRouteRouteImport.update({
   id: '/mission',
   path: '/mission',
@@ -113,7 +108,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/mission': typeof MissionRouteRouteWithChildren
-  '/_authenticated': typeof AuthenticatedRoute
   '/mission/': typeof MissionIndexRoute
   '/my/': typeof MyIndexRoute
   '/mission/$missionId/': typeof MissionMissionIdIndexRoute
@@ -154,7 +148,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/mission'
-    | '/_authenticated'
     | '/mission/'
     | '/my/'
     | '/mission/$missionId/'
@@ -169,7 +162,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MissionRouteRoute: typeof MissionRouteRouteWithChildren
-  AuthenticatedRoute: typeof AuthenticatedRoute
   MyIndexRoute: typeof MyIndexRoute
   Oauth2RedirectIndexRoute: typeof Oauth2RedirectIndexRoute
   OnboardingGymIndexRoute: typeof OnboardingGymIndexRoute
@@ -179,13 +171,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/mission': {
       id: '/mission'
       path: '/mission'
@@ -287,7 +272,6 @@ const MissionRouteRouteWithChildren = MissionRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MissionRouteRoute: MissionRouteRouteWithChildren,
-  AuthenticatedRoute: AuthenticatedRoute,
   MyIndexRoute: MyIndexRoute,
   Oauth2RedirectIndexRoute: Oauth2RedirectIndexRoute,
   OnboardingGymIndexRoute: OnboardingGymIndexRoute,
