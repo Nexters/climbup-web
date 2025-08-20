@@ -220,20 +220,18 @@ export function useUploadAttemptVideo() {
         progress: { currentChunk: 0, totalChunks, percentage: 0 },
       }));
 
-      for (let i = 0; i < totalChunks; i++) {
-        const chunk = chunks[i];
-
+      const uploadPromises = chunks.map(async (chunk, index) => {
         await uploadChunkMutation.mutateAsync({
           attemptId,
           uploadId,
-          index: i,
+          index,
           chunk,
         });
 
         const progress: UploadProgress = {
-          currentChunk: i + 1,
+          currentChunk: index + 1,
           totalChunks,
-          percentage: Math.round(((i + 1) / totalChunks) * 100),
+          percentage: Math.round(((index + 1) / totalChunks) * 100),
         };
 
         setUploadState((prev) => ({
@@ -242,7 +240,9 @@ export function useUploadAttemptVideo() {
         }));
 
         callbacks.onProgress?.(progress);
-      }
+      });
+
+      await Promise.all(uploadPromises);
 
       const thumbnail = await createThumbnailFromVideo(file);
 
