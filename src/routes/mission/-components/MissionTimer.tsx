@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { motion } from "motion/react";
+import { Tooltip } from "radix-ui";
 import { useEffect, useRef, useState } from "react";
 import { Timer } from "@/components/timer/Timer";
 import {
@@ -14,10 +16,14 @@ import StopIcon from "../../../components/icons/StopIcon";
 
 const HOLD_MS = 1000;
 
+const MotionTooltipContent = motion.create(Tooltip.Content);
+
 export default function MissionTimer({
   showMockStopButton,
+  isTooltipOpen,
 }: {
   showMockStopButton: boolean;
+  isTooltipOpen: boolean;
 }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -133,33 +139,60 @@ export default function MissionTimer({
         seconds={time}
         className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
       />
-      <button
-        type="button"
-        onClick={handleToggle}
-        onMouseDown={startHoldToStop}
-        onMouseUp={cancelHoldToStop}
-        onMouseLeave={cancelHoldToStop}
-        onTouchStart={startHoldToStop}
-        onTouchEnd={cancelHoldToStop}
-        onContextMenu={(e) => e.preventDefault()}
-        id={showStopButton ? "timer-stop-button" : "timer-play-button"}
-        className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-1000 ease-in ${
-          isHolding && showStopButton
-            ? "scale-150 bg-neutral-200"
-            : "bg-neutral-100"
-        }`}
-        aria-label={showStopButton ? "정지하기" : "시작하기"}
-      >
-        {showStopButton ? (
-          <StopIcon
-            variant={isHolding ? "red" : "dark"}
-            width={16}
-            height={16}
-          />
-        ) : (
-          <PlayIcon variant="dark" width={16} height={16} />
-        )}
-      </button>
+      <Tooltip.Provider>
+        <Tooltip.Root open={isTooltipOpen}>
+          <Tooltip.Trigger asChild>
+            <button
+              type="button"
+              onClick={handleToggle}
+              onMouseDown={startHoldToStop}
+              onMouseUp={cancelHoldToStop}
+              onMouseLeave={cancelHoldToStop}
+              onTouchStart={startHoldToStop}
+              onTouchEnd={cancelHoldToStop}
+              onContextMenu={(e) => e.preventDefault()}
+              id={showStopButton ? "timer-stop-button" : "timer-play-button"}
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-1000 ease-in ${
+                isHolding && showStopButton
+                  ? "scale-150 bg-neutral-200"
+                  : "bg-neutral-100"
+              }`}
+              aria-label={showStopButton ? "정지하기" : "시작하기"}
+            >
+              {showStopButton ? (
+                <StopIcon
+                  variant={isHolding ? "red" : "dark"}
+                  width={16}
+                  height={16}
+                />
+              ) : (
+                <PlayIcon variant="dark" width={16} height={16} />
+              )}
+            </button>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <MotionTooltipContent
+              initial={{ opacity: 0, y: 10 }}
+              animate={{
+                opacity: 1,
+                y: [0, -4, 0],
+                scale: [1, 1, 1],
+              }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade"
+              sideOffset={5}
+            >
+              <p className="t-p-14-sb text-blue-500">시작</p>
+              <Tooltip.Arrow className="fill-white" />
+            </MotionTooltipContent>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
     </div>
   );
 }

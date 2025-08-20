@@ -262,8 +262,10 @@ function Mission() {
           )}
         </div>
       )}
-
-      <MissionTimer showMockStopButton={showMockStopButton} />
+      <MissionTimer
+        showMockStopButton={showMockStopButton}
+        isTooltipOpen={!isSessionStarted}
+      />
     </div>
   );
 }
