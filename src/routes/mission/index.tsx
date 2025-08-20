@@ -16,6 +16,7 @@ import { getHeaderToken } from "@/utils/cookie";
 import { calculateMissionStatus } from "@/utils/mission";
 import { getStorage, setStorage } from "@/utils/storage";
 import ListIcon from "../../components/icons/ListIcon";
+import MissionEmpty from "./-components/MissionEmpty";
 import MissionGridCard from "./-components/MissionGridCard";
 import MissionListCard from "./-components/MissionListCard";
 import MissionLockCard from "./-components/MissionLockCard";
@@ -224,14 +225,21 @@ function Mission() {
         <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
           <div className="flex items-center p-2 pb-4">
             {isSessionStarted ? (
-              filteredRecommendations.map((mission, index) => (
-                <MissionGridCard
-                  key={mission.missionId}
-                  {...createMissionCardProps(mission)}
-                  type="main"
-                  isSelected={index === selectedIndex}
+              filteredRecommendations.length > 0 ? (
+                filteredRecommendations.map((mission, index) => (
+                  <MissionGridCard
+                    key={mission.missionId}
+                    {...createMissionCardProps(mission)}
+                    type="main"
+                    isSelected={index === selectedIndex}
+                  />
+                ))
+              ) : (
+                <MissionEmpty
+                  status={filter as "success" | "failed" | "not_tried"}
+                  onClickRecommend={() => setFilter("not_tried")}
                 />
-              ))
+              )
             ) : (
               <MissionLockCard />
             )}
@@ -239,12 +247,19 @@ function Mission() {
         </div>
       ) : (
         <div id="mission-list" className="flex flex-col gap-2 px-4">
-          {filteredRecommendations.map((mission) => (
-            <MissionListCard
-              key={mission.missionId}
-              {...createMissionCardProps(mission)}
+          {filteredRecommendations.length > 0 ? (
+            filteredRecommendations.map((mission) => (
+              <MissionListCard
+                key={mission.missionId}
+                {...createMissionCardProps(mission)}
+              />
+            ))
+          ) : (
+            <MissionEmpty
+              status={filter as "success" | "failed" | "not_tried"}
+              onClickRecommend={() => setFilter("not_tried")}
             />
-          ))}
+          )}
         </div>
       )}
 
