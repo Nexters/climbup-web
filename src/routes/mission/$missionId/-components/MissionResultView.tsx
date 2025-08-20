@@ -85,7 +85,7 @@ export default function MissionResultView({
         </div>
       </div>
 
-      <div className="flex items-center gap-4 py-6">
+      <div className="flex items-center gap-4 pt-6">
         <div className="overflow-hidden w-full" ref={emblaRef}>
           <div className="flex gap-1 px-[10vw]">
             <div
@@ -140,7 +140,7 @@ export default function MissionResultView({
         </div>
       </div>
 
-      <div className="flex justify-center gap-4 px-4 py-6">
+      <div className="flex justify-center gap-4 px-4 py-6 pb-24">
         {latestAttemptUrl && (
           <Button
             onClick={() =>
