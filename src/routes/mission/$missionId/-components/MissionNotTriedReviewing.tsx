@@ -19,7 +19,7 @@ export default function MissionNotTriedReviewing({
       <MissionDetailHeader type="mypage" />
 
       <div className="flex-1 flex flex-col items-center">
-        <div className="w-full flex flex-col items-center gap-1 mb-6 px-4">
+        <div className="w-full flex flex-col items-center gap-1 mb-4 px-4">
           <h1 className="t-p-22-sb text-neutral-100 leading-[1.4] tracking-[-0.024em] text-center">
             영상 확인 후 결과를 알려주세요
           </h1>
@@ -43,7 +43,7 @@ export default function MissionNotTriedReviewing({
         </div>
       </div>
 
-      <div className="flex justify-center gap-2 pb-6">
+      <div className="flex justify-center gap-2 pt-4 pb-6">
         <Button onClick={onFailed}>실패</Button>
         <Button onClick={onRetry}>재촬영</Button>
         <Button onClick={onSuccess}>성공</Button>
