@@ -18,7 +18,7 @@ export default function MissionDetailHeader({
             navigate({ to: "/mission" });
           }
           if (type === "mypage") {
-            navigate({ to: "/mypage" });
+            navigate({ to: "/my" });
           }
         }}
       >
