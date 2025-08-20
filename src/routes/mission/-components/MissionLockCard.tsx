@@ -1,6 +1,6 @@
 export default function MissionLockCard() {
   return (
-    <div className="relative flex-[0_0_80vw] aspect-[3/4] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
+    <div className="relative flex-[0_0_80vw] max-w-[480px] aspect-[3/4] flex items-center justify-center border-8 border-neutral-100 rounded-[40px] overflow-hidden">
       <img
         src="/mission-start-mock.png"
         alt="클라이밍 이미지"

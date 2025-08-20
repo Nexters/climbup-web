@@ -84,7 +84,7 @@ export default function MissionResultView({
                 transition: "transform 0.3s ease",
               }}
             >
-              <div className="max-w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+              <div className="max-w-[480px] w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-[40px] overflow-hidden">
                 {missionData?.videoUrl ? (
                   <video
                     src={missionData.videoUrl}
@@ -108,7 +108,7 @@ export default function MissionResultView({
                 transition: "transform 0.3s ease",
               }}
             >
-              <div className="max-w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-3xl overflow-hidden">
+              <div className="max-w-[480px] w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-[40px] overflow-hidden">
                 {latestAttemptUrl ? (
                   <video
                     src={latestAttemptUrl}
