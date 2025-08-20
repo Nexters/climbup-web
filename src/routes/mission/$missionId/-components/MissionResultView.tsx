@@ -84,11 +84,11 @@ export default function MissionResultView({
                 transition: "transform 0.3s ease",
               }}
             >
-              <div className="max-w-[480px] w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-[40px] overflow-hidden">
+              <div className="card-container">
                 {missionData?.videoUrl ? (
                   <video
                     src={missionData.videoUrl}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-[32px]"
                     controls
                     playsInline
                   >
@@ -108,11 +108,11 @@ export default function MissionResultView({
                 transition: "transform 0.3s ease",
               }}
             >
-              <div className="max-w-[480px] w-[80vw] aspect-[3/4] bg-neutral-800 border-8 border-neutral-100 rounded-[40px] overflow-hidden">
+              <div className="card-container">
                 {latestAttemptUrl ? (
                   <video
                     src={latestAttemptUrl}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-[32px]"
                     controls
                     playsInline
                   >

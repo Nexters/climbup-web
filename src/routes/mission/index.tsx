@@ -222,26 +222,15 @@ function Mission() {
 
       {viewMode === "card" ? (
         <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-1 px-[10vw] p-2 pb-4">
+          <div className="flex items-center p-2 pb-4">
             {isSessionStarted ? (
               filteredRecommendations.map((mission, index) => (
-                <div
+                <MissionGridCard
                   key={mission.missionId}
-                  className={cn(
-                    "flex-[0_0_80vw] flex items-center justify-center transition-transform duration-300 ease-in-out",
-                    index === selectedIndex
-                      ? "scale-100 opacity-100"
-                      : "scale-90 opacity-50"
-                  )}
-                  data-selected={index === selectedIndex}
-                  data-index={index}
-                  data-selected-index={selectedIndex}
-                >
-                  <MissionGridCard
-                    {...createMissionCardProps(mission)}
-                    type="main"
-                  />
-                </div>
+                  {...createMissionCardProps(mission)}
+                  type="main"
+                  isSelected={index === selectedIndex}
+                />
               ))
             ) : (
               <MissionLockCard />

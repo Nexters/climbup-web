@@ -9,3 +9,9 @@
 :root {
   --number-flow-char-height: 0.85em;
 }
+
+@layer components {
+  .card-container {
+    @apply flex-[0_0_80vw] max-w-[480px] aspect-[3/4] rounded-[40px] bg-neutral-100 p-2 shadow-[0_4px_8px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-in-out;
+  }
+}

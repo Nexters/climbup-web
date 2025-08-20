@@ -19,6 +19,7 @@ interface MissionGridCardProps {
   removedAt?: string;
   holdImageUrl?: string;
   type: "main" | "detail" | "recommendation";
+  isSelected?: boolean;
 }
 
 export default function MissionGridCard({
@@ -33,30 +34,34 @@ export default function MissionGridCard({
   removedAt,
   holdImageUrl,
   type = "main",
+  isSelected = true,
 }: MissionGridCardProps) {
   return (
     <Link
       to={`/mission/${missionId}/${status === "not_tried" ? "" : status}`}
       disabled={!missionId}
-      className="w-full max-w-[480px] aspect-[3/4] rounded-[40px] overflow-hidden border-8 border-neutral-100 shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+      className={cn("card-container", {
+        "scale-100 opacity-100": isSelected,
+        "scale-90 opacity-50": !isSelected,
+      })}
     >
       <div
         className={cn(
-          "relative h-full p-4 xs:p-5",
+          "relative h-full p-4 xs:p-5 rounded-[32px]",
           status === "not_tried"
-            ? ""
-            : "bg-neutral-100 border-[1px] border-neutral-300 rounded-[32px]"
+            ? "bg-neutral-800"
+            : "bg-neutral-100 border-[1px] border-neutral-300"
         )}
       >
         {status === "not_tried" && imageUrl && (
           <img
             src={imageUrl}
             alt="mission-image"
-            className="absolute inset-0 w-full h-full object-cover z-[-1] opacity-50"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 rounded-[32px]"
             loading="lazy"
           />
         )}
-        <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-between h-full relative z-10">
           {(type === "main" || type === "recommendation") && (
             <div className="flex flex-col gap-1 xs:gap-2">
               <div className="flex items-center justify-between gap-1">
