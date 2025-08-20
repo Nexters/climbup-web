@@ -13,7 +13,7 @@ function isKakaoTalkInAppBrowser() {
 }
 
 if (isKakaoTalkInAppBrowser()) {
-  location.href = "kakaotalk://web/openExternal?url=https://www.holdy.kr";
+  location.href = "kakaotalk://web/openExternal?url=https://holdy.kr";
 }
 
 const rootElement = document.getElementById("root");
