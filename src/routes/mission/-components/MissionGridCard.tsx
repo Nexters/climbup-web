@@ -47,19 +47,22 @@ export default function MissionGridCard({
     >
       <div
         className={cn(
-          "relative h-full p-4 xs:p-5 rounded-[32px]",
+          "relative h-full p-5 rounded-[32px]",
           status === "not_tried"
-            ? "bg-neutral-800"
+            ? ""
             : "bg-neutral-100 border-[1px] border-neutral-300"
         )}
       >
         {status === "not_tried" && imageUrl && (
-          <img
-            src={imageUrl}
-            alt="mission-image"
-            className="absolute inset-0 w-full h-full object-cover opacity-50 rounded-[32px]"
-            loading="lazy"
-          />
+          <>
+            <img
+              src={imageUrl}
+              alt="mission-image"
+              className="absolute inset-0 w-full h-full object-cover opacity-50 rounded-[32px]"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#313131] to-[#00000000] opacity-60 rounded-[32px]" />
+          </>
         )}
         <div className="flex flex-col justify-between h-full relative z-10">
           {(type === "main" || type === "recommendation") && (
