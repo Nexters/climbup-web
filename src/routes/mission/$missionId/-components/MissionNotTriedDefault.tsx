@@ -25,10 +25,7 @@ export default function MissionNotTriedDefault({
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center gap-2">
             <span className="rounded-3xl t-p-14-sb text-neutral-200">
-              {sectorName}
-            </span>
-            <span className="rounded-3xl t-p-14-sb text-neutral-200">
-              {difficulty}
+              SEC {sectorName}
             </span>
           </div>
           <div className="w-[88px] h-[46px]">
