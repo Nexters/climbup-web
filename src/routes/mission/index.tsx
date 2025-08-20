@@ -118,8 +118,6 @@ function Mission() {
 
   const { emblaRef, selectedIndex, scrollTo } = useCarousel();
 
-  console.log("selectedIndex:", selectedIndex);
-
   const handleGuideComplete = useCallback(() => {
     setShowGuide(false);
     setShowMockStopButton(false);
