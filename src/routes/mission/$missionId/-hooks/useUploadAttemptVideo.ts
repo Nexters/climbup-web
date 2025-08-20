@@ -10,7 +10,7 @@ import type { FinalizeRouteMissionUploadSessionBody } from "@/generated/model";
 import { getHeaderToken } from "@/utils/cookie";
 import type { BodyType } from "@/utils/http";
 
-const CHUNK_SIZE = 256 * 1024;
+const CHUNK_SIZE = 512 * 1024;
 
 export interface UploadProgress {
   currentChunk: number;
