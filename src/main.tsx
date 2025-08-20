@@ -6,6 +6,16 @@ import App from "./App.tsx";
 import "./index.css";
 import { worker } from "./mocks/browser.ts";
 
+// 카카오톡 인앱 브라우저 감지 및 외부 브라우저로 리다이렉트
+function isKakaoTalkInAppBrowser() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.includes("kakaotalk");
+}
+
+if (isKakaoTalkInAppBrowser()) {
+  location.href = "kakaotalk://web/openExternal?url=https://www.holdy.kr";
+}
+
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
