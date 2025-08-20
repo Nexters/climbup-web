@@ -3,7 +3,7 @@ import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 const createApiInstance = () => {
   const instance = axios.create({
     // TODO: 추후 환경변수로 관리
-    baseURL: "https://dev-api.holdy.kr",
+    baseURL: "https://api.holdy.kr",
     headers: {
       "Content-Type": "application/json",
     },
