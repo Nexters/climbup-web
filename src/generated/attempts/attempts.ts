@@ -74,7 +74,7 @@ export const finalizeRouteMissionUploadSession = (
     {
       url: `/api/attempts/${attemptId}/upload/${uploadId}/finalize`,
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "multipart/form-data" },
       data: finalizeRouteMissionUploadSessionBody,
     },
     options

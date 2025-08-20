@@ -6,7 +6,9 @@ import {
   initializeRouteMissionUploadSession,
   uploadRouteMissionVideoChunk,
 } from "@/generated/attempts/attempts";
+import type { FinalizeRouteMissionUploadSessionBody } from "@/generated/model";
 import { getHeaderToken } from "@/utils/cookie";
+import type { BodyType } from "@/utils/http";
 
 const CHUNK_SIZE = 256 * 1024;
 
@@ -117,13 +119,22 @@ export function useUploadAttemptVideo() {
       attemptId: number;
       uploadId: string;
       thumbnail: File;
-    }) =>
-      finalizeRouteMissionUploadSession(
+    }) => {
+      const formData = new FormData();
+      formData.append("thumbnail", thumbnail, "thumbnail.jpg");
+
+      return finalizeRouteMissionUploadSession(
         attemptId,
         uploadId,
-        { thumbnail },
-        { headers: getHeaderToken() }
-      ),
+        formData as BodyType<FinalizeRouteMissionUploadSessionBody>,
+        {
+          headers: {
+            ...getHeaderToken(),
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    },
   });
 
   const createThumbnailFromVideo = (videoFile: File): Promise<File> => {
@@ -132,13 +143,19 @@ export function useUploadAttemptVideo() {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
+      if (!ctx) {
+        reject(new Error("Canvas context를 생성할 수 없습니다."));
+        return;
+      }
+
       video.onloadedmetadata = () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+        video.currentTime = 0.1;
       };
 
       video.onseeked = () => {
-        if (ctx) {
+        try {
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
           canvas.toBlob(
             (blob) => {
@@ -154,13 +171,14 @@ export function useUploadAttemptVideo() {
             "image/jpeg",
             0.8
           );
+        } catch (error) {
+          reject(new Error(`썸네일 생성 중 오류: ${error}`));
         }
       };
 
       video.onerror = () => reject(new Error("비디오 로드 실패"));
 
       video.src = URL.createObjectURL(videoFile);
-      video.currentTime = 0.1;
     });
   };
 
