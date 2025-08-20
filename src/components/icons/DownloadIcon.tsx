@@ -12,7 +12,7 @@ export default function DownloadIcon({
   className,
   ...props
 }: DownloadIconProps) {
-  const strokeColor = variant === "white" ? "#FFFFFF" : "#9DA4AE";
+  const strokeColor = variant === "white" ? "#FFFFFF" : "#d2d6db";
 
   return (
     <svg

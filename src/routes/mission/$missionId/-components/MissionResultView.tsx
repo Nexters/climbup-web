@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import Button from "@/components/Button";
+import DownloadIcon from "@/components/icons/DownloadIcon";
 import FrownIcon from "@/components/icons/FrownIcon";
 import ThumbsUpIcon from "@/components/icons/ThumbsUpIcon";
 import type { RouteMissionRecommendationResponse } from "@/generated/model";
@@ -22,15 +23,25 @@ export default function MissionResultView({
   );
   const latestAttemptUrl = missionData?.attempts?.[0]?.videoUrl;
 
-  const handleDownload = (url: string | undefined, filename: string) => {
+  const handleDownload = async (url: string | undefined, filename: string) => {
     if (!url) return;
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("다운로드 실패:", error);
+    }
   };
 
   return (
@@ -139,10 +150,21 @@ export default function MissionResultView({
               )
             }
           >
-            저장
+            <span className="t-p-14-sb text-neutral-300 flex items-center gap-1">
+              저장
+              <DownloadIcon />
+            </span>
           </Button>
         )}
-        {onRetry && <Button onClick={onRetry}>다시 도전</Button>}
+        {onRetry && (
+          <button
+            type="button"
+            className="t-p-14-sb bg-neutral-100 rounded-[32px] px-9 py-4 shadow-[2px_2px_16px_0_rgba(0,0,0,0.4)]"
+            onClick={onRetry}
+          >
+            다시 도전
+          </button>
+        )}
       </div>
     </>
   );
