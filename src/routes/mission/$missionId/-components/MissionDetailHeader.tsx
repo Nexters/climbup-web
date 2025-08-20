@@ -10,7 +10,7 @@ export default function MissionDetailHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center justify-end p-4">
+    <header className="flex items-center justify-end p-2">
       <button
         type="button"
         onClick={() => {
