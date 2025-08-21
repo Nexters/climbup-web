@@ -173,18 +173,18 @@ export default function MissionTimer({
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <MotionTooltipContent
-              initial={{ y: 10 }}
+              initial={{ y: 14 }}
               animate={{
-                y: [0, 7, 0],
+                y: [0, -7, 0],
               }}
-              exit={{ y: 10 }}
+              exit={{ y: 14 }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut",
                 repeatType: "loop",
               }}
-              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
+              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade"
               sideOffset={5}
             >
               <p className="t-p-14-sb text-blue-500">시작</p>
