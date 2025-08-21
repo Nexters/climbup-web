@@ -181,91 +181,95 @@ function Mission() {
   });
 
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-between sticky top-[78px] items-center px-4 bg-neutral-500 pb-4">
-        <div id="mission-filters" className="flex gap-2">
-          {(["all", "not_tried", "failed", "success"] as const).map((type) => (
-            <button
-              key={type}
-              type="button"
-              disabled={!isSessionStarted}
-              className={cn(
-                "h-9 px-4 rounded-3xl whitespace-nowrap t-p-14-m transition-colors text-neutral-100",
-                cn({
-                  "bg-neutral-600": filter === type && isSessionStarted,
-                })
-              )}
-              onClick={() => {
-                setFilter(type);
-                scrollTo(0);
-              }}
-            >
-              {getFilterLabels(recommendations, filter)[type]}
-            </button>
-          ))}
-        </div>
-        {isSessionStarted && (
-          <button
-            id="mission-view-toggle"
-            type="button"
-            className="w-6 h-6 text-neutral-100"
-            onClick={toggleViewMode}
-            aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
-          >
-            {viewMode === "card" ? (
-              <ListIcon variant="white" />
-            ) : (
-              <GridIcon variant="white" />
-            )}
-          </button>
-        )}
-      </div>
-
-      {viewMode === "card" ? (
-        <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
-          <div className="flex items-center p-2 pb-4">
-            {isSessionStarted ? (
-              filteredRecommendations.length > 0 ? (
-                filteredRecommendations.map((mission, index) => (
-                  <MissionGridCard
-                    key={mission.missionId}
-                    {...createMissionCardProps(mission)}
-                    type="main"
-                    isSelected={index === selectedIndex}
-                  />
-                ))
-              ) : (
-                <MissionEmpty
-                  status={filter as "success" | "failed" | "not_tried"}
-                  onClickRecommend={() => setFilter("not_tried")}
-                />
+    <>
+      <div className="flex flex-col">
+        <div className="flex justify-between sticky top-[78px] items-center px-4 bg-neutral-500 pb-4">
+          <div id="mission-filters" className="flex gap-2">
+            {(["all", "not_tried", "failed", "success"] as const).map(
+              (type) => (
+                <button
+                  key={type}
+                  type="button"
+                  disabled={!isSessionStarted}
+                  className={cn(
+                    "h-9 px-4 rounded-3xl whitespace-nowrap t-p-14-m transition-colors text-neutral-100",
+                    cn({
+                      "bg-neutral-600": filter === type && isSessionStarted,
+                    })
+                  )}
+                  onClick={() => {
+                    setFilter(type);
+                    scrollTo(0);
+                  }}
+                >
+                  {getFilterLabels(recommendations, filter)[type]}
+                </button>
               )
-            ) : (
-              <MissionLockCard />
             )}
           </div>
-        </div>
-      ) : (
-        <div id="mission-list" className="flex flex-col gap-2 px-4">
-          {filteredRecommendations.length > 0 ? (
-            filteredRecommendations.map((mission) => (
-              <MissionListCard
-                key={mission.missionId}
-                {...createMissionCardProps(mission)}
-              />
-            ))
-          ) : (
-            <MissionEmpty
-              status={filter as "success" | "failed" | "not_tried"}
-              onClickRecommend={() => setFilter("not_tried")}
-            />
+          {isSessionStarted && (
+            <button
+              id="mission-view-toggle"
+              type="button"
+              className="w-6 h-6 text-neutral-100"
+              onClick={toggleViewMode}
+              aria-label={viewMode === "card" ? "목록으로 보기" : "카드로 보기"}
+            >
+              {viewMode === "card" ? (
+                <ListIcon variant="white" />
+              ) : (
+                <GridIcon variant="white" />
+              )}
+            </button>
           )}
         </div>
-      )}
+
+        {viewMode === "card" ? (
+          <div id="mission-carousel" className="overflow-hidden" ref={emblaRef}>
+            <div className="flex items-center p-2 pb-4">
+              {isSessionStarted ? (
+                filteredRecommendations.length > 0 ? (
+                  filteredRecommendations.map((mission, index) => (
+                    <MissionGridCard
+                      key={mission.missionId}
+                      {...createMissionCardProps(mission)}
+                      type="main"
+                      isSelected={index === selectedIndex}
+                    />
+                  ))
+                ) : (
+                  <MissionEmpty
+                    status={filter as "success" | "failed" | "not_tried"}
+                    onClickRecommend={() => setFilter("not_tried")}
+                  />
+                )
+              ) : (
+                <MissionLockCard />
+              )}
+            </div>
+          </div>
+        ) : (
+          <div id="mission-list" className="flex flex-col gap-2 px-4 pb-[88px]">
+            {filteredRecommendations.length > 0 ? (
+              filteredRecommendations.map((mission) => (
+                <MissionListCard
+                  key={mission.missionId}
+                  {...createMissionCardProps(mission)}
+                />
+              ))
+            ) : (
+              <MissionEmpty
+                status={filter as "success" | "failed" | "not_tried"}
+                onClickRecommend={() => setFilter("not_tried")}
+              />
+            )}
+          </div>
+        )}
+      </div>
       <MissionTimer
         showMockStopButton={showMockStopButton}
         isTooltipOpen={!isSessionStarted}
       />
-    </div>
+    </>
   );
 }

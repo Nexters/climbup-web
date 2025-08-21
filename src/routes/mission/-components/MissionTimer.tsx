@@ -136,7 +136,7 @@ export default function MissionTimer({
   return (
     <Tooltip.Provider>
       <Tooltip.Root open={isTooltipOpen}>
-        <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none">
+        <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center h-[88px] gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none z-30">
           <Timer
             seconds={time}
             className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"

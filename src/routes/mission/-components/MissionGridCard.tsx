@@ -40,10 +40,14 @@ export default function MissionGridCard({
     <Link
       to={`/mission/${missionId}/${status === "not_tried" ? "" : status}`}
       disabled={!missionId}
-      className={cn("card-container", {
-        "scale-100 opacity-100": isSelected,
-        "scale-90 opacity-50": !isSelected,
-      })}
+      className={cn(
+        "card-container",
+        {
+          "scale-100 opacity-100": isSelected,
+          "scale-90 opacity-50": !isSelected,
+        },
+        "max-w-[360px]"
+      )}
     >
       <div
         className={cn(
