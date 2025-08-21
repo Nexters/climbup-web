@@ -12,21 +12,15 @@ import type { BodyType } from "@/utils/http";
 
 const CHUNK_SIZE = 512 * 1024;
 
-export interface UploadProgress {
-  currentChunk: number;
-  totalChunks: number;
-  percentage: number;
-}
-
 export interface UploadState {
   isUploading: boolean;
-  progress: UploadProgress;
+  percentage: number;
   uploadId?: string;
   error?: string;
 }
 
 export interface UploadCallbacks {
-  onProgress?: (progress: UploadProgress) => void;
+  onProgress?: (percentage: number) => void;
   onSuccess?: (fileName: string) => void;
   onError?: (error: Error) => void;
 }
@@ -63,7 +57,7 @@ async function splitFileIntoChunks(
 export function useUploadAttemptVideo() {
   const [uploadState, setUploadState] = useState<UploadState>({
     isUploading: false,
-    progress: { currentChunk: 0, totalChunks: 0, percentage: 0 },
+    percentage: 0,
   });
 
   const checkUploadStatusMutation = useMutation({
@@ -217,8 +211,10 @@ export function useUploadAttemptVideo() {
 
       setUploadState((prev) => ({
         ...prev,
-        progress: { currentChunk: 0, totalChunks, percentage: 0 },
+        percentage: 0,
       }));
+
+      let completedChunks = 0;
 
       const uploadPromises = chunks.map(async (chunk, index) => {
         await uploadChunkMutation.mutateAsync({
@@ -228,18 +224,16 @@ export function useUploadAttemptVideo() {
           chunk,
         });
 
-        const progress: UploadProgress = {
-          currentChunk: index + 1,
-          totalChunks,
-          percentage: Math.round(((index + 1) / totalChunks) * 100),
-        };
+        completedChunks++;
+
+        const percentage = Math.round((completedChunks / totalChunks) * 100);
 
         setUploadState((prev) => ({
           ...prev,
-          progress,
+          percentage,
         }));
 
-        callbacks.onProgress?.(progress);
+        callbacks.onProgress?.(percentage);
       });
 
       await Promise.all(uploadPromises);
@@ -290,7 +284,7 @@ export function useUploadAttemptVideo() {
     checkUploadStatus,
     uploadState,
     isUploading: uploadState.isUploading,
-    progress: uploadState.progress,
+    percentage: uploadState.percentage,
     error: uploadState.error,
     uploadId: uploadState.uploadId,
   };

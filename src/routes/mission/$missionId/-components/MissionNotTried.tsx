@@ -33,14 +33,10 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
   const [state, setState] = useState<MissionState>("DEFAULT");
   const [capturedMedia, setCapturedMedia] = useState<CapturedMedia>(null);
   const [successAttemptId, setSuccessAttemptId] = useState<number | null>(null);
-  const [currentUploadInfo, setCurrentUploadInfo] = useState<{
-    isSuccess: boolean;
-    attemptId: number | null;
-  } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { uploadVideo, isUploading, progress } = useUploadAttemptVideo();
+  const { uploadVideo, isUploading, percentage } = useUploadAttemptVideo();
 
   const { mutateAsync: createAttemptMutate } = useMutation({
     mutationFn: (success: boolean) =>
@@ -88,20 +84,16 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
       const newAttemptId = response.data?.missionAttemptId;
 
       if (newAttemptId && capturedMedia?.file) {
-        setCurrentUploadInfo({ isSuccess, attemptId: newAttemptId });
-
         await uploadVideo(newAttemptId, capturedMedia.file, {
           onSuccess: () => {
             if (isSuccess) {
               setSuccessAttemptId(newAttemptId);
             }
             setState(isSuccess ? "SUCCESS" : "FAILED");
-            setCurrentUploadInfo(null);
           },
           onError: (error) => {
             console.error("Upload failed:", error);
             setState("FAILED");
-            setCurrentUploadInfo(null);
           },
         });
       } else {
@@ -110,7 +102,6 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
     } catch (error) {
       console.error("Review failed:", error);
       setState(isSuccess ? "SUCCESS" : "FAILED");
-      setCurrentUploadInfo(null);
     }
   };
 
@@ -135,12 +126,7 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
         className="hidden"
       />
 
-      {isUploading && (
-        <MissionVideoUploadOverlay
-          progress={progress}
-          isAttemptSuccess={currentUploadInfo?.isSuccess ?? false}
-        />
-      )}
+      {isUploading && <MissionVideoUploadOverlay percentage={percentage} />}
 
       {(() => {
         switch (state) {
