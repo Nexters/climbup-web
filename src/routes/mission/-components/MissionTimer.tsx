@@ -134,13 +134,14 @@ export default function MissionTimer({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none">
-      <Timer
-        seconds={time}
-        className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
-      />
-      <Tooltip.Provider>
-        <Tooltip.Root open={isTooltipOpen}>
+    <Tooltip.Provider>
+      <Tooltip.Root open={isTooltipOpen}>
+        <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center p-4 gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none">
+          <Timer
+            seconds={time}
+            className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
+          />
+
           <Tooltip.Trigger asChild>
             <button
               type="button"
@@ -172,27 +173,26 @@ export default function MissionTimer({
           </Tooltip.Trigger>
           <Tooltip.Portal>
             <MotionTooltipContent
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ y: 10 }}
               animate={{
-                opacity: 1,
-                y: [0, -4, 0],
+                y: [0, 7, 0],
               }}
-              exit={{ opacity: 0, y: 10 }}
+              exit={{ y: 10 }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut",
                 repeatType: "loop",
               }}
-              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade"
+              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity]"
               sideOffset={5}
             >
               <p className="t-p-14-sb text-blue-500">시작</p>
               <Tooltip.Arrow className="fill-white" />
             </MotionTooltipContent>
           </Tooltip.Portal>
-        </Tooltip.Root>
-      </Tooltip.Provider>
-    </div>
+        </div>
+      </Tooltip.Root>
+    </Tooltip.Provider>
   );
 }
