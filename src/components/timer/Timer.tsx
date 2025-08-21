@@ -9,7 +9,6 @@ type TimerProps = {
 };
 
 export const Timer = ({ seconds, className, trend = 1 }: TimerProps) => {
-  console.log(seconds);
   const safeSeconds = Math.max(0, seconds);
   const hh = Math.floor(safeSeconds / 3600);
   const mm = Math.floor((safeSeconds % 3600) / 60);
