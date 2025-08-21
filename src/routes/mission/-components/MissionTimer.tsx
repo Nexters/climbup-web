@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { differenceInSeconds, isValid, parseISO } from "date-fns";
 import { motion } from "motion/react";
 import { Tooltip } from "radix-ui";
 import { useEffect, useRef, useState } from "react";
@@ -56,9 +57,18 @@ export default function MissionTimer({
     let intervalId: NodeJS.Timeout;
 
     if (sessionData?.startedAt && !isSessionError) {
-      const startTime = new Date(sessionData.startedAt).getTime();
-      const currentTime = Date.now();
-      const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+      const startDate = parseISO(sessionData.startedAt);
+
+      // startedAt이 유효한 날짜인지 확인
+      if (!isValid(startDate)) {
+        setTime(0);
+        return;
+      }
+
+      const elapsedSeconds = Math.max(
+        0,
+        differenceInSeconds(new Date(), startDate)
+      );
       setTime(elapsedSeconds);
 
       intervalId = setInterval(() => {
@@ -137,9 +147,9 @@ export default function MissionTimer({
     <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center h-[88px] gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none z-30">
       <Timer
         seconds={time}
+        trend={0}
         className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
       />
-
       <Tooltip.Provider>
         <Tooltip.Root open={isTooltipOpen}>
           <Tooltip.Trigger asChild>
