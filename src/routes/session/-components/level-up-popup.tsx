@@ -23,8 +23,11 @@ export const LevelUpPopup = ({ isOpen, onClose }: LevelUpPopupProps) => {
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
+      <Dialog.Title className="hidden">레벨업</Dialog.Title>
+      <Dialog.Description className="hidden">레벨업</Dialog.Description>
       <AnimatePresence>
         <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-neutral-800 max-w-[600px] mx-auto" />
           <Dialog.Content className="fixed inset-0 z-50 bg-neutral-800 max-w-[600px] mx-auto">
             {/* 레벨업 텍스트와 뱃지 */}
             {/* 배경 그라데이션 */}
