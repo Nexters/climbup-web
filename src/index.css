@@ -15,3 +15,71 @@
     @apply flex-[0_0_80vw] max-w-[480px] aspect-[3/4] rounded-[40px] bg-neutral-100 p-2 shadow-[2px_2px_8px_rgba(0,0,0,0.4)] transition-transform duration-300 ease-in-out;
   }
 }
+
+/* Class assigned to popover wrapper */
+.driver-popover {
+  border-radius: 32px !important;
+  padding: 20px !important;
+}
+
+/* Arrow pointing towards the highlighted element */
+.driver-popover-arrow {
+  display: none;
+}
+
+/* Title and description */
+.driver-popover-title {
+  color: #437bfe;
+  font-family:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -2.2%;
+}
+.driver-popover-description {
+  color: var(--color-neutral-700);
+  font-family:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -2.2%;
+  white-space: pre-line !important;
+}
+
+/* Close button displayed on the top right corner */
+.driver-popover-close-btn {
+  display: none !important;
+}
+
+/* Footer of the popover displaying progress and navigation buttons */
+.driver-popover-footer {
+}
+.driver-popover-progress-text {
+}
+
+.driver-popover-footer button {
+  width: 53px !important;
+  height: 33px !important;
+  border-radius: 24px !important;
+  background: #4d5761 !important;
+  color: #fcfcfd !important;
+  font-family:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: -2.2% !important;
+  border: none !important;
+  text-shadow: none !important;
+  padding: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.driver-popover-footer button:disabled {
+  display: none !important;
+}

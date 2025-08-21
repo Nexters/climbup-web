@@ -137,9 +137,10 @@ function Mission() {
     {
       element: "#timer-play-button",
       popover: {
-        align: "center",
+        align: "end",
         side: "top",
         title: "세션 시작",
+        disableButtons: ["previous"],
         description: "재생 버튼을 누르면 오늘의 세션을 시작해요.",
         onNextClick: () => {
           setShowMockStopButton(true);
@@ -148,12 +149,13 @@ function Mission() {
       },
     },
     {
-      element: "#mission-carousel",
+      element: "#mission-lock-card",
       popover: {
         align: "center",
-        side: "bottom",
+        side: "over",
         title: "루트 미션",
-        description: "내 레벨에 맞는 미션에 도전하고 해설 영상을 확인해보세요.",
+        disableButtons: ["previous"],
+        description: "내 난이도에 맞는 미션을 추천해드려요.",
       },
     },
     {
@@ -162,8 +164,9 @@ function Mission() {
         align: "center",
         side: "top",
         title: "세션 종료",
-        description:
-          "멈춤 버튼을 길게 누르면 오늘의 세션이 종료돼요. 종료 후 기록을 확인할 수 있어요.",
+        description: `정지 버튼을 길게 누르면 세션이 끝나요.\n끝난 뒤엔 기록을 확인할 수 있어요.`,
+        disableButtons: ["previous"],
+        doneBtnText: "시작하기",
         onNextClick: () => {
           stop();
         },

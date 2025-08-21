@@ -37,7 +37,9 @@ export function useDriverGuide({
     Partial<Config> = useMemo(
     () => ({
       showProgress: true,
-      showButtons: ["previous", "next", "close"],
+      showButtons: ["next"],
+      nextBtnText: "다음",
+      progressText: "{{current}}/{{total}}",
     }),
     []
   );
