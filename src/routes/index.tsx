@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const KAKAO_LOGIN_URL = `https://dev-api.holdy.kr/login/kakao?redirect_uri=${window.location.origin}/oauth2/redirect`;
+const KAKAO_LOGIN_URL = `https://api.holdy.kr/login/kakao?redirect_uri=${window.location.origin}/oauth2/redirect`;
 
 function Home() {
   const pagination: PaginationOptions = {
