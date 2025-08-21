@@ -134,14 +134,14 @@ export default function MissionTimer({
   };
 
   return (
-    <Tooltip.Provider>
-      <Tooltip.Root open={isTooltipOpen}>
-        <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center h-[88px] gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none z-30">
-          <Timer
-            seconds={time}
-            className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
-          />
+    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center h-[88px] gap-3 max-w-[600px] mx-auto bg-neutral-500 select-none z-30">
+      <Timer
+        seconds={time}
+        className="t-p-42-b text-neutral-100 tracking-[-1.05px] leading-[54.6px]"
+      />
 
+      <Tooltip.Provider>
+        <Tooltip.Root open={isTooltipOpen}>
           <Tooltip.Trigger asChild>
             <button
               type="button"
@@ -171,13 +171,14 @@ export default function MissionTimer({
               )}
             </button>
           </Tooltip.Trigger>
-          <Tooltip.Portal>
+          <Tooltip.Portal key={isTooltipOpen ? "open" : "close"}>
             <MotionTooltipContent
-              initial={{ y: 14 }}
+              key={isTooltipOpen ? "open" : "close"}
+              initial={{ y: -7 }}
               animate={{
                 y: [0, -7, 0],
               }}
-              exit={{ y: 14 }}
+              exit={{ y: -7 }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
@@ -191,8 +192,8 @@ export default function MissionTimer({
               <Tooltip.Arrow className="fill-white" />
             </MotionTooltipContent>
           </Tooltip.Portal>
-        </div>
-      </Tooltip.Root>
-    </Tooltip.Provider>
+        </Tooltip.Root>
+      </Tooltip.Provider>
+    </div>
   );
 }
