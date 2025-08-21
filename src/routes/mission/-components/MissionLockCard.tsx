@@ -5,7 +5,7 @@ import { cn } from "@/utils/cn";
 export default function MissionLockCard() {
   return (
     <div
-      className={cn("card-container", "max-w-[380px]")}
+      className={cn("card-container", "max-w-[300px]")}
       id="mission-lock-card"
     >
       <div className="relative w-full h-full rounded-[32px]">

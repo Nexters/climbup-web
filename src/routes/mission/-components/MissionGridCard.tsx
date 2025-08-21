@@ -46,7 +46,7 @@ export default function MissionGridCard({
           "scale-100 opacity-100": isSelected,
           "scale-90 opacity-50": !isSelected,
         },
-        "max-w-[360px]"
+        "max-w-[300px]"
       )}
     >
       <div
