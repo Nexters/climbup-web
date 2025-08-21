@@ -155,7 +155,7 @@ export const VideoDetailSwiper = ({
             >
               <div className="z-[120] pointer-events-none flex flex-col justify-center items-center gap-2">
                 <div className="px-3 py-1.5 text-neutral-100 t-p-22-sb text-center whitespace-pre-line">
-                  {`아래로 내려서\n내 완등 영상을 확인해보세요.`}
+                  {`스크롤 내리면 내 완등 영상들을\n확인할 수 있어요.`}
                 </div>
                 <motion.img
                   src={assetScrollDown}

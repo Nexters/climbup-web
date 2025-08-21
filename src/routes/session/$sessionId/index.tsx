@@ -12,7 +12,7 @@ import { MotionNumberFlow } from "@/components/motion-number-flow/MotionNumberFl
 import { Timer } from "@/components/timer/Timer";
 import { getUserSession } from "@/generated/user-session/user-session";
 import { getHeaderToken } from "@/utils/cookie";
-import { getLevelInfo } from "@/utils/level";
+import { getLevelInfo, getLevelUpCount } from "@/utils/level";
 import { LevelUpPopup } from "../-components/level-up-popup";
 import { SessionLevelProgress } from "../-components/session-level-progress";
 
@@ -59,6 +59,9 @@ function RouteComponent() {
   const prevLevelInfo = getLevelInfo(previousSr);
   const nextLevelInfo = getLevelInfo(currentSr);
 
+  // 레벨업 횟수 계산
+  const levelUpCount = getLevelUpCount(previousSr, currentSr);
+
   // Progress 표시용 상태: 이전 점수 상태로 시작 → 점수 애니메이션 완료 후 현재 점수 상태로 전환
   const [displayLevel, setDisplayLevel] = useState(prevLevelInfo.displayLevel);
   const [displayCurrentExp, setDisplayCurrentExp] = useState(
@@ -70,7 +73,6 @@ function RouteComponent() {
 
   // 레벨업 팝업 상태 관리
   const [isLevelUpPopupOpen, setIsLevelUpPopupOpen] = useState(false);
-  const [newLevelForPopup, setNewLevelForPopup] = useState(1);
 
   // 세션 정보가 바뀌면 초기 표시 상태를 이전 점수 기준으로 재설정
   useEffect(() => {
@@ -94,7 +96,6 @@ function RouteComponent() {
 
   // 레벨업 발생 시 팝업 표시
   const handleLevelUp = () => {
-    setNewLevelForPopup(nextLevelInfo.displayLevel);
     setIsLevelUpPopupOpen(true);
   };
 
@@ -206,11 +207,14 @@ function RouteComponent() {
       <div className="flex items-center w-full rounded-[24px] bg-neutral-100 px-4 py-6 gap-4 mt-6">
         <div className="flex flex-col flex-1">
           <SessionLevelProgress
+            currentSr={currentSr}
+            previousSr={previousSr}
             level={displayLevel}
             currentExp={displayCurrentExp}
             levelExp={displayLevelExp}
             progressWrapperClassName="w-full"
             onLevelUp={handleLevelUp}
+            levelUpCount={levelUpCount}
           />
         </div>
       </div>
@@ -250,7 +254,6 @@ function RouteComponent() {
       <LevelUpPopup
         isOpen={isLevelUpPopupOpen}
         onClose={handleCloseLevelUpPopup}
-        newLevel={newLevelForPopup}
       />
     </div>
   );

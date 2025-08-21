@@ -29,7 +29,7 @@ export function getLevelInfo(totalScore: number) {
           levelName,
           displayLevel,
           currentExp: totalScore - min,
-          levelExp: 1000, // 최고 레벨은 임의로 1000점 단위로 표시
+          levelExp: 9999,
           nextLevelScore: null,
           isMaxLevel: true,
         };
@@ -98,4 +98,22 @@ export function getLevelDisplayText(totalScore: number): string {
   const nextLevel = levelInfo.displayLevel + 1;
 
   return `LV.${nextLevel}까지 남은 점수 ${pointsNeeded}점 !`;
+}
+
+/**
+ * 레벨업 횟수를 계산하는 함수
+ */
+export function getLevelUpCount(
+  previousScore: number,
+  currentScore: number
+): number {
+  const prevLevelInfo = getLevelInfo(previousScore);
+  const currentLevelInfo = getLevelInfo(currentScore);
+
+  // 이전 레벨과 현재 레벨의 차이를 계산
+  const levelDifference =
+    currentLevelInfo.displayLevel - prevLevelInfo.displayLevel;
+
+  // 레벨업이 발생한 경우에만 양수 반환, 그렇지 않으면 0 반환
+  return Math.max(0, levelDifference);
 }

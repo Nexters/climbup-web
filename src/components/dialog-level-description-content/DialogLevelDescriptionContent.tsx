@@ -154,7 +154,7 @@ export const DialogLevelDescriptionContent = () => {
                 </div>
                 <div className="flex gap-1 items-center">
                   <img src={assetStar} alt="별" className="size-4" />
-                  <p className="t-p-14-sb text-neutral-600">+300</p>
+                  <p className="t-p-14-sb text-neutral-600">+200</p>
                 </div>
               </li>
             </ul>

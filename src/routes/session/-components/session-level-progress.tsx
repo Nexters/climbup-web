@@ -9,15 +9,19 @@ import assetLevel4 from "@/assets/images/ic_lv4.png";
 import assetLevel5 from "@/assets/images/ic_lv5.png";
 import { LEVEL_SCORE_STANDARD } from "@/constants/level";
 import { cn } from "@/utils/cn";
+import { getLevelInfo } from "@/utils/level";
 
 interface LevelProgressProps {
   currentExp: number;
   levelExp: number;
   level: number;
   progress?: number;
+  currentSr: number;
+  previousSr: number;
   onLevelUp?: () => void;
   onProgressChange?: (progress: number) => void;
   progressWrapperClassName?: string;
+  levelUpCount?: number;
 }
 
 export const SessionLevelProgress = ({
@@ -28,6 +32,9 @@ export const SessionLevelProgress = ({
   onLevelUp,
   onProgressChange,
   progressWrapperClassName,
+  levelUpCount = 0,
+  currentSr,
+  previousSr,
 }: LevelProgressProps) => {
   const [internalProgress, setInternalProgress] = useState(0);
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -43,6 +50,14 @@ export const SessionLevelProgress = ({
       mountedRef.current = false;
     };
   }, []);
+
+  // previousSr을 기반으로 초기 상태 설정
+  useEffect(() => {
+    if (previousSr !== undefined) {
+      const prevLevelInfo = getLevelInfo(previousSr);
+      setDisplayedLevel(prevLevelInfo.displayLevel);
+    }
+  }, [previousSr]);
 
   const getLevelExpByDisplayLevel = useCallback(
     (displayLevel: number) => {
@@ -75,6 +90,10 @@ export const SessionLevelProgress = ({
 
   // 레벨 업 애니메이션 시퀀스 실행
   useEffect(() => {
+    if (!currentSr || !previousSr) {
+      return;
+    }
+
     // 초기/일반 진행률 갱신 (레벨 변동 없음, 또는 애니메이션 중 아님)
     if (!isLevelingUp && level === displayedLevel) {
       setProgress(progressPercentage);
@@ -94,7 +113,11 @@ export const SessionLevelProgress = ({
           // 2) 레벨 아이콘 교체 + 좌우 로테이트 애니메이션
           setDisplayedLevel(fromLevel + 1);
           setShowLevelUp(true);
-          onLevelUp?.();
+
+          // levelUpCount가 0 이상일 때만 onLevelUp 콜백 호출
+          if (levelUpCount > 0) {
+            onLevelUp?.();
+          }
 
           // 3) 1초 후 progress 0으로 초기화 후 남은 경험치 반영 또는 다음 레벨업 반복
           const afterWiggle = window.setTimeout(() => {
@@ -125,11 +148,11 @@ export const SessionLevelProgress = ({
             // nextLevelExp는 현재 표시 텍스트용으로만 활용 가능하지만,
             // 텍스트는 상위에서 전달되는 props를 사용하므로 추가 상태 변경은 생략
             void nextLevelExp;
-          }, 1000);
+          }, 300);
 
           // 정리: 위 타이머를 클린업에서 취소
           timeoutsRef.current.push(afterWiggle);
-        }, 800);
+        }, 200);
 
         timeoutsRef.current.push(afterFill);
       };
@@ -144,6 +167,9 @@ export const SessionLevelProgress = ({
     onLevelUp,
     setProgress,
     getLevelExpByDisplayLevel,
+    levelUpCount,
+    currentSr,
+    previousSr,
   ]);
 
   // 타이머 정리용 ref

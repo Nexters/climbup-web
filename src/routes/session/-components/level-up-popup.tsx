@@ -7,7 +7,6 @@ import assetTextLevelup from "@/assets/images/text_levelup.png";
 interface LevelUpPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  newLevel: number;
 }
 
 export const LevelUpPopup = ({ isOpen, onClose }: LevelUpPopupProps) => {
