@@ -90,6 +90,11 @@ export default function MissionNotTried(props: MissionNotTriedProps) {
               setSuccessAttemptId(newAttemptId);
             }
             setState(isSuccess ? "SUCCESS" : "FAILED");
+            setCapturedMedia(null);
+
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
           },
           onError: (error) => {
             console.error("Upload failed:", error);
