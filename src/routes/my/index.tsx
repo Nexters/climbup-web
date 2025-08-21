@@ -17,6 +17,7 @@ export const Route = createFileRoute("/my/")({
 });
 
 const PAGE_SIZE = 10;
+const GOOGLE_FORM_URL = "https://forms.gle/btXobhr7sAHsXjMg9";
 
 function RouteComponent() {
   const [selectedTab, setSelectedTab] = useState<VideoTabId>(null);
@@ -126,7 +127,7 @@ function RouteComponent() {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.google.com"
+              href={GOOGLE_FORM_URL}
               className="flex items-start justify-between t-p-14-sb text-neutral-500"
             >
               <span>홀디에게 의견 보내기</span>
