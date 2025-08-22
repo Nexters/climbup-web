@@ -199,7 +199,7 @@ export default function MissionGridCard({
                         <img
                           src="/score-star.png"
                           alt="score-star"
-                          className="w-2.5 h-2.5"
+                          className="w-3 h-3"
                         />
                         +{score}
                       </p>
