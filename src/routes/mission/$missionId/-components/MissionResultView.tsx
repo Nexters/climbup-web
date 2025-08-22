@@ -7,6 +7,39 @@ import type { RouteMissionRecommendationResponse } from "@/generated/model";
 import { cn } from "@/utils/cn";
 import { useCarousel } from "../../-hooks/useCarousel";
 
+const VideoComponent = ({
+  isSelected,
+  videoUrl,
+}: {
+  isSelected: boolean;
+  videoUrl: string;
+}) => {
+  return (
+    <div
+      className={cn("card-container", {
+        "opacity-100 scale-100": isSelected,
+        "opacity-50 scale-90": !isSelected,
+      })}
+    >
+      {videoUrl ? (
+        <video
+          src={videoUrl}
+          className="w-full h-full object-cover rounded-[32px] aspect-[3/4]"
+          playsInline
+          muted
+          loop
+          controls
+          autoPlay
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-neutral-400 t-p-14-m">
+          영상이 없어요
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function MissionResultView({
   status,
   missionData,
@@ -22,6 +55,8 @@ export default function MissionResultView({
     [selectedIndex]
   );
   const latestAttemptUrl = missionData?.attempts?.[0]?.videoUrl;
+
+  console.log(selectedIndex);
 
   const handleDownload = async (url: string | undefined, filename: string) => {
     if (!url) return;
@@ -87,55 +122,15 @@ export default function MissionResultView({
 
       <div className="flex items-center gap-4 pt-6">
         <div className="overflow-hidden w-full" ref={emblaRef}>
-          <div className="flex gap-1 px-[10vw]">
-            <div
-              className="flex-[0_0_80vw] flex items-center justify-center"
-              style={{
-                transform: selectedIndex === 0 ? "scale(1)" : "scale(0.9)",
-                transition: "transform 0.3s ease",
-              }}
-            >
-              <div className="card-container">
-                {missionData?.videoUrl ? (
-                  <video
-                    src={missionData.videoUrl}
-                    className="w-full h-full object-cover rounded-[32px]"
-                    controls
-                    playsInline
-                  >
-                    <track kind="captions" />
-                  </video>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-neutral-400 t-p-14-m">
-                    답지 영상이 없습니다
-                  </div>
-                )}
-              </div>
-            </div>
-            <div
-              className="flex-[0_0_80vw] flex items-center justify-center"
-              style={{
-                transform: selectedIndex === 1 ? "scale(1)" : "scale(0.9)",
-                transition: "transform 0.3s ease",
-              }}
-            >
-              <div className="card-container">
-                {latestAttemptUrl ? (
-                  <video
-                    src={latestAttemptUrl}
-                    className="w-full h-full object-cover rounded-[32px]"
-                    controls
-                    playsInline
-                  >
-                    <track kind="captions" />
-                  </video>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-neutral-400 t-p-14-m">
-                    영상이 없습니다
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="flex items-center">
+            <VideoComponent
+              isSelected={selectedIndex === 0}
+              videoUrl={missionData?.videoUrl ?? ""}
+            />
+            <VideoComponent
+              isSelected={selectedIndex === 1}
+              videoUrl={latestAttemptUrl ?? ""}
+            />
           </div>
         </div>
       </div>

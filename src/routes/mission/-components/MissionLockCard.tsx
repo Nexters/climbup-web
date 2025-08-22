@@ -1,14 +1,10 @@
 import assetMissionIcon from "@/assets/images/ic_lock.png";
 import assetMissionLock from "@/assets/images/ic_lock_image.png";
-import { cn } from "@/utils/cn";
 
 export default function MissionLockCard() {
   return (
-    <div
-      className={cn("card-container", "max-w-[300px]")}
-      id="mission-lock-card"
-    >
-      <div className="relative w-full h-full rounded-[32px]">
+    <div className="card-container">
+      <div className="relative aspect-[3/4] w-full h-full rounded-[32px]">
         <div className="h-full flex flex-col items-center justify-center gap-2 relative z-1 bg-neutral-400 rounded-[32px]">
           <img
             src={assetMissionIcon}

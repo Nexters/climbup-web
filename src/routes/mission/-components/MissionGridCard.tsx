@@ -40,18 +40,14 @@ export default function MissionGridCard({
     <Link
       to={`/mission/${missionId}/${status === "not_tried" ? "" : status}`}
       disabled={!missionId}
-      className={cn(
-        "card-container",
-        {
-          "scale-100 opacity-100": isSelected,
-          "scale-90 opacity-50": !isSelected,
-        },
-        "max-w-[300px]"
-      )}
+      className={cn("card-container", {
+        "scale-100 opacity-100": isSelected,
+        "scale-90 opacity-50": !isSelected,
+      })}
     >
       <div
         className={cn(
-          "relative h-full p-5 rounded-[32px]",
+          "relative aspect-[3/4] h-full rounded-[32px]",
           status === "not_tried"
             ? ""
             : "bg-neutral-100 border-[1px] border-neutral-300"
@@ -68,9 +64,9 @@ export default function MissionGridCard({
             <div className="absolute inset-0 bg-gradient-to-b from-[#313131] to-[#00000000] opacity-60 rounded-[32px]" />
           </>
         )}
-        <div className="flex flex-col justify-between h-full relative z-10">
+        <div className="flex flex-col justify-between h-full relative z-10 p-5">
           {(type === "main" || type === "recommendation") && (
-            <div className="flex flex-col gap-1 xs:gap-2">
+            <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between gap-1">
                 {type === "main" && (
                   <div className="flex items-center gap-1">
@@ -166,7 +162,7 @@ export default function MissionGridCard({
             </div>
           )}
           {status !== "not_tried" && (
-            <div className="flex flex-col gap-1 border-t border-neutral-300 pt-3">
+            <div className="flex flex-col gap-1 border-t border-neutral-300 pt-2">
               <div className="flex justify-between items-center">
                 <span className="t-p-16-m text-neutral-500">SECTOR</span>
                 <span className="t-p-16-m text-neutral-500">{sectorName}</span>

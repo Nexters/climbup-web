@@ -30,12 +30,13 @@ export default function MissionNotTriedFailed({
         <div className="card-container">
           <video
             src={videoUrl}
-            className="w-full h-full object-cover"
-            controls
+            className="w-full h-full object-cover rounded-[32px]"
             playsInline
-          >
-            <track kind="captions" />
-          </video>
+            muted
+            loop
+            controls
+            autoPlay
+          />
         </div>
       </div>
 

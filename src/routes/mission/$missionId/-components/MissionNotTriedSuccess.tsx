@@ -42,32 +42,23 @@ export default function MissionNotTriedSuccess({
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-1 px-[7.5vw]">
+          <div className="flex items-center">
             {missions?.map((mission, index) => (
-              <div
+              <MissionGridCard
                 key={mission.missionId}
-                className="flex-[0_0_85vw] flex items-center justify-center"
-                style={{
-                  transform:
-                    index === selectedIndex ? "scale(1)" : "scale(0.9)",
-                  transition: "transform 0.3s ease",
+                sectorName={mission.sector?.name ?? ""}
+                difficulty={convertPascalCase(mission.difficulty ?? "")}
+                imageUrl={mission.imageUrl}
+                onStart={() => {
+                  navigate({
+                    to: "/mission/$missionId",
+                    params: { missionId: mission.missionId?.toString() },
+                  });
+                  onStart();
                 }}
-              >
-                <MissionGridCard
-                  key={mission.missionId}
-                  sectorName={mission.sector?.name ?? ""}
-                  difficulty={convertPascalCase(mission.difficulty ?? "")}
-                  imageUrl={mission.imageUrl}
-                  onStart={() => {
-                    navigate({
-                      to: "/mission/$missionId",
-                      params: { missionId: mission.missionId?.toString() },
-                    });
-                    onStart();
-                  }}
-                  type="recommendation"
-                />
-              </div>
+                type="recommendation"
+                isSelected={index === selectedIndex}
+              />
             ))}
           </div>
         </div>
