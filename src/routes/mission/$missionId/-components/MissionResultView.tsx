@@ -56,8 +56,6 @@ export default function MissionResultView({
   );
   const latestAttemptUrl = missionData?.attempts?.[0]?.videoUrl;
 
-  console.log(selectedIndex);
-
   const handleDownload = async (url: string | undefined, filename: string) => {
     if (!url) return;
 
@@ -120,7 +118,7 @@ export default function MissionResultView({
         </div>
       </div>
 
-      <div className="flex items-center gap-4 pt-6">
+      <div className="flex items-center gap-4 pt-4">
         <div className="overflow-hidden w-full" ref={emblaRef}>
           <div className="flex items-center">
             <VideoComponent
@@ -135,7 +133,7 @@ export default function MissionResultView({
         </div>
       </div>
 
-      <div className="flex justify-center gap-4 px-4 py-6 pb-24">
+      <div className="flex justify-center gap-4 px-4 pb-6 mt-auto">
         {latestAttemptUrl && (
           <Button
             onClick={() =>

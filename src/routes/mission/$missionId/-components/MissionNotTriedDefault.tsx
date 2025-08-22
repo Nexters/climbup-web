@@ -19,7 +19,7 @@ export default function MissionNotTriedDefault({
 }: MissionNotTriedDefaultProps) {
   return (
     <>
-      <MissionDetailHeader type="close" />
+      <MissionDetailHeader />
 
       <div className="flex-1 flex flex-col items-center gap-4 px-4">
         <div className="flex flex-col items-center gap-2">

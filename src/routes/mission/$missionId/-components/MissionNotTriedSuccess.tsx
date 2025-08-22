@@ -30,7 +30,7 @@ export default function MissionNotTriedSuccess({
 
   return (
     <>
-      <MissionDetailHeader type="close" />
+      <MissionDetailHeader />
 
       <div className="flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">

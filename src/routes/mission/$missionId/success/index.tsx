@@ -44,7 +44,7 @@ function MissionSuccess() {
 
   return (
     <div className="fixed inset-0 flex flex-col h-full bg-neutral-900">
-      <MissionDetailHeader type="close" />
+      <MissionDetailHeader />
       <MissionResultView status="success" missionData={currentMission} />
     </div>
   );

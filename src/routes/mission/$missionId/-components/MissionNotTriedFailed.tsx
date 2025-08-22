@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
 import Button from "@/components/Button";
 import MissionDetailHeader from "./MissionDetailHeader";
 
@@ -11,11 +10,9 @@ export default function MissionNotTriedFailed({
   videoUrl,
   onRetry,
 }: MissionNotTriedFailedProps) {
-  const navigate = useNavigate();
-
   return (
     <>
-      <MissionDetailHeader type="mypage" />
+      <MissionDetailHeader />
 
       <div className="flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center gap-4 mb-6 px-4">
@@ -41,7 +38,6 @@ export default function MissionNotTriedFailed({
       </div>
 
       <div className="flex justify-center gap-2 px-[30px] pb-6">
-        <Button onClick={() => navigate({ to: "/mission" })}>홈</Button>
         <Button onClick={onRetry}>재도전</Button>
       </div>
     </>
