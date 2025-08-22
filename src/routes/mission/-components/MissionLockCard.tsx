@@ -9,7 +9,7 @@ export default function MissionLockCard() {
           <img
             src={assetMissionIcon}
             alt="자물쇠 이미지"
-            className="absolute w-[35px] h-[43px] left-[24px] top-[24px] object-cover"
+            className="absolute w-[35px] h-[43px] left-[20px] top-[20px] object-cover"
           />
           <div className="max-w-[140px] max-h-[140px] w-full h-full aspect-square">
             <img
