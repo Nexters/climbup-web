@@ -45,6 +45,7 @@ export default function MissionNotTriedDefault({
             status="not_tried"
             onStart={onStart}
             type="detail"
+            imageOpacity={100}
           />
         </div>
       </div>

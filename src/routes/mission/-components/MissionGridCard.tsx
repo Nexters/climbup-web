@@ -20,6 +20,7 @@ interface MissionGridCardProps {
   holdImageUrl?: string;
   type: "main" | "detail" | "recommendation";
   isSelected?: boolean;
+  imageOpacity?: number;
 }
 
 export default function MissionGridCard({
@@ -35,6 +36,7 @@ export default function MissionGridCard({
   holdImageUrl,
   type = "main",
   isSelected = true,
+  imageOpacity = 50,
 }: MissionGridCardProps) {
   return (
     <Link
@@ -58,7 +60,10 @@ export default function MissionGridCard({
             <img
               src={imageUrl}
               alt="mission-image"
-              className="absolute inset-0 w-full h-full object-cover opacity-50 rounded-[32px]"
+              className={cn(
+                "absolute inset-0 w-full h-full object-cover rounded-[32px]",
+                `opacity-${imageOpacity}`
+              )}
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#313131] to-[#00000000] opacity-60 rounded-[32px]" />
