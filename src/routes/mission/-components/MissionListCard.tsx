@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { sample } from "es-toolkit/compat";
+import { MISSION_STATUS_MESSAGES } from "@/constants/mission";
 import { cn } from "@/utils/cn";
 import { convertPascalCase } from "@/utils/convert";
 
@@ -90,9 +92,9 @@ export default function MissionListCard({
           {convertPascalCase(difficulty)}
         </div>
         <div className="t-p-12-m text-neutral-600 mb-1">
-          {status === "not_tried" && "이 루트가 궁금하지 않으신가요?"}
-          {status === "success" && "완등 ! 대단히 상당히 멋져요!"}
-          {status === "failed" && "한 번 더 도전해보세요!"}
+          {status === "not_tried" && sample(MISSION_STATUS_MESSAGES.not_tried)}
+          {status === "success" && sample(MISSION_STATUS_MESSAGES.success)}
+          {status === "failed" && sample(MISSION_STATUS_MESSAGES.failed)}
         </div>
         <div className="flex items-center gap-1 t-p-10-sb text-neutral-400">
           <span className="w-1 h-1 rounded-full bg-neutral-400" />

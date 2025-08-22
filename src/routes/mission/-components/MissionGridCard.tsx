@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
+import { sample } from "es-toolkit/compat";
 import { Tooltip } from "radix-ui";
 import Button from "@/components/Button";
 import { Tag } from "@/components/tag/Tag";
+import { MISSION_STATUS_MESSAGES } from "@/constants/mission";
 import { cn } from "@/utils/cn";
 import { convertPascalCase } from "@/utils/convert";
 import { getDiffFromNow } from "@/utils/date";
@@ -141,7 +143,7 @@ export default function MissionGridCard({
                 <div className="flex items-center gap-1">
                   {status === "not_tried" ? (
                     <div className="t-p-14-m text-neutral-100">
-                      이 루트 궁금하지 않으신가요?
+                      {sample(MISSION_STATUS_MESSAGES.not_tried)}
                     </div>
                   ) : (
                     <>
@@ -152,8 +154,8 @@ export default function MissionGridCard({
                       )}
                       <div className="t-p-14-m">
                         {status === "success"
-                          ? "완등 ! 대단히 상당히 멋져요!"
-                          : "한 번 더 도전해보세요!"}
+                          ? sample(MISSION_STATUS_MESSAGES.success)
+                          : sample(MISSION_STATUS_MESSAGES.failed)}
                       </div>
                     </>
                   )}
