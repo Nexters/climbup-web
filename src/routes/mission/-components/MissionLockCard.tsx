@@ -5,13 +5,13 @@ export default function MissionLockCard() {
   return (
     <div className="card-container">
       <div className="relative aspect-[3/4] w-full h-full rounded-[32px]">
-        <div className="h-full flex flex-col items-center justify-center gap-2 relative z-1 bg-neutral-400 rounded-[32px]">
+        <div className="h-full flex flex-col items-center justify-center gap-5 relative z-1 bg-neutral-300 rounded-[32px]">
           <img
             src={assetMissionIcon}
             alt="자물쇠 이미지"
             className="absolute w-[35px] h-[43px] left-[24px] top-[24px] object-cover"
           />
-          <div className="max-w-[200px] max-h-[200px] w-full h-full aspect-square">
+          <div className="max-w-[140px] max-h-[140px] w-full h-full aspect-square">
             <img
               src={assetMissionLock}
               alt="미션 아이콘"
