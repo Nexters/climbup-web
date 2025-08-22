@@ -15,6 +15,7 @@ export default function MissionNotTriedDefault({
   sectorImage,
   difficulty,
   missionImage,
+  score,
   onStart,
 }: MissionNotTriedDefaultProps) {
   return (
@@ -46,6 +47,8 @@ export default function MissionNotTriedDefault({
             onStart={onStart}
             type="detail"
             imageOpacity={100}
+            score={score}
+            hasTooltip
           />
         </div>
       </div>

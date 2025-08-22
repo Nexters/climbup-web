@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Tooltip } from "radix-ui";
 import Button from "@/components/Button";
 import { Tag } from "@/components/tag/Tag";
 import { cn } from "@/utils/cn";
@@ -21,6 +22,7 @@ interface MissionGridCardProps {
   type: "main" | "detail" | "recommendation";
   isSelected?: boolean;
   imageOpacity?: number;
+  hasTooltip?: boolean;
 }
 
 export default function MissionGridCard({
@@ -37,6 +39,7 @@ export default function MissionGridCard({
   type = "main",
   isSelected = true,
   imageOpacity = 50,
+  hasTooltip = false,
 }: MissionGridCardProps) {
   return (
     <Link
@@ -182,7 +185,29 @@ export default function MissionGridCard({
           )}
           {onStart && (type === "recommendation" || type === "detail") && (
             <div className="flex justify-end gap-2 mt-auto">
-              <Button onClick={onStart}>도전</Button>
+              <Tooltip.Provider>
+                <Tooltip.Root open={hasTooltip && isSelected}>
+                  <Tooltip.Trigger asChild>
+                    <Button onClick={onStart}>도전</Button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal>
+                    <Tooltip.Content
+                      className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade animate-bounce"
+                      sideOffset={5}
+                    >
+                      <p className="t-p-14-sb text-neutral-800 flex items-center gap-1">
+                        <img
+                          src="/score-star.png"
+                          alt="score-star"
+                          className="w-2.5 h-2.5"
+                        />
+                        +{score}
+                      </p>
+                      <Tooltip.Arrow className="fill-white mt-[-1px]" />
+                    </Tooltip.Content>
+                  </Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             </div>
           )}
         </div>

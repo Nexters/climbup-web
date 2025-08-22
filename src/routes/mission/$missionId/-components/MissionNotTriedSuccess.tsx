@@ -58,6 +58,8 @@ export default function MissionNotTriedSuccess({
                 }}
                 type="recommendation"
                 isSelected={index === selectedIndex}
+                score={mission.score}
+                hasTooltip
               />
             ))}
           </div>

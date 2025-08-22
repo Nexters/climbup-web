@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { differenceInSeconds, isValid, parseISO } from "date-fns";
-import { motion } from "motion/react";
 import { Tooltip } from "radix-ui";
 import { useEffect, useRef, useState } from "react";
 import { Timer } from "@/components/timer/Timer";
@@ -16,8 +15,6 @@ import PlayIcon from "../../../components/icons/PlayIcon";
 import StopIcon from "../../../components/icons/StopIcon";
 
 const HOLD_MS = 1000;
-
-const MotionTooltipContent = motion.create(Tooltip.Content);
 
 export default function MissionTimer({
   showMockStopButton,
@@ -181,26 +178,14 @@ export default function MissionTimer({
               )}
             </button>
           </Tooltip.Trigger>
-          <Tooltip.Portal key={isTooltipOpen ? "open" : "close"}>
-            <MotionTooltipContent
-              key={isTooltipOpen ? "open" : "close"}
-              initial={{ y: -7 }}
-              animate={{
-                y: [0, -7, 0],
-              }}
-              exit={{ y: -7 }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                repeatType: "loop",
-              }}
-              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade"
+          <Tooltip.Portal>
+            <Tooltip.Content
+              className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade animate-bounce"
               sideOffset={5}
             >
               <p className="t-p-14-sb text-blue-500">시작</p>
-              <Tooltip.Arrow className="fill-white" />
-            </MotionTooltipContent>
+              <Tooltip.Arrow className="fill-white mt-[-1px]" />
+            </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip.Root>
       </Tooltip.Provider>
