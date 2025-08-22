@@ -251,6 +251,7 @@ export function useUploadAttemptVideo() {
         ...prev,
         isUploading: false,
         uploadId: undefined,
+        percentage: 0,
       }));
 
       callbacks.onSuccess?.(fileName || "");
