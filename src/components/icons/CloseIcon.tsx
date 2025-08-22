@@ -18,6 +18,7 @@ export default function CloseIcon({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Close icon"
+      className="rounded-[5px] active:bg-[#D2D6DB]/40"
       role="img"
       {...props}
     >
