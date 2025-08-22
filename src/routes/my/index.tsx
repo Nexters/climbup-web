@@ -19,8 +19,10 @@ export const Route = createFileRoute("/my/")({
 const PAGE_SIZE = 10;
 const GOOGLE_FORM_URL = "https://forms.gle/btXobhr7sAHsXjMg9";
 
+export const ALL_TAB_ID = 0;
+
 function RouteComponent() {
-  const [selectedTab, setSelectedTab] = useState<VideoTabId>(null);
+  const [selectedTab, setSelectedTab] = useState<VideoTabId>(ALL_TAB_ID);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const fetchVideos = async ({ pageParam = 0 }: { pageParam?: number }) => {
