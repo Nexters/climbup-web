@@ -24,7 +24,7 @@ const VideoComponent = ({
       {videoUrl ? (
         <video
           src={videoUrl}
-          className="w-full h-full object-cover rounded-[32px] aspect-[3/4]"
+          className="w-full h-full object-cover rounded-[32px] aspect-[3/4] overflow-hidden"
           playsInline
           muted
           loop

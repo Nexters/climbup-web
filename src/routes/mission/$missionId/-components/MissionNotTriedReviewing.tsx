@@ -31,7 +31,7 @@ export default function MissionNotTriedReviewing({
         <div className="flex items-center justify-center">
           <div className="card-container">
             <video
-              className="w-full h-full object-cover rounded-[32px]"
+              className="w-full h-full aspect-[3/4] object-cover rounded-[32px] overflow-hidden"
               playsInline
               muted
               loop
