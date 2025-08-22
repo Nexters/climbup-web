@@ -44,9 +44,13 @@ export default function MissionNotTriedReviewing({
       </div>
 
       <div className="flex justify-center gap-2 pt-4 pb-6">
-        <Button onClick={onFailed}>실패</Button>
         <Button onClick={onRetry}>재촬영</Button>
-        <Button onClick={onSuccess}>성공</Button>
+        <Button variant="white" onClick={onFailed}>
+          실패
+        </Button>
+        <Button variant="white" onClick={onSuccess}>
+          성공
+        </Button>
       </div>
     </>
   );

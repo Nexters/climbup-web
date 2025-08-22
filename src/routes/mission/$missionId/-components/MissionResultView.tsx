@@ -150,13 +150,9 @@ export default function MissionResultView({
           </Button>
         )}
         {onRetry && (
-          <button
-            type="button"
-            className="t-p-14-sb bg-neutral-100 rounded-[32px] px-9 py-4 shadow-[2px_2px_16px_0_rgba(0,0,0,0.4)]"
-            onClick={onRetry}
-          >
+          <Button variant="white" onClick={onRetry}>
             다시 도전
-          </button>
+          </Button>
         )}
       </div>
     </>

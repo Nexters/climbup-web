@@ -38,7 +38,9 @@ export default function MissionNotTriedFailed({
       </div>
 
       <div className="flex justify-center gap-2 px-[30px] pb-6">
-        <Button onClick={onRetry}>재도전</Button>
+        <Button variant="white" onClick={onRetry}>
+          다시 도전
+        </Button>
       </div>
     </>
   );
