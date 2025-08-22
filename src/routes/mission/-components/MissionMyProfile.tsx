@@ -24,7 +24,7 @@ export default function MissionMyProfile() {
         alt="user-profile"
         className="w-10 h-10 object-cover rounded-full"
       />
-      <span className="absolute bottom-[6px] right-0 t-p-10-sb text-neutral-100 bg-neutral-500 border-2 border-neutral-100 rounded-full py-0.5 px-1">
+      <span className="absolute bottom-[2px] right-0 t-p-10-sb text-neutral-100 bg-neutral-500 border-2 border-neutral-100 rounded-full py-0.5 px-1">
         LV.{levelInfo.displayLevel}
       </span>
     </Link>
