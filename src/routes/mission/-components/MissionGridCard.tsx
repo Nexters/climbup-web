@@ -192,7 +192,7 @@ export default function MissionGridCard({
                   </Tooltip.Trigger>
                   <Tooltip.Portal>
                     <Tooltip.Content
-                      className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-violet11 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] will-change-[transform,opacity] data-[state=delayed-open]:data-[side=bottom]:animate-slideUpAndFade data-[state=delayed-open]:data-[side=left]:animate-slideRightAndFade data-[state=delayed-open]:data-[side=right]:animate-slideLeftAndFade data-[state=delayed-open]:data-[side=top]:animate-slideDownAndFade animate-bounce"
+                      className="select-none rounded-[8px] bg-white px-[15px] py-2 text-[15px] leading-none text-neutral-800 shadow-[2px_2px_16px_rgba(0,0,0,0.4)] animate-bounce"
                       sideOffset={5}
                     >
                       <p className="t-p-14-sb text-neutral-800 flex items-center gap-1">
