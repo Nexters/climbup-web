@@ -19,7 +19,7 @@ export default function MissionLockCard() {
             />
           </div>
           <p className="text-center t-p-16-m text-neutral-800">
-            아래 재생 버튼을 눌러
+            아래 시작 버튼을 눌러
             <br />
             루트 미션을 확인해보세요
           </p>
